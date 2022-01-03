@@ -28,3 +28,6 @@
 [submodule "3rdparty/openal/openal-soft"]
 	path = 3rdparty/openal/openal-soft
 	url = https://github.com/kcat/openal-soft.git
+[submodule "3rdparty/bullet/bullet3"]
+	path = 3rdparty/bullet/bullet3
+	url = https://github.com/bulletphysics/bullet3.git
