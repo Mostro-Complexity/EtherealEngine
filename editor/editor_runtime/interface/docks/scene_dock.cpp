@@ -463,7 +463,7 @@ void handle_camera_movement() {
   auto transform = editor_camera.get_component<transform_component>().lock();
   float movement_speed = 5.0f;
   float spin_speed = 0.2f;
-  float surround_speed = 0.002f;
+  float surround_speed = 0.05f;
   float multiplier = 5.0f;
   auto delta_move = input.get_cursor_delta_move();
   float radius = 10;
@@ -547,13 +547,10 @@ void handle_camera_movement() {
     float dx = x * surround_speed;
     float dy = y * surround_speed;
 
-    auto trans = transform->get_transform();
-    auto look_dir = transform->get_z_axis();
-    trans.set_position(at - radius * look_dir);
-    trans.rotate(0.0f, dx, 0.0f);
-    trans.rotate_axis(-dy, math::cross(look_dir, math::vec3(0.0f, 1.0f, 0.0f)));
-
-    transform->set_transform(trans);
+    transform->rotate(0.0f, dx, 0.0f);
+    transform->rotate_axis(
+      -dy, math::cross(transform->get_z_axis(), math::vec3(0.0f, 1.0f, 0.0f)));  // DEBUG
+    transform->set_position(at - radius * transform->get_z_axis());
   }
 }
 
