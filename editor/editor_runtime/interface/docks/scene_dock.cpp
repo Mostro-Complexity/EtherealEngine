@@ -69,11 +69,11 @@ static void resource_bar(
   itemHovered |= bar(std::max(1.0f, percentage * _maxWidth), _maxWidth, _height, color);
   gui::SameLine();
 
-  gui::Text("%5.2f%%", double(percentage * 100.0f));
+  gui::Text("%5.2f%%", double(percentage) * 100.0f);
 
   if (itemHovered) {
     gui::BeginTooltip();
-    gui::Text("%s %5.2f%%", _tooltip, double(percentage * 100.0f));
+    gui::Text("%s %5.2f%%", _tooltip, double(percentage) * 100.0f);
     gui::EndTooltip();
   }
 }
@@ -369,7 +369,7 @@ void manipulation_gizmos() {
       imguizmo::set_view_rect(p.x, p.y, s.x, s.y);
       auto camera_comp = editor_camera.get_component<camera_component>().lock();
       auto transform_comp = sel.get_component<transform_component>().lock();
-      auto transform = transform_comp->get_transform();
+      const auto& transform = transform_comp->get_transform();
       math::transform delta;
       float* snap = nullptr;
       if (input.is_key_down(mml::keyboard::LControl)) {
@@ -463,7 +463,7 @@ void handle_camera_movement() {
   auto transform = editor_camera.get_component<transform_component>().lock();
   float movement_speed = 5.0f;
   float spin_speed = 0.2f;
-  float surround_speed = 0.05f;
+  float surround_speed = 0.1f;
   float multiplier = 5.0f;
   auto delta_move = input.get_cursor_delta_move();
   float radius = 10;
@@ -548,8 +548,7 @@ void handle_camera_movement() {
     float dy = y * surround_speed;
 
     transform->rotate(0.0f, dx, 0.0f);
-    transform->rotate_axis(
-      -dy, math::cross(transform->get_z_axis(), math::vec3(0.0f, 1.0f, 0.0f)));  // DEBUG
+    transform->rotate_axis(dy, transform->get_x_axis());
     transform->set_position(at - radius * transform->get_z_axis());
   }
 }
