@@ -466,6 +466,8 @@ void handle_camera_movement() {
   float surround_speed = 0.002f;
   float multiplier = 5.0f;
   auto delta_move = input.get_cursor_delta_move();
+  float radius = 10;
+  static auto at = transform->get_position() + radius * transform->get_z_axis();
 
   if (input.is_mouse_button_down(mml::mouse::middle)) {
     if (input.is_key_down(mml::keyboard::LShift)) { movement_speed *= multiplier; }
@@ -535,31 +537,23 @@ void handle_camera_movement() {
 
     float delta_wheel = input.get_mouse_wheel_scroll_delta_move();
     transform->move_local({ 0.0f, 0.0f, 14.0f * movement_speed * delta_wheel * dt });
+    at = transform->get_position() + radius * transform->get_z_axis();
   }
 
   if (input.is_key_down(mml::keyboard::LAlt) && input.is_mouse_button_down(mml::mouse::left)) {
-    static float eye_x;
-    static float eye_y;
-    static float eye_z;
-    float radius = 10;
+    auto x = static_cast<float>(delta_move.x);
+    auto y = static_cast<float>(delta_move.y);
 
-    static math::vec2 move(0, math::pi<float>() / 2);
-    move.x -= delta_move.x * surround_speed;
-    move.y -= delta_move.y * surround_speed;
+    float dx = x * surround_speed;
+    float dy = y * surround_speed;
 
-    math::vec3 at(2, 2, 2);
-    move.y = fmod(move.y, 2 * math::pi<float>());  // TODO: operational optimization
-    if (move.y > math::pi<float>() - 1e-1f) {
-      move.y = math::pi<float>() - 1e-1f;
-    } else if (1e-1f > move.y) {
-      move.y = 1e-1f;
-    }
+    auto trans = transform->get_transform();
+    auto look_dir = transform->get_z_axis();
+    trans.set_position(at - radius * look_dir);
+    trans.rotate(0.0f, dx, 0.0f);
+    trans.rotate_axis(-dy, math::cross(look_dir, math::vec3(0.0f, 1.0f, 0.0f)));
 
-    eye_x = at.x + sin(move.y) * cos(move.x) * radius;
-    eye_y = at.y + cos(move.y) * radius;
-    eye_z = at.z + sin(move.y) * sin(move.x) * radius;
-
-    transform->look_at(math::vec3(eye_x, eye_y, eye_z), at, math::vec3(0.0f, 1.0f, 0.0f));
+    transform->set_transform(trans);
   }
 }
 

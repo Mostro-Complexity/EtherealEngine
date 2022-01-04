@@ -99,21 +99,17 @@ const math::transform& transform_component::get_local_transform() const {
 
 void transform_component::look_at(float x, float y, float z) { look_at(math::vec3(x, y, z)); }
 
-void transform_component::look_at(const math::vec3& point) {
+void transform_component::look_at(const math::vec3& at) {
   auto eye = get_position();
-  math::transform m = math::lookAt(eye, point, math::vec3{ 0.0f, 1.0f, 0.0f });
+  math::transform m = math::lookAt(eye, at, math::vec3{ 0.0f, 1.0f, 0.0f });
   m = math::inverse(m);
 
   set_rotation(m.get_rotation());
 }
 
-void transform_component::look_at(const math::vec3& eye, const math::vec3& at) {
-  math::transform m = math::lookAt(eye, at, math::vec3{ 0.0f, 1.0f, 0.0f });
-  set_transform(math::inverse(m));
-}
-
 void transform_component::look_at(
-  const math::vec3& eye, const math::vec3& at, const math::vec3& up) {
+  const math::vec3& eye, const math::vec3& at,
+  const math::vec3& up = math::vec3{ 0.0f, 1.0f, 0.0f }) {
   math::transform m = math::lookAt(eye, at, up);
   set_transform(math::inverse(m));
 }

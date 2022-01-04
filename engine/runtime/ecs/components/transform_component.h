@@ -242,16 +242,6 @@ public:
   ///
   /// </summary>
   //-----------------------------------------------------------------------------
-  void look_at(const math::vec3& eye, const math::vec3& at);
-
-  //-----------------------------------------------------------------------------
-  //  Name : look_at ( )
-  /// <summary>
-  ///
-  ///
-  ///
-  /// </summary>
-  //-----------------------------------------------------------------------------
   void look_at(const math::vec3& eye, const math::vec3& at, const math::vec3& up);
   //-----------------------------------------------------------------------------
   //  Name : set_position()
@@ -547,8 +537,4 @@ protected:
   math::transform world_transform_;
   /// Should recalc world transform.
   bool dirty_ = true;
-  /// Cached position of watching at pivot point.
-  math::vec3 at_;
-  /// Cached distance between position of watching and eyes.
-  float radius_;
 };
