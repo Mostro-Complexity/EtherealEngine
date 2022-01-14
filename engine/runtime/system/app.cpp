@@ -22,189 +22,161 @@
 
 #include <sstream>
 
-namespace runtime
-{
+namespace runtime {
 
-void app::setup(cmd_line::parser& parser)
-{
-	auto logging_container = logging::get_mutable_logging_container();
-	logging_container->add_sink(std::make_shared<logging::sinks::platform_sink_mt>());
-	logging_container->add_sink(std::make_shared<logging::sinks::simple_file_sink_mt>("Log.txt", true));
+  void app::setup(cmd_line::parser& parser) {
+    auto logging_container = logging::get_mutable_logging_container();
+    logging_container->add_sink(std::make_shared<logging::sinks::platform_sink_mt>());
+    logging_container->add_sink(
+      std::make_shared<logging::sinks::simple_file_sink_mt>("Log.txt", true));
 
-	logging::create(APPLOG, logging_container);
+    logging::create(APPLOG, logging_container);
 
-	serialization::set_warning_logger([](const std::string& msg) { APPLOG_WARNING(msg); });
+    serialization::set_warning_logger([](const std::string& msg) { APPLOG_WARNING(msg); });
 
-	gfx::set_info_logger([](const std::string& msg) { APPLOG_INFO(msg); });
-	gfx::set_warning_logger([](const std::string& msg) { APPLOG_WARNING(msg); });
-	gfx::set_error_logger([](const std::string& msg) { APPLOG_ERROR(msg); });
+    gfx::set_info_logger([](const std::string& msg) { APPLOG_INFO(msg); });
+    gfx::set_warning_logger([](const std::string& msg) { APPLOG_WARNING(msg); });
+    gfx::set_error_logger([](const std::string& msg) { APPLOG_ERROR(msg); });
 
-	audio::set_info_logger([](const std::string& msg) { APPLOG_INFO(msg); });
-	audio::set_error_logger([](const std::string& msg) { APPLOG_ERROR(msg); });
+    audio::set_info_logger([](const std::string& msg) { APPLOG_INFO(msg); });
+    audio::set_error_logger([](const std::string& msg) { APPLOG_ERROR(msg); });
 
-	ecs::set_frame_getter([]() { return core::get_subsystem<core::simulation>().get_frame(); });
+    ecs::set_frame_getter([]() { return core::get_subsystem<core::simulation>().get_frame(); });
 
-	parser.set_optional<std::string>("r", "renderer", "auto", "Select preferred renderer.");
-	parser.set_optional<bool>("n", "novsync", false, "Disable vsync.");
-}
+    parser.set_optional<std::string>("r", "renderer", "auto", "Select preferred renderer.");
+    parser.set_optional<bool>("n", "novsync", false, "Disable vsync.");
+  }
 
-void app::start(cmd_line::parser& parser)
-{
-	// this order is important
-	core::add_subsystem<core::simulation>();
-	core::add_subsystem<renderer>(parser);
-	core::add_subsystem<input>();
-	core::add_subsystem<audio::device>();
-	core::add_subsystem<asset_manager>();
-	core::add_subsystem<core::task_system>(false);
-	setup_asset_manager();
-	core::add_subsystem<entity_component_system>();
-	core::add_subsystem<scene_graph>();
-	core::add_subsystem<bone_system>();
-	core::add_subsystem<camera_system>();
-	core::add_subsystem<reflection_probe_system>();
-	core::add_subsystem<deferred_rendering>();
-	core::add_subsystem<audio_system>();
-}
+  void app::start(cmd_line::parser& parser) {
+    // this order is important
+    core::add_subsystem<core::simulation>();
+    core::add_subsystem<renderer>(parser);
+    core::add_subsystem<input>();
+    core::add_subsystem<audio::device>();
+    core::add_subsystem<asset_manager>();
+    core::add_subsystem<core::task_system>(false);
+    setup_asset_manager();
+    auto& ecs = core::add_subsystem<entity_component_system>();
+    core::add_subsystem<scene_graph>();
+    core::add_subsystem<bone_system>();
+    core::add_subsystem<camera_system>();
+    core::add_subsystem<reflection_probe_system>();
+    core::add_subsystem<deferred_rendering>();
+    core::add_subsystem<audio_system>();
 
-void app::stop()
-{
-}
+    runtime::on_application_start();
+  }
 
-void poll_events()
-{
-	auto& renderer = core::get_subsystem<runtime::renderer>();
-	const auto& windows = renderer.get_windows();
+  void app::stop() {}
 
-	std::uint32_t focused_id = 0;
-	std::map<std::uint32_t, std::vector<mml::platform_event>> collected_events;
-	for(const auto& window : windows)
-	{
-		const auto id = window->get_id();
-		std::vector<mml::platform_event> events;
-		mml::platform_event e;
-		while(window->poll_event(e))
-		{
-			events.emplace_back(e);
-		}
+  void poll_events() {
+    auto& renderer = core::get_subsystem<runtime::renderer>();
+    const auto& windows = renderer.get_windows();
 
-		if(window->has_focus())
-		{
-			focused_id = id;
-		}
+    std::uint32_t focused_id = 0;
+    std::map<std::uint32_t, std::vector<mml::platform_event>> collected_events;
+    for (const auto& window : windows) {
+      const auto id = window->get_id();
+      std::vector<mml::platform_event> events;
+      mml::platform_event e;
+      while (window->poll_event(e)) { events.emplace_back(e); }
 
-		if(!events.empty())
-		{
-			collected_events.emplace(id, std::move(events));
-		}
-	}
+      if (window->has_focus()) { focused_id = id; }
 
-	for(const auto& event_pair : collected_events)
-	{
-		const auto id = event_pair.first;
-		const auto& events = event_pair.second;
-		std::pair<std::uint32_t, bool> info{id, (id == focused_id)};
-		on_platform_events(info, events);
-	}
-}
+      if (!events.empty()) { collected_events.emplace(id, std::move(events)); }
+    }
 
-void app::run_one_frame()
-{
-	using namespace std::literals;
+    for (const auto& event_pair : collected_events) {
+      const auto id = event_pair.first;
+      const auto& events = event_pair.second;
+      std::pair<std::uint32_t, bool> info{ id, (id == focused_id) };
+      on_platform_events(info, events);
+    }
+  }
 
-	auto& sim = core::get_subsystem<core::simulation>();
-	auto& tasks = core::get_subsystem<core::task_system>();
-	auto& renderer = core::get_subsystem<runtime::renderer>();
-	const bool is_active = renderer.get_focused_window() != nullptr;
-	sim.run_one_frame(is_active);
-	tasks.run_on_owner_thread(5ms);
+  void app::run_one_frame() {
+    using namespace std::literals;
 
-	auto dt = sim.get_delta_time();
+    auto& sim = core::get_subsystem<core::simulation>();
+    auto& tasks = core::get_subsystem<core::task_system>();
+    auto& renderer = core::get_subsystem<runtime::renderer>();
+    const bool is_active = renderer.get_focused_window() != nullptr;
+    sim.run_one_frame(is_active);
+    tasks.run_on_owner_thread(5ms);
 
-	poll_events();
+    auto dt = sim.get_delta_time();
 
-	renderer.process_pending_windows();
+    poll_events();
 
-	const auto& windows = renderer.get_windows();
-	bool should_quit = std::all_of(std::begin(windows), std::end(windows),
-								   [](const auto& window) { return !window->is_visible(); });
-	if(should_quit)
-	{
-		quit(0);
-		return;
-	}
+    renderer.process_pending_windows();
 
-	on_frame_begin(dt);
+    const auto& windows = renderer.get_windows();
+    bool should_quit = std::all_of(std::begin(windows), std::end(windows), [](const auto& window) {
+      return !window->is_visible();
+    });
+    if (should_quit) {
+      quit(0);
+      return;
+    }
 
-	on_frame_update(dt);
+    on_frame_begin(dt);
 
-	on_frame_render(dt);
+    on_frame_update(dt);
 
-	on_frame_ui_render(dt);
+    on_frame_render(dt);
 
-	on_frame_end(dt);
-}
+    on_frame_ui_render(dt);
 
-int app::run(int argc, char* argv[])
-{
-	core::details::initialize();
+    on_frame_end(dt);
+  }
 
-	cmd_line::parser parser(argc, argv);
+  int app::run(int argc, char* argv[]) {
+    core::details::initialize();
 
-	setup(parser);
-	if(exitcode_ != 0)
-	{
-		core::details::dispose();
-		return exitcode_;
-	}
+    cmd_line::parser parser(argc, argv);
 
-	std::stringstream out, err;
-	if(!parser.run(out, err))
-	{
-		auto parse_error = out.str();
-		if(parse_error.empty())
-		{
-			parse_error = "Failed to parse command line.";
-		}
-		APPLOG_ERROR(parse_error);
-	}
-	auto parse_info = out.str();
-	if(!parse_info.empty())
-	{
-		APPLOG_INFO(parse_info);
-	}
+    setup(parser);
+    if (exitcode_ != 0) {
+      core::details::dispose();
+      return exitcode_;
+    }
 
-	APPLOG_INFO("Initializing...");
-	start(parser);
-	if(exitcode_ != 0)
-	{
-		core::details::dispose();
-		return exitcode_;
-	}
+    std::stringstream out, err;
+    if (!parser.run(out, err)) {
+      auto parse_error = out.str();
+      if (parse_error.empty()) { parse_error = "Failed to parse command line."; }
+      APPLOG_ERROR(parse_error);
+    }
+    auto parse_info = out.str();
+    if (!parse_info.empty()) { APPLOG_INFO(parse_info); }
 
-	APPLOG_INFO("Starting...");
-	while(running_)
-		run_one_frame();
+    APPLOG_INFO("Initializing...");
+    start(parser);
+    if (exitcode_ != 0) {
+      core::details::dispose();
+      return exitcode_;
+    }
 
-	APPLOG_INFO("Deinitializing...");
+    APPLOG_INFO("Starting...");
+    while (running_) run_one_frame();
 
-	stop();
+    APPLOG_INFO("Deinitializing...");
 
-	APPLOG_INFO("Exiting...");
+    stop();
 
-	core::details::dispose();
-	return exitcode_;
-}
+    APPLOG_INFO("Exiting...");
 
-void app::quit_with_error(const std::string& message)
-{
-	APPLOG_ERROR(message.c_str());
-	quit(-1);
-}
+    core::details::dispose();
+    return exitcode_;
+  }
 
-void app::quit(int exitcode)
-{
-	running_ = false;
-	exitcode_ = exitcode;
-}
-} // namespace runtime
+  void app::quit_with_error(const std::string& message) {
+    APPLOG_ERROR(message.c_str());
+    quit(-1);
+  }
+
+  void app::quit(int exitcode) {
+    running_ = false;
+    exitcode_ = exitcode;
+  }
+}  // namespace runtime

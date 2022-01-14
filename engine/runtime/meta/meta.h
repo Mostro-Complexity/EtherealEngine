@@ -12,6 +12,7 @@
 #include "ecs/components/model_component.hpp"
 #include "ecs/components/reflection_probe_component.hpp"
 #include "ecs/components/transform_component.hpp"
+#include "ecs/components/rigidbody_component.hpp"
 #include "ecs/entity.hpp"
 
 #include "rendering/camera.hpp"

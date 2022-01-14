@@ -8,18 +8,21 @@
 #include <chrono>
 #include <cstdint>
 
-namespace runtime
-{
-/// engine loop events
-extern event<void(delta_t)> on_frame_begin;
-extern event<void(delta_t)> on_frame_update;
-extern event<void(delta_t)> on_frame_render;
-extern event<void(delta_t)> on_frame_ui_render;
-extern event<void(delta_t)> on_frame_end;
+namespace runtime {
+  /// engine loop events
+  extern event<void(delta_t)> on_frame_begin;
+  extern event<void(delta_t)> on_frame_update;
+  extern event<void(delta_t)> on_frame_render;
+  extern event<void(delta_t)> on_frame_ui_render;
+  extern event<void(delta_t)> on_frame_end;
 
-/// platform events
-
-/// <window_id, is_focused>, {events}
-extern event<void(const std::pair<std::uint32_t, bool>&, const std::vector<mml::platform_event>&)>
-	on_platform_events;
-}
+  /// platform events
+  extern event<void()> on_application_setup;
+  extern event<void()> on_application_start;
+  extern event<void()> on_application_run;
+  extern event<void()> on_application_stop;
+  extern event<void()> on_application_quit;
+  /// <window_id, is_focused>, {events}
+  extern event<void(const std::pair<std::uint32_t, bool>&, const std::vector<mml::platform_event>&)>
+    on_platform_events;
+}  // namespace runtime
