@@ -1,8 +1,7 @@
-﻿set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+﻿cmake_minimum_required(VERSION 3.0)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-cmake_minimum_required(VERSION 3.0)
-
-project (ethereal)
+project(ethereal)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,18 +15,25 @@ include(sanitizers_support)
 include(clang_tidy_support)
 include(ide_support)
 
-set( BUILD_SHARED_LIBS OFF CACHE BOOL "Build package with shared libraries." FORCE)
+set(BUILD_SHARED_LIBS
+    OFF
+    CACHE BOOL "Build package with shared libraries." FORCE)
 
 if(NOT BUILD_SHARED_LIBS)
-    add_definitions(-DETH_STATIC)
-	add_definitions(-DETH_API_EXPORTS)
+  add_definitions(-DETH_STATIC)
+  add_definitions(-DETH_API_EXPORTS)
 else()
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
 add_definitions(-DNOMINMAX)
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_RELEASE "/MT")
+  set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+  add_compile_definitions(_XKEYCHECK_H)
+endif()
 
-#enable_sanitizers("custom")
+# enable_sanitizers("custom")
 
 detect_platform()
 print_info()
