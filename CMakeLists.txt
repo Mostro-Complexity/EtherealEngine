@@ -28,8 +28,6 @@ else()
 endif()
 add_definitions(-DNOMINMAX)
 if(MSVC)
-  set(CMAKE_CXX_FLAGS_RELEASE "/MT")
-  set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
   add_compile_definitions(_XKEYCHECK_H)
 endif()
 

@@ -20,15 +20,19 @@ bool rigidbody_component::get_gravity_validity() const { return gravity_enabled_
 
 void rigidbody_component::update() {
   physics::rigidbody* body = physics::rigidbody::upcast(body_.get());
-  btTransform trans;
-  if (body && body->getMotionState()) {
-    body->getMotionState()->getWorldTransform(trans);
-  } else {
-    trans = body_->getWorldTransform();
-  }
   math::mat4 out;
-  trans.getOpenGLMatrix(&out[0][0]);
-  *transform_ = math::transform(out);  // bypass the transform component
+  {
+    btTransform trans;
+    if (body && body->getMotionState()) {
+      body->getMotionState()->getWorldTransform(trans);
+    } else {
+      trans = body_->getWorldTransform();
+    }
+    trans.getOpenGLMatrix(&out[0][0]);
+  }
+  auto trans = math::transform(out);
+  auto transform_comp = entity_.get_component<transform_component>().lock();
+  transform_comp->set_transform(trans);
 }
 
 float rigidbody_component::get_mass() const { return mass_; }
@@ -36,11 +40,11 @@ float rigidbody_component::get_mass() const { return mass_; }
 void rigidbody_component::set_mass(float mass) { mass_ = mass; }
 
 void rigidbody_component::set_rigidbody(const physics::rigidbody& body) {
-  body_ = std::make_unique<physics::rigidbody>(body);
+  body_ = std::make_shared<physics::rigidbody>(body);
 }
 
 void rigidbody_component::set_rigidbody(physics::rigidbody&& body) {
-  body_ = std::make_unique<physics::rigidbody>(std::forward<physics::rigidbody>(body));
+  body_ = std::make_shared<physics::rigidbody>(std::forward<physics::rigidbody>(body));
 }
 
 const physics::rigidbody& rigidbody_component::get_rigidbody() const { return *body_; }

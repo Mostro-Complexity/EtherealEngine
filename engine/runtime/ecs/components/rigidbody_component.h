@@ -1,8 +1,11 @@
 #pragma once
-//-----------------------------------------------------------------------------
-// rigidbody_component Header Includes
-//-----------------------------------------------------------------------------
-// NOTE: basic headers
+/**
+ * @file rigidbody_component.h
+ * @author Mostro
+ * @brief Source code of rigidbody_component Components
+ * @date 2022-01-14
+ *
+ */
 #include "../ecs.h"
 
 #include <core/common/basetypes.hpp>
@@ -10,9 +13,6 @@
 #include <core/physics/bullet_includes.h>
 #include <core/physics/rigidbody.h>
 
-//-----------------------------------------------------------------------------
-// Forward Declarations
-//-----------------------------------------------------------------------------
 enum class force_mode { acceleration, force, impulse, velocity_change };
 
 enum class query_trigger_interaction { use_global, Ignore, Collide };
@@ -36,24 +36,22 @@ enum class query_trigger_interaction { use_global, Ignore, Collide };
 //  transform t;         // The Transform of the rigidbody or collider that was hit.
 //  triangle_index ti;   // The index of the triangle that was hit.
 //};
+
 //-----------------------------------------------------------------------------
-// Main Class Declarations
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//  Name : rigidbody_component (Class)
-/// <summary>
-///
-///
-/// </summary>
-// NOTE: if you use rigidbody, you can't bypass physics engine
-//-----------------------------------------------------------------------------
+/**
+ * @brief Class that contains physical data for rigidbody.
+ *
+ * @remark NOTE: if you use rigidbody, you can't bypass physics engine
+ * @remark NOTE: customize your component by refering @link link-engine/runtime/meta/meta.h @endlink
+ */
 class rigidbody_component : public runtime::component_impl<rigidbody_component> {
   SERIALIZABLE(rigidbody_component)
   REFLECTABLEV(rigidbody_component, runtime::component)
 public:
-  //-------------------------------------------------------------------------
-  // Constructors & Destructors
-  //-------------------------------------------------------------------------
+  /**
+   * @brief Construct a new rigidbody component
+   *
+   */
   rigidbody_component();
   virtual ~rigidbody_component();
 
@@ -286,16 +284,8 @@ public:
   /// </summary>
   //-----------------------------------------------------------------------------
   // void wake_up();
-
-  //-----------------------------------------------------------------------------
-  //  Name : set_gravity_validity ()
-  /// <summary>
-  ///
-  ///
-  ///
-  /// </summary>
-  //-----------------------------------------------------------------------------
   void set_gravity_validity(bool flag);
+
   bool get_gravity_validity() const;
 
   void update();
@@ -313,7 +303,6 @@ private:
   //-------------------------------------------------------------------------
   float mass_;
   bool gravity_enabled_;
-  std::unique_ptr<physics::rigidbody> body_;
-  std::shared_ptr<math::transform> transform_;
+  std::shared_ptr<physics::rigidbody> body_;
   math::vec3 velocity_;
 };

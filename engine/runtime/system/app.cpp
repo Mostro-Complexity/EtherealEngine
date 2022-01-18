@@ -10,6 +10,7 @@
 #include "../ecs/systems/deferred_rendering.h"
 #include "../ecs/systems/reflection_probe_system.h"
 #include "../ecs/systems/scene_graph.h"
+#include "../ecs/systems/physics_system.h"
 #include "../input/input.h"
 #include "../rendering/render_window.h"
 #include "../rendering/renderer.h"
@@ -63,8 +64,7 @@ namespace runtime {
     core::add_subsystem<reflection_probe_system>();
     core::add_subsystem<deferred_rendering>();
     core::add_subsystem<audio_system>();
-
-    runtime::on_application_start();
+    core::add_subsystem<physics_system>();
   }
 
   void app::stop() {}
