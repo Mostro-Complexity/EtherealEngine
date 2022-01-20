@@ -26,3 +26,5 @@ IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
 
 target_compile_definitions(imgui PUBLIC ${imgui_flags})
 target_include_directories (imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+set_target_properties( imgui PROPERTIES FOLDER "3rdparty" )

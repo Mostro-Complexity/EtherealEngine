@@ -13,3 +13,5 @@ set(CUSTOM_DOXYGEN_STYLE OFF CACHE BOOL "Enable this option to use a custom doxy
 set(BUILD_WEBSITE_DOCU OFF CACHE BOOL "Enable this option to create the special docu for the website" FORCE)
 set(CMAKE_REQUIRED_DEFINITIONS ${CMAKE_CXX14_STANDARD_COMPILE_OPTION})
 add_subdirectory( rttr )
+
+set_target_properties( rttr_core_lib PROPERTIES FOLDER "3rdparty" )

@@ -150,3 +150,5 @@ add_subdirectory( assimp )
 
 target_include_directories (assimp PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/assimp/include)
 target_include_directories (assimp PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/assimp/include)
+
+set_target_properties(assimp PROPERTIES FOLDER "3rdparty")

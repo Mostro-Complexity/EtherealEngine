@@ -10,6 +10,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "cmake_targets")
+
 include(macros)
 include(sanitizers_support)
 include(clang_tidy_support)

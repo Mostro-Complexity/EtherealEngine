@@ -9,3 +9,6 @@ set(GLM_DISABLE_AUTO_DETECTION ON CACHE BOOL "Force 'pure' instructions" FORCE)
 
 add_definitions(-DGLM_FORCE_LEFT_HANDED)
 add_subdirectory( glm )
+
+set_target_properties( glm_shared PROPERTIES FOLDER "3rdparty/glm" )
+set_target_properties( glm_static PROPERTIES FOLDER "3rdparty/glm" )

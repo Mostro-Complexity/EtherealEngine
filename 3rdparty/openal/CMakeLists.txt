@@ -14,3 +14,4 @@ endif()
 add_subdirectory( openal-soft )
 
 target_include_directories (OpenAL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/openal-soft/include)
+set_target_properties( OpenAL PROPERTIES FOLDER "3rdparty" )
