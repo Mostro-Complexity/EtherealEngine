@@ -2,7 +2,6 @@
 #include "component.hpp"
 
 #include "../../core/physics/rigidbody.hpp"
-#include "../../core/math/vector.hpp"
 
 #include <core/serialization/types/vector.hpp>
 

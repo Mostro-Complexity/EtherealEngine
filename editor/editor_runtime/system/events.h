@@ -6,8 +6,7 @@
 #include <chrono>
 #include <cstdint>
 
-namespace editor
-{
-extern event<void(const fs::path&)> on_open_project;
-extern event<void()> on_close_project;
-}
+namespace editor {
+  extern event<void(const fs::path&)> on_open_project;
+  extern event<void()> on_close_project;
+}  // namespace editor

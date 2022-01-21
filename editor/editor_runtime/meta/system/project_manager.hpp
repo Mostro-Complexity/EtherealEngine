@@ -4,8 +4,7 @@
 
 #include <core/serialization/serialization.h>
 
-namespace editor
-{
-SAVE_EXTERN(project_manager::options);
-LOAD_EXTERN(project_manager::options);
-}
+namespace editor {
+  SAVE_EXTERN(project_manager::options);
+  LOAD_EXTERN(project_manager::options);
+}  // namespace editor

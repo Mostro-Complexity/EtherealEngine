@@ -1,7 +1,6 @@
 [Ethereal Engine](https://github.com/volcoma/EtherealEngine) - Cross-platform C++ Game Engine
 ============================================================================
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1c46ea696a3a43e4a0199673de0db4bb)](https://www.codacy.com/app/volcoma/EtherealEngine?utm_source=github.com&utm_medium=referral&utm_content=volcoma/EtherealEngine&utm_campaign=badger)
 [![Join the chat at https://gitter.im/EtherealEngine/Lobby](https://badges.gitter.im/EtherealEngine/Lobby.svg)](https://gitter.im/EtherealEngine/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/volcoma/EtherealEngine.svg?branch=master)](https://travis-ci.org/volcoma/EtherealEngine)
 [![Build status](https://ci.appveyor.com/api/projects/status/18pxyag4wok2fscl?svg=true)](https://ci.appveyor.com/project/volcoma/etherealengine)
@@ -12,17 +11,18 @@
 [![](https://codescene.io/projects/1800/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/1800/jobs/latest-successful/results)
 
 ## INFO
-Using c++14
+This is mostro verson of Ethereal.  
+I added the bullet physics engine.  
+I've made some useful updates to the interface, camera, and game & editor separation.
 
-WYSIWYG Editor
+My goal of this work is **WYSIWYG** and **highly scalable**. 
 
 ## STATUS
-WIP - not production ready in any way
+I am continuing to develop, 
 
-Building
--------------
-Don't forget to update submodules
-```
+## Building
+**Don't forget to update submodules**
+```bash
 git clone https://github.com/volcoma/EtherealEngine.git
 cd EtherealEngine
 git submodule init
@@ -67,40 +67,32 @@ The engine uses the CMake build system.
 #include "some_header.h"
 #include "some_other_header_impl.hpp"
 
-namespace nsp
-{
-class some_class
-{
-public:
-
-//-----------------------------------------------------------------------------
-  //  Name : some_method ()
-  /// <summary>
-  /// This is a method comment description.
-  /// </summary>
-  //-----------------------------------------------------------------------------
-  void some_method();
+namespace nsp {
+  class some_class {
+  public:
+    /**
+     * @brief This is a method comment description.
+     *
+     */
+    void some_method();
   
-  //-----------------------------------------------------------------------------
-  //  Name : some_templated_method ()
-  /// <summary>
-  /// This is a method comment description.
-  /// </summary>
-  //-----------------------------------------------------------------------------
-  template<typename T>
-  void some_templated_method();
-public:
-  /// this is a member comment
-  int some_public_member = 0;
-  
-private:
-  /// this is a member comment
-  int some_private_member_ = 0;
+    /**
+     * @brief 
+     * 
+     * @tparam T 
+     */
+    template<typename T> void some_templated_method();
+  public:
+    // this is a member comment
+    int some_public_member = 0;
+    
+  private:
+    // this is a member comment
+    int some_private_member_ = 0;
 }
 
 template<typename T>
-inline void some_class::some_templated_method()
-{
+inline void some_class::some_templated_method() {
 // If the class is fully templated it is acceptable to put this inside the class
 }
 ```
@@ -110,6 +102,20 @@ inline void some_class::some_templated_method()
 ![screenshot2](https://user-images.githubusercontent.com/1499411/29488400-f43a5960-8512-11e7-923e-86a0c204da31.png)
 
 ![screenshot3](https://user-images.githubusercontent.com/1499411/29488403-ff3c3df6-8512-11e7-869f-32a783530cc3.png)
+
+## REQUIRED FEATURES
+### PRIMARY FEATURE
+* Implement all methods of Rigidbody Component
+* Implement all Collider Component and its method
+* Fix camera sight distance bugs
+* Script Component, which support programing language such as C++, C#, Python(Yes, I've seriously thought about it)
+* game & editor separation
+* Game play & close button switch
+* Scene(Project) save
+* Use system default file explorer
+* Double click game object to focus
+* Unit test of Transform Component
+
 
 
 ## LIBRARIES

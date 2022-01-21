@@ -1,36 +1,28 @@
 #pragma once
-
+/**
+ * @file transform_component.h
+ * @brief Source code of Transform Components
+ * 
+ */
 #include "../ecs.h"
 
 #include <core/math/math_includes.h>
 
-//-----------------------------------------------------------------------------
-// Main Class Declarations
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//  Name : transform_component (Class)
-/// <summary>
-/// Class containing transformation data and functionality. It represents
-/// an object's state in a 3D setup. Provides functionality for manipulating
-/// that state.
-/// </summary>
-//-----------------------------------------------------------------------------
+/**
+ * @brief Class that contains and calculates spatial information of entities
+ * 
+ * @remark NOTE: customize your component by refering @link link-engine/runtime/meta/meta.h @endlink
+ * 
+ */
 class transform_component : public runtime::component_impl<transform_component> {
   SERIALIZABLE(transform_component)
   REFLECTABLEV(transform_component, runtime::component)
 
 public:
-  //-------------------------------------------------------------------------
-  // Constructors & Destructors
-  //-------------------------------------------------------------------------
-  //-----------------------------------------------------------------------------
-  //  Name : transform_component ()
-  /// <summary>
-  ///
-  ///
-  ///
-  /// </summary>
-  //-----------------------------------------------------------------------------
+  /**
+   * @brief Construct a new transform component 
+   * 
+   */
   transform_component() = default;
 
   //-----------------------------------------------------------------------------

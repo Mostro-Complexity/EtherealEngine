@@ -6,26 +6,24 @@
 
 class gpu_program;
 
-namespace editor
-{
-class debugdraw_system
-{
-public:
-	debugdraw_system();
-	~debugdraw_system();
+namespace editor {
+  class debugdraw_system {
+  public:
+    debugdraw_system();
+    ~debugdraw_system();
 
-	//-----------------------------------------------------------------------------
-	//  Name : frame_render ()
-	/// <summary>
-	///
-	///
-	///
-	/// </summary>
-	//-----------------------------------------------------------------------------
-	void frame_render(delta_t dt);
+    //-----------------------------------------------------------------------------
+    //  Name : frame_render ()
+    /// <summary>
+    ///
+    ///
+    ///
+    /// </summary>
+    //-----------------------------------------------------------------------------
+    void frame_render(delta_t dt);
 
-private:
-	///
-	std::unique_ptr<gpu_program> program_;
-};
-}
+  private:
+    ///
+    std::unique_ptr<gpu_program> program_;
+  };
+}  // namespace editor

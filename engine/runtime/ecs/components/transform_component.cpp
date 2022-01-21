@@ -25,6 +25,7 @@ transform_component::~transform_component() {
 }
 
 void transform_component::move(const math::vec3& amount) {
+  // NOTE: thread unsafe, fix require?
   auto new_pos = get_position();
   new_pos += get_x_axis() * amount.x;
   new_pos += get_y_axis() * amount.y;

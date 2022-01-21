@@ -497,7 +497,7 @@ void handle_camera_movement() {
       transform_comp->rotate(0.0f, dx, 0.0f);
       transform_comp->rotate_local(dy, 0.0f, 0.0f);
       float radius =
-        math::distance(transform_comp->get_position(), camera_comp->get_looking_position());
+        math::distance(transform_comp->get_position(), camera_comp->get_looking_at_position());
       camera_comp->set_looking_at_position(
         transform_comp->get_position() + radius * transform_comp->get_z_axis());
     }
@@ -518,13 +518,13 @@ void handle_camera_movement() {
     float dx = x * surround_speed;
     float dy = y * surround_speed;
     float radius =
-      math::distance(camera_comp->get_looking_position(), transform_comp->get_position());
+      math::distance(camera_comp->get_looking_at_position(), transform_comp->get_position());
 
     transform_comp->rotate(0.0f, dx, 0.0f);
     transform_comp->rotate_axis(
       dy, transform_comp->get_x_axis());  // rotate around the right direction axis
     transform_comp->set_position(         // step back in the direction you are facing
-      camera_comp->get_looking_position() - radius * transform_comp->get_z_axis());
+      camera_comp->get_looking_at_position() - radius * transform_comp->get_z_axis());
   }
 }
 
