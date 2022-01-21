@@ -418,12 +418,17 @@ void manipulation_gizmos() {
 }
 
 void handle_camera_movement() {
-  if (!gui::IsWindowFocused()) { return; }
+  if (!gui::IsWindowHovered()) { return; }
   auto& es = core::get_subsystem<editor::editing_system>();
   auto& input = core::get_subsystem<runtime::input>();
   auto& sim = core::get_subsystem<core::simulation>();
   auto& rend = core::get_subsystem<runtime::renderer>();
 
+  /**
+   * @brief first person free perspective
+   * Use right mouse key to rotate camera itself,
+   * which is implemented by quaternions to avoid avoid gimbal deadlock.
+   */
   if (input.is_mouse_button_down(mml::mouse::right)) {
     auto wnd = rend.get_focused_window();
     if (wnd) {
@@ -460,68 +465,26 @@ void handle_camera_movement() {
   auto& editor_camera = es.camera;
   auto dt = sim.get_delta_time().count();
 
-  auto transform = editor_camera.get_component<transform_component>().lock();
+  auto transform_comp = editor_camera.get_component<transform_component>().lock();
+  auto camera_comp = editor_camera.get_component<camera_component>().lock();
   float movement_speed = 5.0f;
   float spin_speed = 0.2f;
   float surround_speed = 0.1f;
   float multiplier = 5.0f;
   auto delta_move = input.get_cursor_delta_move();
-  float radius = 10;
-  static auto at = transform->get_position() + radius * transform->get_z_axis();
 
   if (input.is_mouse_button_down(mml::mouse::middle)) {
     if (input.is_key_down(mml::keyboard::LShift)) { movement_speed *= multiplier; }
 
     if (delta_move.x != 0) {
-      transform->move_local({ -1 * delta_move.x * movement_speed * dt, 0.0f, 0.0f });
+      transform_comp->move_local({ -1 * delta_move.x * movement_speed * dt, 0.0f, 0.0f });
     }
     if (delta_move.y != 0) {
-      transform->move_local({ 0.0f, delta_move.y * movement_speed * dt, 0.0f });
+      transform_comp->move_local({ 0.0f, delta_move.y * movement_speed * dt, 0.0f });
     }
   }
 
   if (input.is_mouse_button_down(mml::mouse::right)) {
-    if (input.is_key_down(mml::keyboard::LShift)) { movement_speed *= multiplier; }
-
-    if (input.is_key_down(mml::keyboard::W)) {
-      transform->move_local({ 0.0f, 0.0f, movement_speed * dt });
-    }
-
-    if (input.is_key_down(mml::keyboard::S)) {
-      transform->move_local({ 0.0f, 0.0f, -movement_speed * dt });
-    }
-
-    if (input.is_key_down(mml::keyboard::A)) {
-      transform->move_local({ -movement_speed * dt, 0.0f, 0.0f });
-    }
-
-    if (input.is_key_down(mml::keyboard::D)) {
-      transform->move_local({ movement_speed * dt, 0.0f, 0.0f });
-    }
-    if (input.is_key_down(mml::keyboard::Up)) {
-      transform->move_local({ 0.0f, 0.0f, movement_speed * dt });
-    }
-
-    if (input.is_key_down(mml::keyboard::Down)) {
-      transform->move_local({ 0.0f, 0.0f, -movement_speed * dt });
-    }
-
-    if (input.is_key_down(mml::keyboard::Left)) {
-      transform->move_local({ -movement_speed * dt, 0.0f, 0.0f });
-    }
-
-    if (input.is_key_down(mml::keyboard::Right)) {
-      transform->move_local({ movement_speed * dt, 0.0f, 0.0f });
-    }
-
-    if (input.is_key_down(mml::keyboard::Space)) {
-      transform->move_local({ 0.0f, movement_speed * dt, 0.0f });
-    }
-
-    if (input.is_key_down(mml::keyboard::LControl)) {
-      transform->move_local({ 0.0f, -movement_speed * dt, 0.0f });
-    }
-
     auto x = static_cast<float>(delta_move.x);
     auto y = static_cast<float>(delta_move.y);
 
@@ -531,25 +494,37 @@ void handle_camera_movement() {
       float dx = x * spin_speed;
       float dy = y * spin_speed;
 
-      transform->rotate(0.0f, dx, 0.0f);
-      transform->rotate_local(dy, 0.0f, 0.0f);
+      transform_comp->rotate(0.0f, dx, 0.0f);
+      transform_comp->rotate_local(dy, 0.0f, 0.0f);
+      float radius =
+        math::distance(transform_comp->get_position(), camera_comp->get_looking_position());
+      camera_comp->set_looking_at_position(
+        transform_comp->get_position() + radius * transform_comp->get_z_axis());
     }
-
-    float delta_wheel = input.get_mouse_wheel_scroll_delta_move();
-    transform->move_local({ 0.0f, 0.0f, 14.0f * movement_speed * delta_wheel * dt });
-    at = transform->get_position() + radius * transform->get_z_axis();
   }
 
+  float delta_wheel = input.get_mouse_wheel_scroll_delta_move();
+  transform_comp->move_local({ 0.0f, 0.0f, 14.0f * movement_speed * delta_wheel * dt });
+
+  /**
+   * @brief first person crystal ball perspective
+   * Use left mouse key to rotate the relative position between the observation position
+   * and the camera, which is implemented by quaternions to avoid avoid gimbal deadlock.
+   */
   if (input.is_key_down(mml::keyboard::LAlt) && input.is_mouse_button_down(mml::mouse::left)) {
-    auto x = static_cast<float>(delta_move.x);
+    auto x = static_cast<float>(delta_move.x);  // mouse from one edge to another
     auto y = static_cast<float>(delta_move.y);
 
     float dx = x * surround_speed;
     float dy = y * surround_speed;
+    float radius =
+      math::distance(camera_comp->get_looking_position(), transform_comp->get_position());
 
-    transform->rotate(0.0f, dx, 0.0f);
-    transform->rotate_axis(dy, transform->get_x_axis());
-    transform->set_position(at - radius * transform->get_z_axis());
+    transform_comp->rotate(0.0f, dx, 0.0f);
+    transform_comp->rotate_axis(
+      dy, transform_comp->get_x_axis());  // rotate around the right direction axis
+    transform_comp->set_position(         // step back in the direction you are facing
+      camera_comp->get_looking_position() - radius * transform_comp->get_z_axis());
   }
 }
 
