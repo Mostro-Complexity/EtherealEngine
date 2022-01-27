@@ -288,7 +288,7 @@ void project_dock::render(const ImVec2& /*area*/) {
   if (gui::Button("IMPORT...")) { import(); }
   gui::SameLine();
   gui::PushItemWidth(80.0f);
-  gui::SliderFloat("", &scale_, 0.5f, 1.0f);
+  gui::SliderFloat("what_the_fuck", &scale_, 0.5f, 1.0f);  // TODO: change the name of this slider
   const float size = gui::GetFrameHeight() * 5.0f * scale_;
   if (gui::IsItemHovered()) {
     gui::BeginTooltip();
@@ -602,7 +602,7 @@ void project_dock::render(const ImVec2& /*area*/) {
     };
     gui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
     const auto& style = gui::GetStyle();
-    auto avail = gui::GetContentRegionAvailWidth();
+    auto avail = gui::GetContentRegionAvail().x;
     auto item_size = size + style.ItemSpacing.x;
     auto items_per_line_exact = avail / item_size;
     auto items_per_line_floor = ImFloor(items_per_line_exact);
@@ -611,7 +611,8 @@ void project_dock::render(const ImVec2& /*area*/) {
     auto extra = ((items_per_line_exact - items_per_line_floor) * item_size)
                  / std::max(1.0f, items_per_line_floor - 1);
     auto lines = std::max<int>(1, int(ImCeil(float(count) / float(items_per_line))));
-    ImGuiListClipper clipper(lines);
+    ImGuiListClipper clipper;
+    clipper.Begin(lines);
 
     while (clipper.Step()) {
       for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {

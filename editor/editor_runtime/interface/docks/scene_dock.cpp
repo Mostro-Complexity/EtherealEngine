@@ -220,9 +220,10 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
         const double toGpuMs = 1000.0 / double(stats->gpuTimerFreq);
         const float scale = 3.0f;
 
-        if (ImGui::ListBoxHeader(
+        if (ImGui::BeginListBox(
               "Encoders", ImVec2(0, stats->numEncoders * itemHeightWithSpacing))) {
-          ImGuiListClipper clipper(stats->numEncoders, itemHeight);
+          ImGuiListClipper clipper;
+          clipper.Begin(stats->numEncoders, itemHeight);
 
           while (clipper.Step()) {
             for (int32_t pos = clipper.DisplayStart; pos < clipper.DisplayEnd; ++pos) {
@@ -242,13 +243,14 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
             }
           }
 
-          ImGui::ListBoxFooter();
+          ImGui::EndListBox();
         }
 
         ImGui::Separator();
 
-        if (ImGui::ListBoxHeader("Views", ImVec2(0, stats->numViews * itemHeightWithSpacing))) {
-          ImGuiListClipper clipper(stats->numViews, itemHeight);
+        if (ImGui::BeginListBox("Views", ImVec2(0, stats->numViews * itemHeightWithSpacing))) {
+          ImGuiListClipper clipper;
+          clipper.Begin(stats->numViews, itemHeight);
 
           while (clipper.Step()) {
             for (int32_t pos = clipper.DisplayStart; pos < clipper.DisplayEnd; ++pos) {
@@ -283,7 +285,7 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
             }
           }
 
-          ImGui::ListBoxFooter();
+          ImGui::EndListBox();
         }
       }
       gui::PopFont();

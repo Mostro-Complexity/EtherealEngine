@@ -109,13 +109,13 @@ inline void some_class::some_templated_method() {
 * Implement all Collider Component and its method
 * Fix camera sight distance bugs
 * Script Component, which support programing language such as C++, C#, Python(Yes, I've seriously thought about it)
-* game & editor separation
+* Game & Editor separation
 * Game play & close button switch
 * Scene(Project) save
 * Use system default file explorer
-* Double click game object to focus
 * Unit test of Transform Component
-
+* Set a name and thumbnail for each dock and make it pluginable
+* Develop a plugin store dock, from which you can choose the plugins you need to install
 
 
 ## LIBRARIES
@@ -134,3 +134,5 @@ assimp - https://github.com/assimp/assimp
 glm - https://github.com/g-truc/glm
 
 openal-soft = https://github.com/kcat/openal-soft
+
+bullet = https://github.com/bulletphysics/bullet3

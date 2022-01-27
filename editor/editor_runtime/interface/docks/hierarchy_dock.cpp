@@ -17,6 +17,7 @@
 #include <runtime/ecs/components/transform_component.h>
 #include <runtime/ecs/constructs/prefab.h>
 #include <runtime/ecs/constructs/utils.h>
+#include <runtime/ecs/constructs/scene.h>
 #include <runtime/ecs/systems/scene_graph.h>
 #include <runtime/input/input.h>
 #include <runtime/rendering/mesh.h>
@@ -397,7 +398,7 @@ void hierarchy_dock::draw_entity(runtime::entity entity) {
       name.size() < input_buff.size() ? name.size() : input_buff.size());
 
     gui::SetCursorScreenPos(pos);
-    gui::PushItemWidth(gui::GetContentRegionAvailWidth());
+    gui::PushItemWidth(gui::GetContentRegionAvail().x);
 
     gui::PushID(static_cast<int>(entity.id().index()));
     gui::PushID(static_cast<int>(entity.id().version()));
@@ -412,7 +413,7 @@ void hierarchy_dock::draw_entity(runtime::entity entity) {
 
     gui::PopItemWidth();
 
-    if (!gui::IsItemActive() && (gui::IsMouseClicked(0) || gui::IsMouseDragging())) {
+    if (!gui::IsItemActive() && (gui::IsMouseClicked(0) || gui::IsMouseDragging(0))) {
       edit_label_ = false;
     }
     gui::PopID();
@@ -525,10 +526,10 @@ void hierarchy_dock::render(const ImVec2& /*unused*/) {
       gui::Separator();
     }
 
-    for (auto& root : roots) {
-      if (root.valid()) {
-        if (root != editor_camera) { draw_entity(root); }
-      }
+        for (auto& root : roots) {
+          if (root.valid()) {
+            if (root != editor_camera) { draw_entity(root); }
+          }
     }
   }
   gui::EndChild();

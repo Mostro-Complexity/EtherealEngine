@@ -299,7 +299,7 @@ namespace editor {
     auto& es = core::get_subsystem<editor::editing_system>();
     auto& icons = es.icons;
 
-    float width = gui::GetContentRegionAvailWidth();
+    float width = gui::GetContentRegionAvail().x;
     if (gui::ToolbarButton(
           icons["translate"].get(), "TRANSLATE", es.operation == imguizmo::operation::translate)) {
       es.operation = imguizmo::operation::translate;
@@ -492,8 +492,8 @@ namespace editor {
     const auto tasks_info = ts.get_info();
     const auto items = console_log_->get_items();
 
-    const auto total_width = gui::GetContentRegionAvailWidth();
-    gui::BeginColumns("footer", 2, ImGuiColumnsFlags_NoBorder | ImGuiColumnsFlags_NoResize);
+    const auto total_width = gui::GetContentRegionAvail().x;
+    gui::BeginColumns("footer", 2, ImGuiOldColumnFlags_NoBorder | ImGuiOldColumnFlags_NoResize);
     gui::SetColumnWidth(0, total_width * 0.8f);
 
     if (items.size() > 0) {
@@ -581,12 +581,12 @@ namespace editor {
 
     gui::BeginGroup();
     {
-      if (gui::Button("NEW PROJECT", ImVec2(gui::GetContentRegionAvailWidth(), 0.0f))) {
+      if (gui::Button("NEW PROJECT", ImVec2(gui::GetContentRegionAvail().x, 0.0f))) {
         std::string path;
         if (native::pick_folder_dialog("", path)) { on_create_project(path); }
       }
 
-      if (gui::Button("OPEN OTHER", ImVec2(gui::GetContentRegionAvailWidth(), 0.0f))) {
+      if (gui::Button("OPEN OTHER", ImVec2(gui::GetContentRegionAvail().x, 0.0f))) {
         std::string path;
         if (native::pick_folder_dialog("", path)) { on_open_project(path); }
       }

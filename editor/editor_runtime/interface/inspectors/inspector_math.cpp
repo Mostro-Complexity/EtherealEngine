@@ -77,7 +77,7 @@ bool inspector_transform::inspect(
   static math::vec3 euler_angles(0.0f, 0.0f, 0.0f);
   bool changed = false;
   bool equal = math::all(math::equal(old_quat, rotation, math::epsilon<float>()));
-  if (!equal && (!gui::IsMouseDragging() || imguizmo::is_using())) {
+  if (!equal && (!gui::IsMouseDragging(0) || imguizmo::is_using())) {
     euler_angles = local_euler_angles;
     old_quat = rotation;
   }
@@ -137,7 +137,7 @@ bool inspector_transform::inspect(
   }
   gui::PopID();
 
-  gui::BeginColumns("properties", 2, ImGuiColumnsFlags_NoBorder | ImGuiColumnsFlags_NoResize);
+  gui::BeginColumns("properties", 2, ImGuiOldColumnFlags_NoBorder | ImGuiOldColumnFlags_NoResize);
 
   var = data;
 

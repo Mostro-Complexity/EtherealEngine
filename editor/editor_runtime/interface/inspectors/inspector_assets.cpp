@@ -54,9 +54,9 @@ bool inspector_asset_handle_texture::inspect(
   bool is_selected = selected && selected.is_type<asset_handle<gfx::texture>>();
   bool changed = false;
 
-  float available = math::min(64.0f, gui::GetContentRegionAvailWidth() / 1.5f);
+  float available = math::min(64.0f, gui::GetContentRegionAvail().x / 1.5f);
 
-  if (is_selected) { available = gui::GetContentRegionAvailWidth(); }
+  if (is_selected) { available = gui::GetContentRegionAvail().x; }
 
   auto draw_image = [&]() {
     ImVec2 size = { available, available };

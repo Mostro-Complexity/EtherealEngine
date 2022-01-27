@@ -29,7 +29,10 @@ property_layout::property_layout(const rttr::property& prop, bool columns /*= tr
 
   if (columns) {
     if (gui::GetColumnsCount() > 1) { gui::EndColumns(); }
-    gui::BeginColumns("properties", 2, ImGuiColumnsFlags_NoBorder | ImGuiColumnsFlags_NoResize);
+    gui::BeginColumns(
+      "properties",
+      2,
+      ImGuiOldColumnFlags_NoBorder | ImGuiOldColumnFlags_NoResize);  // TODO:check out new flags
   }
 
   gui::AlignTextToFramePadding();
@@ -40,13 +43,13 @@ property_layout::property_layout(const rttr::property& prop, bool columns /*= tr
   gui::NextColumn();
 
   gui::PushID(pretty_name.c_str());
-  gui::PushItemWidth(gui::GetContentRegionAvailWidth());
+  gui::PushItemWidth(gui::GetContentRegionAvail().x);
 }
 
 property_layout::property_layout(const std::string& name, bool columns /*= true*/) {
   if (columns) {
     if (gui::GetColumnsCount() > 1) { gui::EndColumns(); }
-    gui::BeginColumns("properties", 2, ImGuiColumnsFlags_NoBorder | ImGuiColumnsFlags_NoResize);
+    gui::BeginColumns("properties", 2, ImGuiOldColumnFlags_NoBorder | ImGuiOldColumnFlags_NoResize);
   }
 
   gui::AlignTextToFramePadding();
@@ -55,14 +58,14 @@ property_layout::property_layout(const std::string& name, bool columns /*= true*
   gui::NextColumn();
 
   gui::PushID(name.c_str());
-  gui::PushItemWidth(gui::GetContentRegionAvailWidth());
+  gui::PushItemWidth(gui::GetContentRegionAvail().x);
 }
 
 property_layout::property_layout(
   const std::string& name, const std::string& tooltip, bool columns /*= true*/) {
   if (columns) {
     if (gui::GetColumnsCount() > 1) { gui::EndColumns(); }
-    gui::BeginColumns("properties", 2, ImGuiColumnsFlags_NoBorder | ImGuiColumnsFlags_NoResize);
+    gui::BeginColumns("properties", 2, ImGuiOldColumnFlags_NoBorder | ImGuiOldColumnFlags_NoResize);
   }
 
   gui::AlignTextToFramePadding();
@@ -73,7 +76,7 @@ property_layout::property_layout(
   gui::NextColumn();
 
   gui::PushID(name.c_str());
-  gui::PushItemWidth(gui::GetContentRegionAvailWidth());
+  gui::PushItemWidth(gui::GetContentRegionAvail().x);
 }
 
 property_layout::~property_layout() {
