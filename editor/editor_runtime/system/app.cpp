@@ -189,7 +189,7 @@ namespace editor {
       std::string path;
       if (native::open_file_dialog("sgr", fs::resolve_protocol("app:/data").string(), path)) {
         auto scene_path = fs::convert_to_protocol(path);
-        auto scene = am.load<::scene>(scene_path.string()).get();
+        auto scene = am.load<::scene>(scene_path.string()).get();  // NOTE:scene process
         scene->instantiate(::scene::mode::standard);
         es.load_editor_camera();
         es.scene = path;
@@ -343,9 +343,10 @@ namespace editor {
     if (gui::ToolbarButton(icons["play"].get(), "PLAY", false)) {
       // NOTE: start game life period
       // NOTE: for temporary
+      // TODO: put standalone game code to somewhere
 
       auto& ts = core::get_subsystem<core::task_system>();
-      auto task = ts.push_on_worker_thread([]() {  // FIXME: 必须使用单一线程运行
+      auto task = ts.push_on_worker_thread([]() {
         int argc = 1;
         char* argv[] = { "game" };
         editor::standalone standalone;
