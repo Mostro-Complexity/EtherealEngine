@@ -16,6 +16,7 @@ endif()
 
 # Grab the bx source files
 file( GLOB BX_SOURCES ${BX_DIR}/src/*.cpp )
+
 if(BX_AMALGAMATED)
 	set(BX_NOBUILD ${BX_SOURCES})
 	list(REMOVE_ITEM BX_NOBUILD ${BX_DIR}/src/amalgamated.cpp)
@@ -27,24 +28,38 @@ else()
 endif()
 
 # Create the bx target
-add_library( bx ${BX_SOURCES} )
+add_library( bx STATIC ${BX_SOURCES} )
 
 # Link against psapi on Windows
 if( WIN32 )
 	target_link_libraries( bx PUBLIC psapi )
 endif()
 
+include(GNUInstallDirs)
+
 # Add include directory of bx
-target_include_directories( bx PUBLIC ${BX_DIR}/include )
-target_include_directories( bx PUBLIC ${BX_DIR}/3rdparty )
+target_include_directories( bx
+	PUBLIC
+		$<BUILD_INTERFACE:${BX_DIR}/include>
+		$<BUILD_INTERFACE:${BX_DIR}/3rdparty>
+		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 
 # Build system specific configurations
-if( MSVC )
-	target_include_directories( bx PUBLIC ${BX_DIR}/include/compat/msvc )
-elseif( MINGW )
-	target_include_directories( bx PUBLIC ${BX_DIR}/include/compat/mingw )
+if( MINGW )
+	target_include_directories( bx
+		PUBLIC
+		    $<BUILD_INTERFACE:${BX_DIR}/include/compat/mingw>
+		    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/compat/mingw> )
+elseif( WIN32 )
+	target_include_directories( bx
+		PUBLIC
+			$<BUILD_INTERFACE:${BX_DIR}/include/compat/msvc>
+			$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/compat/msvc> )
 elseif( APPLE )
-	target_include_directories( bx PUBLIC ${BX_DIR}/include/compat/osx )
+	target_include_directories( bx
+		PUBLIC
+		    $<BUILD_INTERFACE:${BX_DIR}/include/compat/osx>
+		    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/compat/osx> )
 endif()
 
 # All configurations
@@ -52,8 +67,14 @@ target_compile_definitions( bx PUBLIC "__STDC_LIMIT_MACROS" )
 target_compile_definitions( bx PUBLIC "__STDC_FORMAT_MACROS" )
 target_compile_definitions( bx PUBLIC "__STDC_CONSTANT_MACROS" )
 
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+	target_compile_definitions( bx PUBLIC "BX_CONFIG_DEBUG=1" )
+else()
+	target_compile_definitions( bx PUBLIC "BX_CONFIG_DEBUG=0" )
+endif()
+
 # Additional dependencies on Unix
-if( UNIX AND NOT APPLE )
+if( UNIX AND NOT APPLE AND NOT ANDROID )
 	# Threads
 	find_package( Threads )
 	target_link_libraries( bx ${CMAKE_THREAD_LIBS_INIT} dl )
@@ -67,7 +88,4 @@ elseif(APPLE)
 endif()
 
 # Put in a "bgfx" folder in Visual Studio
-set_target_properties( bx PROPERTIES FOLDER "bgfx" )
-
-# Export debug build as "bxd"
-set_target_properties( bx PROPERTIES OUTPUT_NAME_DEBUG "bxd" )
+set_target_properties( bx PROPERTIES FOLDER "3rdparty/bgfx" )

@@ -16,6 +16,11 @@
 #include <runtime/rendering/material.h>
 #include <runtime/rendering/mesh.h>
 
+#include <imgui/imgui_internal.h>
+namespace gui {
+  using namespace ImGui;
+};
+
 template <typename asset_t> static bool process_drag_drop_target(asset_handle<asset_t>& entry) {
   auto& am = core::get_subsystem<runtime::asset_manager>();
 

@@ -3,4 +3,4 @@ set( SPDLOG_BUILD_TESTING OFF CACHE BOOL "Build spdlog tests" FORCE)
 
 add_subdirectory( spdlog )
 
-set_target_properties( spdlog_headers_for_ide PROPERTIES FOLDER "3rdparty" )
+set_target_properties( spdlog PROPERTIES FOLDER "3rdparty" )

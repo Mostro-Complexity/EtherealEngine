@@ -9,6 +9,7 @@
 #include <runtime/input/input.h>
 #include <runtime/rendering/renderer.h>
 
+#include <imgui/imgui_internal.h>
 namespace imguidock {
   dockspace::dockspace() {}
 

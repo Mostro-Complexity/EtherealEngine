@@ -22,6 +22,10 @@
 #include <runtime/rendering/renderer.h>
 
 #include <numeric>
+#include <imgui/imgui_internal.h>
+namespace gui {
+  using namespace ImGui;
+};
 
 static bool bar(float _width, float _maxWidth, float _height, const ImVec4& _color) {
   const ImGuiStyle& style = gui::GetStyle();
@@ -40,11 +44,13 @@ static bool bar(float _width, float _maxWidth, float _height, const ImVec4& _col
 
   bool itemHovered = false;
 
-  gui::Button("", ImVec2(_width, _height));
+  gui::Button("what_the_fuck", ImVec2(_width, _height));  // TODO: change the name of this button
   itemHovered |= gui::IsItemHovered();
 
   gui::SameLine();
-  gui::InvisibleButton("", ImVec2(_maxWidth - _width + 1, _height));
+  gui::InvisibleButton(
+    "what_the_fuck",
+    ImVec2(_maxWidth - _width + 1, _height));  // TODO: change the name of this button
   itemHovered |= gui::IsItemHovered();
 
   gui::PopStyleVar(2);
@@ -83,7 +89,7 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
   gui::SetNextWindowPos(stat_pos);
   gui::SetNextWindowSizeConstraints(ImVec2(0, 0), area - gui::GetStyle().WindowPadding);
   if (gui::Begin(
-        (ICON_FA_BAR_CHART "\tSTATISTICS##" + title).c_str(),
+        (ICON_FA_CHART_BAR "\tSTATISTICS##" + title).c_str(),
         nullptr,
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize)) {
 
@@ -190,14 +196,14 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
       resource_bar(
         " VD",
         "Vertex declarations",
-        stats->numVertexDecls,
-        caps->limits.maxVertexDecls,
+        stats->numVertexLayouts,
+        caps->limits.maxVertexLayouts,
         maxWidth,
         itemHeight);
       gui::PopFont();
     }
 
-    if (gui::CollapsingHeader(ICON_FA_CLOCK_O "\tProfiler")) {
+    if (gui::CollapsingHeader(ICON_FA_CLOCK "\tProfiler")) {
       if (gui::Checkbox("Enable profiler", &enable_profiler)) {
         if (enable_profiler) {
           gfx::set_debug(BGFX_DEBUG_PROFILER);
@@ -259,10 +265,14 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
               ImGui::Text("%3d %3d %s", pos, viewStats.view, viewStats.name);
 
               const float maxWidth = 30.0f * scale;
-              const float cpuWidth =
-                bx::clamp(float(viewStats.cpuTimeElapsed * toCpuMs) * scale, 1.0f, maxWidth);
-              const float gpuWidth =
-                bx::clamp(float(viewStats.gpuTimeElapsed * toGpuMs) * scale, 1.0f, maxWidth);
+              const float cpuWidth = bx::clamp(
+                float((viewStats.cpuTimeEnd - viewStats.cpuTimeBegin) * toCpuMs) * scale,
+                1.0f,
+                maxWidth);
+              const float gpuWidth = bx::clamp(
+                float((viewStats.gpuTimeEnd - viewStats.gpuTimeBegin) * toGpuMs) * scale,
+                1.0f,
+                maxWidth);
 
               ImGui::SameLine(64.0f);
 
@@ -271,7 +281,7 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
                   "View %d \"%s\", CPU: %f [ms]",
                   pos,
                   viewStats.name,
-                  viewStats.cpuTimeElapsed * toCpuMs);
+                  (viewStats.cpuTimeEnd - viewStats.cpuTimeBegin) * toCpuMs);
               }
 
               ImGui::SameLine();
@@ -280,7 +290,7 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
                   "View: %d \"%s\", GPU: %f [ms]",
                   pos,
                   viewStats.name,
-                  viewStats.gpuTimeElapsed * toGpuMs);
+                  (viewStats.gpuTimeEnd - viewStats.gpuTimeBegin) * toGpuMs);
               }
             }
           }

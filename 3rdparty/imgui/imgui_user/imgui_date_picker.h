@@ -16,7 +16,7 @@
 #define IMGUIDATECHOOSER_H_
 
 #ifndef IMGUI_API
-#include "../imgui/imgui.h"
+#include "imgui/imgui.h"
 #endif			 // IMGUI_API
 #include <ctime> // very simple and common plain C header file (it's NOT the c++ <sys/time.h>). If not available it's probably better to implement it yourself rather than modifying this file.
 

@@ -1,4 +1,8 @@
 #include "inspector_math.h"
+#include <imgui/imgui_internal.h>
+namespace gui {
+  using namespace ImGui;
+};
 
 bool inspector_vec2::inspect(rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
   auto data = var.get_value<math::vec2>();

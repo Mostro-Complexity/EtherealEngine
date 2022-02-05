@@ -45,7 +45,7 @@ namespace gfx {
   using texture_handle = bgfx::TextureHandle;
   using uniform_handle = bgfx::UniformHandle;
   using vertex_buffer_handle = bgfx::VertexBufferHandle;
-  using vertex_decl_handle = bgfx::VertexDeclHandle;
+  using vertex_decl_handle = bgfx::VertexLayoutHandle;
   using embedded_shader = bgfx::EmbeddedShader;
   using transient_vertex_buffer = bgfx::TransientVertexBuffer;
   using transient_index_buffer = bgfx::TransientIndexBuffer;

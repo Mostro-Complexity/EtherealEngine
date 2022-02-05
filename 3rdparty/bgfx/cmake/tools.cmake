@@ -10,9 +10,11 @@
 
 if( BGFX_CUSTOM_TARGETS )
 	add_custom_target( tools )
-	set_target_properties( tools PROPERTIES FOLDER "bgfx/tools" )
+	set_target_properties( tools PROPERTIES FOLDER "3rdparty/bgfx/tools" )
 endif()
 
-include( cmake/tools/texturec.cmake )
-#include( cmake/tools/texturev.cmake )
-include( cmake/tools/shaderc.cmake )
+include( ${CMAKE_CURRENT_LIST_DIR}/tools/geometryc.cmake )
+include( ${CMAKE_CURRENT_LIST_DIR}/tools/geometryv.cmake )
+include( ${CMAKE_CURRENT_LIST_DIR}/tools/shaderc.cmake )
+include( ${CMAKE_CURRENT_LIST_DIR}/tools/texturec.cmake )
+include( ${CMAKE_CURRENT_LIST_DIR}/tools/texturev.cmake )

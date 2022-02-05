@@ -8,77 +8,114 @@
 # You should have received a copy of the CC0 Public Domain Dedication along with
 # this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+# To prevent this warning: https://cmake.org/cmake/help/git-stage/policy/CMP0072.html
+if(POLICY CMP0072)
+  cmake_policy(SET CMP0072 NEW)
+endif()
+
 # Ensure the directory exists
 if( NOT IS_DIRECTORY ${BGFX_DIR} )
 	message( SEND_ERROR "Could not load bgfx, directory does not exist. ${BGFX_DIR}" )
 	return()
 endif()
+
+if(NOT APPLE)
+	set(BGFX_AMALGAMATED_SOURCE ${BGFX_DIR}/src/amalgamated.cpp)
+else()
+	set(BGFX_AMALGAMATED_SOURCE ${BGFX_DIR}/src/amalgamated.mm)
+endif()
+
 # Grab the bgfx source files
 file( GLOB BGFX_SOURCES ${BGFX_DIR}/src/*.cpp ${BGFX_DIR}/src/*.mm ${BGFX_DIR}/src/*.h ${BGFX_DIR}/include/bgfx/*.h ${BGFX_DIR}/include/bgfx/c99/*.h )
-list(APPEND BGFX_SOURCES ${BGFX_DIR}/examples/common/debugdraw/debugdraw.cpp)
-list(APPEND BGFX_SOURCES ${BGFX_DIR}/examples/common/bounds.cpp)
 if(BGFX_AMALGAMATED)
 	set(BGFX_NOBUILD ${BGFX_SOURCES})
-	list(REMOVE_ITEM BGFX_NOBUILD ${BGFX_DIR}/src/amalgamated.cpp)
+	list(REMOVE_ITEM BGFX_NOBUILD ${BGFX_AMALGAMATED_SOURCE})
 	foreach(BGFX_SRC ${BGFX_NOBUILD})
 		set_source_files_properties( ${BGFX_SRC} PROPERTIES HEADER_FILE_ONLY ON )
 	endforeach()
 else()
-	list(REMOVE_ITEM BGFX_SOURCES ${BGFX_DIR}/src/amalgamated.cpp)
+	# Do not build using amalgamated sources
 	set_source_files_properties( ${BGFX_DIR}/src/amalgamated.cpp PROPERTIES HEADER_FILE_ONLY ON )
+	set_source_files_properties( ${BGFX_DIR}/src/amalgamated.mm PROPERTIES HEADER_FILE_ONLY ON )
 endif()
 
 # Create the bgfx target
-add_library( bgfx ${BGFX_SOURCES} )
+if(BGFX_LIBRARY_TYPE STREQUAL STATIC)
+    add_library( bgfx STATIC ${BGFX_SOURCES} )
+else()
+    add_library( bgfx SHARED ${BGFX_SOURCES} )
+endif()
 
-# Enable BGFX_CONFIG_DEBUG in Debug configuration
-target_compile_definitions( bgfx PRIVATE "$<$<CONFIG:Debug>:BGFX_CONFIG_DEBUG=1>" )
+if(BGFX_CONFIG_RENDERER_WEBGPU)
+    include(${CMAKE_CURRENT_LIST_DIR}/3rdparty/webgpu.cmake)
+    target_compile_definitions( bgfx PRIVATE BGFX_CONFIG_RENDERER_WEBGPU=1)
+    if (EMSCRIPTEN)
+        target_link_options(bgfx PRIVATE "-s USE_WEBGPU=1")
+    else()
+        target_link_libraries(bgfx PRIVATE webgpu)
+    endif()
+endif()
+
+if( NOT ${BGFX_OPENGL_VERSION} STREQUAL "" )
+	target_compile_definitions( bgfx PRIVATE BGFX_CONFIG_RENDERER_OPENGL_MIN_VERSION=${BGFX_OPENGL_VERSION} )
+endif()
+
+if( NOT ${BGFX_OPENGLES_VERSION} STREQUAL "" )
+	target_compile_definitions( bgfx PRIVATE BGFX_CONFIG_RENDERER_OPENGLES_MIN_VERSION=${BGFX_OPENGLES_VERSION} )
+endif()
 
 # Special Visual Studio Flags
 if( MSVC )
 	target_compile_definitions( bgfx PRIVATE "_CRT_SECURE_NO_WARNINGS" )
 endif()
 
-SET(MAX_VIEWS 1024 CACHE INT "MAX_VIEWS" FORCE)
-target_compile_definitions(bgfx PRIVATE "BGFX_CONFIG_MAX_VIEWS=${MAX_VIEWS}")
-target_compile_definitions(bgfx PRIVATE "BGFX_CONFIG_MAX_VIEW_NAME=${MAX_VIEWS}")
-target_compile_definitions(bgfx PRIVATE "BGFX_CONFIG_MAX_FRAME_BUFFERS=2048")
-
-# Includes
-target_include_directories( bgfx PRIVATE ${BGFX_DIR}/3rdparty ${BGFX_DIR}/3rdparty/dxsdk/include ${BGFX_DIR}/3rdparty/khronos )
-target_include_directories( bgfx PUBLIC ${BGFX_DIR}/include )
-target_include_directories( bgfx PUBLIC ${BGFX_DIR}/examples )
-# bgfx depends on bx and bimg
-target_link_libraries( bgfx PUBLIC bx bimg )
-
-# ovr support
-if( BGFX_USE_OVR )
-	target_link_libraries( bgfx PUBLIC ovr )
+# Add debug config required in bx headers since bx is private
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    target_compile_definitions( bgfx PUBLIC "BX_CONFIG_DEBUG=1" )
+else()
+    target_compile_definitions( bgfx PUBLIC "BX_CONFIG_DEBUG=0" )
 endif()
 
-# Frameworks required on OS X
-if( APPLE )
+
+# Includes
+target_include_directories( bgfx
+	PRIVATE
+		${BGFX_DIR}/3rdparty
+		${BGFX_DIR}/3rdparty/dxsdk/include
+		${BGFX_DIR}/3rdparty/khronos
+	PUBLIC
+		$<BUILD_INTERFACE:${BGFX_DIR}/include>
+		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+# bgfx depends on bx and bimg
+target_link_libraries( bgfx PRIVATE bx bimg )
+
+# Frameworks required on iOS, tvOS and macOS
+if( ${CMAKE_SYSTEM_NAME} MATCHES iOS|tvOS )
+	target_link_libraries (bgfx PUBLIC 
+		"-framework OpenGLES -framework Metal -framework UIKit -framework CoreGraphics -framework QuartzCore -framework IOKit -framework CoreFoundation")
+elseif( APPLE )
 	find_library( COCOA_LIBRARY Cocoa )
 	find_library( METAL_LIBRARY Metal )
 	find_library( QUARTZCORE_LIBRARY QuartzCore )
+	find_library( IOKIT_LIBRARY IOKit )
+	find_library( COREFOUNDATION_LIBRARY CoreFoundation )
 	mark_as_advanced( COCOA_LIBRARY )
 	mark_as_advanced( METAL_LIBRARY )
 	mark_as_advanced( QUARTZCORE_LIBRARY )
-	target_link_libraries( bgfx PUBLIC ${COCOA_LIBRARY} ${METAL_LIBRARY} ${QUARTZCORE_LIBRARY} )
+	mark_as_advanced( IOKIT_LIBRARY )
+	mark_as_advanced( COREFOUNDATION_LIBRARY )
+	target_link_libraries( bgfx PUBLIC ${COCOA_LIBRARY} ${METAL_LIBRARY} ${QUARTZCORE_LIBRARY} ${IOKIT_LIBRARY} ${COREFOUNDATION_LIBRARY} )
 endif()
 
-if( UNIX AND NOT APPLE )
+if( UNIX AND NOT APPLE AND NOT EMSCRIPTEN AND NOT ANDROID )
+	find_package(X11 REQUIRED)
 	find_package(OpenGL REQUIRED)
-	find_library( OPENGL_LIBRARY GL )
-	mark_as_advanced( OPENGL_LIBRARY )
-	target_link_libraries( bgfx PUBLIC ${OPENGL_LIBRARY} )
-endif()
-
-# Excluded files from compilation
-if(NOT APPLE)
-	set_source_files_properties( ${BGFX_DIR}/src/amalgamated.mm PROPERTIES HEADER_FILE_ONLY ON )
-else()
-	set_source_files_properties( ${BGFX_DIR}/src/amalgamated.cpp PROPERTIES HEADER_FILE_ONLY ON )
+	#The following commented libraries are linked by bx
+	#find_package(Threads REQUIRED)
+	#find_library(LIBRT_LIBRARIES rt)
+	#find_library(LIBDL_LIBRARIES dl)
+	target_link_libraries( bgfx PUBLIC ${X11_LIBRARIES} ${OPENGL_LIBRARIES})
 endif()
 
 # Exclude mm files if not on OS X
@@ -94,7 +131,9 @@ if( NOT UNIX OR APPLE )
 endif()
 
 # Put in a "bgfx" folder in Visual Studio
-set_target_properties( bgfx PROPERTIES FOLDER "bgfx" )
+set_target_properties( bgfx PROPERTIES FOLDER "3rdparty/bgfx" )
 
-# Export debug build as "bgfxd"
-set_target_properties( bgfx PROPERTIES OUTPUT_NAME_DEBUG "bgfxd" )
+# in Xcode we need to specify this file as objective-c++ (instead of renaming to .mm)
+if (XCODE)
+	set_source_files_properties(${BGFX_DIR}/src/renderer_vk.cpp PROPERTIES LANGUAGE OBJCXX XCODE_EXPLICIT_FILE_TYPE sourcecode.cpp.objcpp)
+endif()

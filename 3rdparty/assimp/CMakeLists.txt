@@ -148,8 +148,11 @@ add_definitions(-DASSIMP_BUILD_NO_3MF_EXPORTER)
 
 add_subdirectory( assimp )
 
-target_include_directories (assimp PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/assimp/include)
-target_include_directories (assimp PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/assimp/include)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wno-error)
+endif()
+# target_include_directories (assimp PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/assimp/include)
+# target_include_directories (assimp PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/assimp/include)
 
 set_target_properties(assimp PROPERTIES FOLDER "3rdparty/assimp")
 # set_target_properties(irrXML PROPERTIES FOLDER "3rdparty/assimp")

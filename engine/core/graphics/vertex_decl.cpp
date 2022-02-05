@@ -1,7 +1,7 @@
 #include "vertex_decl.h"
 
 namespace gfx {
-  void pos_texcoord0_vertex::init(gfx::vertex_layout& decl) {
+  void pos_texcoord0_vertex::init(vertex_layout& decl) {
     decl.begin()
       .add(attribute::Position, 3, attribute_type::Float)
       .add(attribute::TexCoord0, 2, attribute_type::Float)

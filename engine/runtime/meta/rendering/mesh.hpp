@@ -6,11 +6,10 @@
 
 REFLECT_EXTERN(mesh::info);
 
-namespace bgfx
-{
-SAVE_EXTERN(VertexDecl);
-LOAD_EXTERN(VertexDecl);
-}
+namespace bgfx {
+  SAVE_EXTERN(VertexLayoutHandle);
+  LOAD_EXTERN(VertexLayoutHandle);
+}  // namespace bgfx
 
 SAVE_EXTERN(mesh::triangle);
 LOAD_EXTERN(mesh::triangle);

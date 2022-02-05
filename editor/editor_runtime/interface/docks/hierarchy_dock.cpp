@@ -21,6 +21,12 @@
 #include <runtime/ecs/systems/scene_graph.h>
 #include <runtime/input/input.h>
 #include <runtime/rendering/mesh.h>
+
+#include <imgui/imgui_internal.h>
+namespace gui {
+  using namespace ImGui;
+};
+
 math::bbox calc_bounds(runtime::entity entity) {
   const math::vec3 one = { 1.0f, 1.0f, 1.0f };
   math::bbox bounds = math::bbox(-one, one);
@@ -521,15 +527,38 @@ void hierarchy_dock::render(const ImVec2& /*unused*/) {
       }
     }
 
+    // draw entities of editor
     if (editor_camera.valid()) {
       draw_entity(editor_camera);
       gui::Separator();
     }
 
+    bool opened;  // TODO: clean your code
+    {
+      ImGuiTreeNodeFlags flags =
+        0 | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_OpenOnArrow;
+      // FIXME: draw scenes first
+      std::uint32_t scene_index = 0;
+      auto s = scene(scene::id_t(scene_index));
+
+      gui::PushID(static_cast<int>(s.id().index()));
+      gui::PushID(static_cast<int>(s.id().version()));
+
+      opened = gui::TreeNodeEx(es.scene.c_str(), flags);
+    }
+
+    {
+      if (opened) {
+        // draw entities of game
         for (auto& root : roots) {
           if (root.valid()) {
             if (root != editor_camera) { draw_entity(root); }
           }
+        }
+        gui::TreePop();
+      }
+      gui::PopID();
+      gui::PopID();
     }
   }
   gui::EndChild();

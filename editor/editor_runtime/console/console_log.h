@@ -10,6 +10,8 @@
 
 class console_log : public logging::sinks::base_sink<std::mutex>, public console {
 public:
+  virtual ~console_log();
+
   template <typename T> using ring_buffer = nonstd::stack_ringbuffer<T, 150>;
   using entries_t = ring_buffer<std::pair<std::string, logging::level::level_enum>>;
 
@@ -21,7 +23,7 @@ public:
   ///
   /// </summary>
   //-----------------------------------------------------------------------------
-  void _sink_it(const logging::details::log_msg& msg) override;
+  void sink_it_(const logging::details::log_msg& msg) override;
 
   //-----------------------------------------------------------------------------
   //  Name : flush ()
@@ -31,7 +33,7 @@ public:
   ///
   /// </summary>
   //-----------------------------------------------------------------------------
-  void _flush() override;
+  void flush_() override;
 
   //-----------------------------------------------------------------------------
   //  Name : get_items ()

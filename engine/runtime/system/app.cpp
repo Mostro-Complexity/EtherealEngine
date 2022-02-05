@@ -20,18 +20,22 @@
 #include <core/serialization/serialization.h>
 #include <core/simulation/simulation.h>
 #include <core/tasks/task_system.h>
+#include <spdlog/sinks/dist_sink.h>
 
 #include <sstream>
 
 namespace runtime {
 
   void app::setup(cmd_line::parser& parser) {
-    auto logging_container = logging::get_mutable_logging_container();
+    // auto logging_container = std::dynamic_pointer_cast<logging::sinks::dist_sink_mt>(
+    //  logging::create<logging::sinks::dist_sink_mt>(APPLOG));
+    auto logging_container = std::make_shared<logging::sinks::dist_sink_mt>(
+      std::vector<std::shared_ptr<logging::sinks::sink>>());
+    std::dynamic_pointer_cast<logging::sinks::dist_sink_mt>(
+      logging::create<logging::sinks::dist_sink_mt>(APPLOG));
     logging_container->add_sink(std::make_shared<logging::sinks::platform_sink_mt>());
     logging_container->add_sink(
-      std::make_shared<logging::sinks::simple_file_sink_mt>("Log.txt", true));
-
-    logging::create(APPLOG, logging_container);
+      std::make_shared<logging::sinks::basic_file_sink_mt>("Log.txt", true));
 
     serialization::set_warning_logger([](const std::string& msg) { APPLOG_WARNING(msg); });
 

@@ -1,6 +1,6 @@
 #include "imgui_user.h"
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include "../imgui/imgui_internal.h"
+#include "imgui/imgui_internal.h"
 #include <unordered_map>
 #include <vector>
 #include <array>

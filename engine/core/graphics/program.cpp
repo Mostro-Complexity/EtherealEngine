@@ -59,7 +59,8 @@ namespace gfx {
       hUniform = it->second;
     } else {
       if (texture) {
-        hUniform = std::make_shared<gfx::uniform>(_name, gfx::uniform_type::Int1, 1);
+        hUniform =
+          std::make_shared<gfx::uniform>(_name, gfx::uniform_type::Mat4, 1);  // NOTE: is it a mat?
         uniforms[_name] = hUniform;
       }
     }

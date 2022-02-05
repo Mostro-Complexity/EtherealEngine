@@ -1,11 +1,11 @@
 #pragma once
 
 #include <spdlog/spdlog.h>
-
 #include "../common/platform/config.hpp"
 
 #if ETH_ON(ETH_PLATFORM_WINDOWS)
   #include <spdlog/sinks/msvc_sink.h>
+  #include <spdlog/sinks/wincolor_sink.h>
 namespace spdlog {
   namespace sinks {
     using platform_sink_mt = wincolor_stdout_sink_mt;
@@ -38,7 +38,7 @@ namespace spdlog {
 }  // namespace spdlog
 #endif
 #include <spdlog/sinks/dist_sink.h>
-#include <spdlog/sinks/file_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
 namespace logging {
   using namespace spdlog;
   inline std::shared_ptr<sinks::dist_sink_mt> get_mutable_logging_container() {

@@ -1,5 +1,10 @@
 #include "inspector.h"
 
+#include <imgui/imgui_internal.h>
+namespace gui {
+  using namespace ImGui;
+};
+
 void Tooltip(const rttr::property& prop) {
   auto& g = *gui::GetCurrentContext();
   if (!g.DragDropActive && gui::IsItemHovered()) {

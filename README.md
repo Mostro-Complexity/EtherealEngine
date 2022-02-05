@@ -31,6 +31,7 @@ git submodule update
 mkdir build
 cd build
 cmake ..
+# cmake .. -G "Visual Studio 16 2019" -T ClangCL -A x64
 
 ```
 

@@ -32,6 +32,10 @@
 #include <runtime/system/events.h>
 
 #include <editor_core/nativefd/filedialog.h>
+#include <imgui/imgui_internal.h>
+namespace gui {
+  using namespace ImGui;
+};
 
 namespace editor {
   namespace {
