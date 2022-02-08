@@ -67,6 +67,10 @@ target_compile_definitions( bx PUBLIC "__STDC_LIMIT_MACROS" )
 target_compile_definitions( bx PUBLIC "__STDC_FORMAT_MACROS" )
 target_compile_definitions( bx PUBLIC "__STDC_CONSTANT_MACROS" )
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 	target_compile_definitions( bx PUBLIC "BX_CONFIG_DEBUG=1" )
 else()

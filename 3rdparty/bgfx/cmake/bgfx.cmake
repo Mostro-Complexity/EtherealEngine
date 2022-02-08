@@ -69,6 +69,14 @@ if( MSVC )
 	target_compile_definitions( bgfx PRIVATE "_CRT_SECURE_NO_WARNINGS" )
 endif()
 
+SET(MAX_VIEWS 1024 CACHE STRING "MAX_VIEWS" FORCE)
+target_compile_definitions(bgfx PRIVATE "BGFX_CONFIG_MAX_VIEWS=${MAX_VIEWS}")
+target_compile_definitions(bgfx PRIVATE "BGFX_CONFIG_MAX_VIEW_NAME=${MAX_VIEWS}")
+target_compile_definitions(bgfx PRIVATE "BGFX_CONFIG_MAX_FRAME_BUFFERS=2048")
+
+# Enable BGFX_CONFIG_DEBUG in Debug configuration
+target_compile_definitions( bgfx PRIVATE "$<$<CONFIG:Debug>:BGFX_CONFIG_DEBUG=1>" )
+
 # Add debug config required in bx headers since bx is private
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     target_compile_definitions( bgfx PUBLIC "BX_CONFIG_DEBUG=1" )

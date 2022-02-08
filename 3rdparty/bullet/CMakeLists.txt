@@ -1,9 +1,11 @@
-add_subdirectory( bullet3 )
+set(CMAKE_CXX_FLAGS_RELEASE "/MD")
+set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
 set(USE_MSVC_RUNTIME_LIBRARY_DLL ON CACHE BOOL "Build importer" FORCE)
 set(BUILD_BULLET2_DEMOS OFF CACHE BOOL "Build importer" FORCE)
 set(BUILD_CPU_DEMOS OFF CACHE BOOL "Build importer" FORCE)
 set(BUILD_OPENGL3_DEMOS OFF CACHE BOOL "Build importer" FORCE)
 set(BUILD_EXTRAS OFF CACHE BOOL "Build importer" FORCE)
+add_subdirectory( bullet3 )
 
 set_target_properties(Bullet2FileLoader PROPERTIES FOLDER "3rdparty/bullet")
 set_target_properties(Bullet3Collision PROPERTIES FOLDER "3rdparty/bullet")
