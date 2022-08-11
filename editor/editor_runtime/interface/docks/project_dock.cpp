@@ -89,7 +89,7 @@ static void process_drag_drop_target(const fs::path& absolute_path) {
 
     fs::error_code err;
     if (fs::is_directory(absolute_path, err)) {
-      static const auto types = ex::get_all_formats();
+      static const auto& types = ex::get_all_formats();
 
       const auto process_drop = [&absolute_path](const std::string& type) {
         auto payload = gui::AcceptDragDropPayload(type.c_str());
@@ -198,8 +198,7 @@ static bool draw_entry(
     action = entry_action::double_clicked;
   }
 
-  std::array<char, 64> input_buff;
-  input_buff.fill(0);
+  std::array<char, 64> input_buff{};
   auto name_sz = std::min(name.size(), input_buff.size() - 1);
   std::memcpy(input_buff.data(), name.c_str(), name_sz);
 
@@ -616,7 +615,7 @@ void project_dock::render(const ImVec2& /*area*/) {
                  / std::max(1.0f, items_per_line_floor - 1);
     auto lines = std::max<int>(1, int(ImCeil(float(count) / float(items_per_line))));
     ImGuiListClipper clipper;
-    clipper.Begin(lines);
+    clipper.Begin(lines, 1);  // NOTE: the second param is temporally defined, and don't understand the meaning
 
     while (clipper.Step()) {
       for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
@@ -672,13 +671,13 @@ void project_dock::context_create_menu() {
     gui::Separator();
 
     if (gui::MenuItem("MATERIAL")) {
-      const auto available = get_new_file(cache_.get_path(), "New Material", ".mat");
-      const auto key = fs::convert_to_protocol(available).generic_string();
+      const auto& available = get_new_file(cache_.get_path(), "New Material", ".mat");
+      const auto& key = fs::convert_to_protocol(available).generic_string();
 
       auto& am = core::get_subsystem<runtime::asset_manager>();
       auto new_mat_future =
         am.load_asset_from_instance<material>(key, std::make_shared<standard_material>());
-      auto asset = new_mat_future.get();
+      auto& asset = new_mat_future.get();
       runtime::asset_writer::save_to_file(asset.id(), asset);
     }
 

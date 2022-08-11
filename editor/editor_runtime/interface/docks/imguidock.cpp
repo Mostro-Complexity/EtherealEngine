@@ -677,9 +677,10 @@ namespace imguidock {
       auto& owner = renderer.get_window(owner_id);
       auto& wnd = renderer.get_window(id);
 
-      std::array<int32_t, 2> pos;
-      pos[0] = int32_t(preview_rect.Min.x - offset.x) + owner->get_position()[0];
-      pos[1] = int32_t(preview_rect.Min.y - offset.y) + owner->get_position()[1];
+      std::array<int32_t, 2> pos = {
+        int32_t(preview_rect.Min.x - offset.x) + owner->get_position()[0],
+        int32_t(preview_rect.Min.y - offset.y) + owner->get_position()[1]
+      };
       wnd->set_position(pos);
       wnd->set_size({ { uint32_t(preview_rect.GetSize().x + offset.x),
                         uint32_t(preview_rect.GetSize().y + offset.y) } });
