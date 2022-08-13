@@ -3,7 +3,7 @@
 #include <map>
 namespace gfx {
   static std::map<std::string, std::function<void(const std::string&)>> s_loggers;
-  static bool s_initted = false;
+  static bool                                                           s_initted = false;
 
   void set_info_logger(const std::function<void(const std::string&)>& logger) {
     s_loggers["info"] = logger;
@@ -621,7 +621,7 @@ namespace gfx {
   std::uint64_t
   screen_quad(float dest_width, float dest_height, float depth, float width, float height) {
     float texture_half = get_half_texel();
-    bool origin_bottom_left = is_origin_bottom_left();
+    bool  origin_bottom_left = is_origin_bottom_left();
 
     if (3 == getAvailTransientVertexBuffer(3, pos_texcoord0_vertex::get_layout())) {
       transient_vertex_buffer vb;
@@ -790,13 +790,13 @@ namespace gfx {
 
   float get_half_texel() {
     const renderer_type renderer = bgfx::getRendererType();
-    float half_texel = renderer_type::Direct3D9 == renderer ? 0.5f : 0.0f;
+    float               half_texel = renderer_type::Direct3D9 == renderer ? 0.5f : 0.0f;
     return half_texel;
   }
 
   bool is_supported(uint64_t flag) {
     const auto caps = gfx::get_caps();
-    bool supported = 0 != (caps->supported & flag);
+    bool       supported = 0 != (caps->supported & flag);
     return supported;
   }
 }  // namespace gfx

@@ -330,8 +330,8 @@ namespace math {
       // Classify each point of the line against the plane.
       float fDist1 = plane::dot_coord(extruded_planes[i], v1);
       float fDist2 = plane::dot_coord(extruded_planes[i], v2);
-      int nSide1 = (fDist1 >= 0) ? 1 : 0;
-      int nSide2 = (fDist2 >= 0) ? 1 : 0;
+      int   nSide1 = (fDist1 >= 0) ? 1 : 0;
+      int   nSide2 = (fDist2 >= 0) ? 1 : 0;
 
       // Accumulate the classification info to determine
       // if the edge was spanning any of the planes.
@@ -345,7 +345,7 @@ namespace math {
       // The line is potentially spanning?
       if (nSide1 ^ nSide2) {
         // Compute the point at which the line intersects this plane.
-        vec3 vDir = v2 - v1;
+        vec3  vDir = v2 - v1;
         float t =
           -plane::dot_coord(extruded_planes[i], v1) / plane::dot_normal(extruded_planes[i], vDir);
 

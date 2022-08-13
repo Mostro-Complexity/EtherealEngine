@@ -9,7 +9,7 @@ struct scene {
     standard,
     additive,
   };
-  std::vector<runtime::entity> instantiate(mode mod);
+  std::vector<runtime::entity>  instantiate(mode mod);
   std::shared_ptr<std::istream> data;
 
   struct id_t {

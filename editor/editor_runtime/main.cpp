@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
   fs::add_path_protocol("binary:", binary_path);
   fs::add_path_protocol("shader_include:", shader_include_path);
   editor::app app;
-  int return_code = app.run(argc, argv);
+  int         return_code = app.run(argc, argv);
 
   return return_code;
 }

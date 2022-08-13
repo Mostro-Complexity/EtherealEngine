@@ -36,17 +36,17 @@ namespace editor {
 
       if (!editor_camera || !editor_camera.has_component<camera_component>()) return;
 
-      auto camera_comp = editor_camera.get_component<camera_component>();
-      auto camera_comp_ptr = camera_comp.lock().get();
+      auto        camera_comp = editor_camera.get_component<camera_component>();
+      auto        camera_comp_ptr = camera_comp.lock().get();
       const auto& current_camera = camera_comp_ptr->get_camera();
-      const auto near_clip = current_camera.get_near_clip();
-      const auto far_clip = current_camera.get_far_clip();
+      const auto  near_clip = current_camera.get_near_clip();
+      const auto  far_clip = current_camera.get_far_clip();
       const auto& mouse_pos = input.get_current_cursor_position();
       const auto& frustum = current_camera.get_frustum();
-      math::vec2 cursor_pos = math::vec2{ mouse_pos.x, mouse_pos.y };
-      math::vec3 pick_eye;
-      math::vec3 pick_at;
-      math::vec3 pick_up = { 0.0f, 1.0f, 0.0f };
+      math::vec2  cursor_pos = math::vec2{ mouse_pos.x, mouse_pos.y };
+      math::vec3  pick_eye;
+      math::vec3  pick_at;
+      math::vec3  pick_up = { 0.0f, 1.0f, 0.0f };
 
       if (!current_camera.viewport_to_world(
             cursor_pos, frustum.planes[math::volume_plane::near_plane], pick_eye, true))
@@ -77,9 +77,9 @@ namespace editor {
       pass.bind(surface_.get());
 
       ecs.for_each<transform_component, model_component>([this, &pass, &pick_frustum](
-                                                           runtime::entity e,
+                                                           runtime::entity      e,
                                                            transform_component& transform_comp_ref,
-                                                           model_component& model_comp_ref) {
+                                                           model_component&     model_comp_ref) {
         auto& model = model_comp_ref.get_model();
         if (!model.is_valid()) return;
 
@@ -93,11 +93,11 @@ namespace editor {
         // Test the bounding box of the mesh
         if (!math::frustum::test_obb(pick_frustum, bounds, world_transform)) return;
 
-        auto entity_index = e.id().index();
+        auto          entity_index = e.id().index();
         std::uint32_t rr = (entity_index) &0xff;
         std::uint32_t gg = (entity_index >> 8) & 0xff;
         std::uint32_t bb = (entity_index >> 16) & 0xff;
-        math::vec4 color_id = { rr / 255.0f, gg / 255.0f, bb / 255.0f, 1.0f };
+        math::vec4    color_id = { rr / 255.0f, gg / 255.0f, bb / 255.0f, 1.0f };
 
         const auto& bone_transforms = model_comp_ref.get_bone_transforms();
         model.render(
@@ -137,7 +137,7 @@ namespace editor {
     if (reading_ && reading_ <= render_frame) {
       reading_ = 0;
       std::map<std::uint32_t, std::uint32_t> ids;  // This contains all the IDs found in the buffer
-      std::uint32_t max_amount = 0;
+      std::uint32_t                          max_amount = 0;
       for (std::uint8_t* x = blit_data_; x < blit_data_ + tex_id_dim * tex_id_dim * 4;) {
         std::uint8_t rr = *x++;
         std::uint8_t gg = *x++;
@@ -152,9 +152,9 @@ namespace editor {
         // Skip background
         if (0 == (rr | gg | bb)) { continue; }
 
-        auto hash_key = static_cast<std::uint32_t>(rr + (gg << 8) + (bb << 16));
+        auto          hash_key = static_cast<std::uint32_t>(rr + (gg << 8) + (bb << 16));
         std::uint32_t amount = 1;
-        auto mapIter = ids.find(hash_key);
+        auto          mapIter = ids.find(hash_key);
         if (mapIter != ids.end()) { amount = mapIter->second + 1; }
 
         // Amount of times this ID (color) has been clicked on in buffer

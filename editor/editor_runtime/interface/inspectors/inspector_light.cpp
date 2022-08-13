@@ -7,7 +7,7 @@ bool inspector_light_component::inspect(
   auto light_val = data->get_light();
 
   rttr::variant light_var = light_val;
-  bool changed = inspect_var(light_var);
+  bool          changed = inspect_var(light_var);
   if (changed) light_val = light_var.get_value<light>();
 
   if (light_val.type == light_type::spot) {
@@ -39,7 +39,7 @@ bool inspector_reflection_probe_component::inspect(
   auto probe = data->get_probe();
 
   rttr::variant probe_var = probe;
-  bool changed = inspect_var(probe_var);
+  bool          changed = inspect_var(probe_var);
   if (changed) probe = probe_var.get_value<reflection_probe>();
 
   if (probe.type == probe_type::box) {

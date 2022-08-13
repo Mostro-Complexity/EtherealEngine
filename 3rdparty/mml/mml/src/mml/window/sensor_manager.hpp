@@ -64,10 +64,10 @@ namespace mml {
       /// \brief sensor information and state
       ///
       struct item {
-        bool available;              ///< Is the sensor available on this device?
-        bool enabled;                ///< Current enable state of the sensor
-        sensor_impl sensor;          ///< sensor implementation
-        std::array<float, 3> value;  ///< The current sensor value
+        bool                 available;  ///< Is the sensor available on this device?
+        bool                 enabled;    ///< Current enable state of the sensor
+        sensor_impl          sensor;     ///< sensor implementation
+        std::array<float, 3> value;      ///< The current sensor value
       };
 
       item m_sensors[sensor::count];  ///< Sensors information and state

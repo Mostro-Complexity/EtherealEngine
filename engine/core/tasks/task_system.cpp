@@ -66,8 +66,8 @@ namespace core {
 
   std::pair<bool, task> task_system::task_queue::pop(duration_t pop_timeout) {
     std::unique_lock<std::mutex> lock(mutex_);
-    bool wait = pop_timeout > duration_t(0);
-    bool timed_wait = pop_timeout != duration_t::max();
+    bool                         wait = pop_timeout > duration_t(0);
+    bool                         timed_wait = pop_timeout != duration_t::max();
     if (wait && tasks_.empty()) {
       if (timed_wait) {
         cv_.wait_for(lock, pop_timeout);
@@ -130,15 +130,15 @@ namespace core {
     std::size_t idx, const std::function<bool()>& condition, duration_t pop_timeout) {
     while (condition()) {
       const auto queue_index = get_thread_queue_idx(idx);
-      bool is_done = queues_[queue_index].is_done();
-      bool is_empty = queues_[queue_index].get_pending_tasks() == 0;
+      bool       is_done = queues_[queue_index].is_done();
+      bool       is_empty = queues_[queue_index].get_pending_tasks() == 0;
       if (is_done && is_empty) { return; }
 
       std::pair<bool, task> p = { false, task() };
 
       if (idx != 0 && is_empty) {
         std::size_t steal_attempts = threads_count_;
-        const auto queue_idx = get_most_free_queue_idx(true);
+        const auto  queue_idx = get_most_free_queue_idx(true);
         for (std::size_t k = 0; k < steal_attempts; ++k) {
           if (queue_index != queue_idx) {
             p = queues_[queue_idx].try_pop();

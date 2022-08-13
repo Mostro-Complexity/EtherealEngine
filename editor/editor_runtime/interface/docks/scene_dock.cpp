@@ -69,7 +69,7 @@ static void resource_bar(
   itemHovered |= gui::IsItemHovered();
   gui::SameLine();
 
-  const float percentage = float(_num) / float(_max);
+  const float         percentage = float(_num) / float(_max);
   static const ImVec4 color(0.5f, 0.5f, 0.5f, 1.0f);
 
   itemHovered |= bar(std::max(1.0f, percentage * _maxWidth), _maxWidth, _height, color);
@@ -123,7 +123,7 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
 
       gui::Separator();
 
-      const auto& gui_sys = core::get_subsystem<gui_system>();
+      const auto&   gui_sys = core::get_subsystem<gui_system>();
       std::uint32_t ui_draw_calls = gui_sys.get_draw_calls();
       std::uint32_t total_primitives =
         std::accumulate(std::begin(stats->numPrims), std::end(stats->numPrims), 0u);
@@ -220,11 +220,11 @@ void scene_dock::show_statistics(const ImVec2& area, unsigned int fps, bool& sho
         ImVec4 cpuColor(0.5f, 1.0f, 0.5f, 1.0f);
         ImVec4 gpuColor(0.5f, 0.5f, 1.0f, 1.0f);
 
-        const float itemHeight = ImGui::GetTextLineHeightWithSpacing();
-        const float itemHeightWithSpacing = ImGui::GetFrameHeightWithSpacing();
+        const float  itemHeight = ImGui::GetTextLineHeightWithSpacing();
+        const float  itemHeightWithSpacing = ImGui::GetFrameHeightWithSpacing();
         const double toCpuMs = 1000.0 / double(stats->cpuTimerFreq);
         const double toGpuMs = 1000.0 / double(stats->gpuTimerFreq);
-        const float scale = 3.0f;
+        const float  scale = 3.0f;
 
         if (ImGui::BeginListBox(
               "Encoders", ImVec2(0, stats->numEncoders * itemHeightWithSpacing))) {
@@ -317,16 +317,16 @@ void draw_selected_camera(const ImVec2& size) {
     auto sel = selected.get_value<runtime::entity>();
 
     if (sel && (editor_camera != sel) && sel.has_component<camera_component>()) {
-      const auto selected_camera = sel.get_component<camera_component>().lock();
+      const auto  selected_camera = sel.get_component<camera_component>().lock();
       const auto& camera = selected_camera->get_camera();
-      auto& render_view = selected_camera->get_render_view();
+      auto&       render_view = selected_camera->get_render_view();
       const auto& viewport_size = camera.get_viewport_size();
-      const auto surface = render_view.get_output_fbo(viewport_size);
+      const auto  surface = render_view.get_output_fbo(viewport_size);
 
       float factor =
         std::min(size.x / float(viewport_size.width), size.y / float(viewport_size.height)) / 4.0f;
       ImVec2 bounds(viewport_size.width * factor, viewport_size.height * factor);
-      auto p = gui::GetWindowPos();
+      auto   p = gui::GetWindowPos();
       p.x += size.x - bounds.x - 20.0f;
       p.y += size.y - bounds.y - 40.0f;
       gui::SetNextWindowPos(p);
@@ -379,11 +379,11 @@ void manipulation_gizmos() {
       auto p = gui::GetItemRectMin();
       auto s = gui::GetItemRectSize();
       imguizmo::set_view_rect(p.x, p.y, s.x, s.y);
-      auto camera_comp = editor_camera.get_component<camera_component>().lock();
-      auto transform_comp = sel.get_component<transform_component>().lock();
-      const auto& transform = transform_comp->get_transform();
+      auto            camera_comp = editor_camera.get_component<camera_component>().lock();
+      auto            transform_comp = sel.get_component<transform_component>().lock();
+      const auto&     transform = transform_comp->get_transform();
       math::transform delta;
-      float* snap = nullptr;
+      float*          snap = nullptr;
       if (input.is_key_down(mml::keyboard::LControl)) {
         if (operation == imguizmo::operation::translate) {
           snap = &es.snap_data.translation_snap[0];
@@ -394,7 +394,7 @@ void manipulation_gizmos() {
         }
       }
       const auto& camera = camera_comp->get_camera();
-      math::mat4 output = transform;
+      math::mat4  output = transform;
       imguizmo::manipulate(
         camera.get_view(),
         camera.get_projection(),
@@ -444,14 +444,14 @@ void handle_camera_movement() {
   if (input.is_mouse_button_down(mml::mouse::right)) {
     auto wnd = rend.get_focused_window();
     if (wnd) {
-      auto pos = mml::mouse::get_position(*wnd);
-      auto result = pos;
-      auto win_pos = gui::GetWindowPos();
-      auto win_size = gui::GetWindowSize();
-      auto max_x = int32_t(win_pos.x + win_size.x);
-      auto max_y = int32_t(win_pos.y + win_size.y);
-      auto min_x = int32_t(win_pos.x);
-      auto min_y = int32_t(win_pos.y);
+      auto  pos = mml::mouse::get_position(*wnd);
+      auto  result = pos;
+      auto  win_pos = gui::GetWindowPos();
+      auto  win_size = gui::GetWindowSize();
+      auto  max_x = int32_t(win_pos.x + win_size.x);
+      auto  max_y = int32_t(win_pos.y + win_size.y);
+      auto  min_x = int32_t(win_pos.x);
+      auto  min_y = int32_t(win_pos.y);
       auto& x = result[0];
       auto& y = result[1];
 
@@ -475,15 +475,15 @@ void handle_camera_movement() {
   }
 
   auto& editor_camera = es.camera;
-  auto dt = sim.get_delta_time().count();
+  auto  dt = sim.get_delta_time().count();
 
-  auto transform_comp = editor_camera.get_component<transform_component>().lock();
-  auto camera_comp = editor_camera.get_component<camera_component>().lock();
+  auto  transform_comp = editor_camera.get_component<transform_component>().lock();
+  auto  camera_comp = editor_camera.get_component<camera_component>().lock();
   float movement_speed = 5.0f;
   float spin_speed = 0.2f;
   float surround_speed = 0.1f;
   float multiplier = 5.0f;
-  auto delta_move = input.get_cursor_delta_move();
+  auto  delta_move = input.get_cursor_delta_move();
 
   if (input.is_mouse_button_down(mml::mouse::middle)) {
     if (input.is_key_down(mml::keyboard::LShift)) { movement_speed *= multiplier; }
@@ -569,7 +569,7 @@ static void process_drag_drop_target(const std::shared_ptr<camera_component>& ca
           auto trans_comp = object.get_component<transform_component>().lock();
           if (trans_comp) {
             math::vec3 projected_pos;
-            auto cursor_pos = gui::GetMousePos();
+            auto       cursor_pos = gui::GetMousePos();
             if (camera_comp->get_camera().viewport_to_world(
                   math::vec2{ cursor_pos.x, cursor_pos.y },
                   math::plane::from_point_normal(
@@ -605,7 +605,7 @@ static void process_drag_drop_target(const std::shared_ptr<camera_component>& ca
           auto trans_comp = object.assign<transform_component>().lock();
           if (trans_comp) {
             math::vec3 projected_pos;
-            auto cursor_pos = gui::GetMousePos();
+            auto       cursor_pos = gui::GetMousePos();
             if (camera_comp->get_camera().viewport_to_world(
                   math::vec2{ cursor_pos.x, cursor_pos.y },
                   math::plane::from_point_normal(
@@ -637,7 +637,7 @@ void scene_dock::render(const ImVec2& area) {
   auto& input = core::get_subsystem<runtime::input>();
   auto& sim = core::get_subsystem<core::simulation>();
 
-  auto window = renderer.get_focused_window();
+  auto  window = renderer.get_focused_window();
   auto& editor_camera = es.camera;
   auto& selected = es.selection_data.object;
 
@@ -660,10 +660,10 @@ void scene_dock::render(const ImVec2& area) {
       { static_cast<std::uint32_t>(size.x), static_cast<std::uint32_t>(size.y) });
 
     const auto& camera = camera_comp->get_camera();
-    auto& render_view = camera_comp->get_render_view();
+    auto&       render_view = camera_comp->get_render_view();
     const auto& viewport_size = camera.get_viewport_size();
-    const auto surface = render_view.get_output_fbo(viewport_size);
-    auto tex = surface->get_attachment(0).texture;
+    const auto  surface = render_view.get_output_fbo(viewport_size);
+    auto        tex = surface->get_attachment(0).texture;
     gui::Image(gui::get_info(tex), size);
 
     if (gui::IsItemClicked(1) || gui::IsItemClicked(2)) {

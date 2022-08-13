@@ -215,7 +215,7 @@ namespace uuids {
     friend ::std::basic_ostream<CharT, Traits>&
     operator<<(::std::basic_ostream<CharT, Traits>& os, uuid const& u) {
       typedef typename std::basic_ostream<CharT, Traits> ostream_type;
-      typename ostream_type::sentry ok(os);
+      typename ostream_type::sentry                      ok(os);
 
       if (ok) {
         for (std::size_t i = 0; i != u.size(); ++i) {
@@ -229,7 +229,7 @@ namespace uuids {
 
   private:
     static constexpr std::size_t static_size = 16;
-    value_type data_[static_size];
+    value_type                   data_[static_size];
   };
 
   ///////////////////////////////////////////////////////////////////////

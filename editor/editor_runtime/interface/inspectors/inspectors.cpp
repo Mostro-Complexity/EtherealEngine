@@ -28,8 +28,8 @@ bool inspect_var(
   rttr::variant& var, bool skip_custom, bool read_only,
   const inspector::meta_getter& get_metadata) {
   rttr::instance object = var;
-  auto type = object.get_derived_type();
-  auto properties = type.get_properties();
+  auto           type = object.get_derived_type();
+  auto           properties = type.get_properties();
 
   bool changed = false;
 
@@ -43,17 +43,17 @@ bool inspect_var(
     }
   } else {
     for (auto& prop : properties) {
-      bool prop_changed = false;
-      auto prop_var = prop.get_value(object);
-      bool is_readonly = prop.is_readonly();
-      bool is_array = prop_var.is_sequential_container();
-      bool is_associative_container = prop_var.is_associative_container();
-      bool is_enum = prop.is_enumeration();
-      rttr::instance prop_object = prop_var;
-      bool has_inspector = !!get_inspector(prop_object.get_derived_type());
-      bool details = !has_inspector && !is_enum;
+      bool            prop_changed = false;
+      auto            prop_var = prop.get_value(object);
+      bool            is_readonly = prop.is_readonly();
+      bool            is_array = prop_var.is_sequential_container();
+      bool            is_associative_container = prop_var.is_associative_container();
+      bool            is_enum = prop.is_enumeration();
+      rttr::instance  prop_object = prop_var;
+      bool            has_inspector = !!get_inspector(prop_object.get_derived_type());
+      bool            details = !has_inspector && !is_enum;
       property_layout layout(prop);
-      bool open = true;
+      bool            open = true;
       if (details) {
         gui::AlignTextToFramePadding();
         open = gui::TreeNode("details");
@@ -108,7 +108,7 @@ bool inspect_array(rttr::variant& var, bool read_only, const inspector::meta_get
   }
 
   for (std::size_t i = 0; i < size; ++i) {
-    auto value = view.get_value(i).extract_wrapped_value();
+    auto        value = view.get_value(i).extract_wrapped_value();
     std::string element = "Element ";
     element += std::to_string(i);
 
@@ -131,7 +131,7 @@ bool inspect_associative_container(rttr::variant& var, bool read_only) {
 }
 
 bool inspect_enum(rttr::variant& var, rttr::enumeration& data, bool read_only) {
-  auto strings = data.get_names();
+  auto                     strings = data.get_names();
   std::vector<const char*> cstrings{};
   cstrings.reserve(strings.size());
 

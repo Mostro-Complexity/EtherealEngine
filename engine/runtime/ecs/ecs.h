@@ -30,7 +30,7 @@ namespace runtime {
 
   namespace ecs {
     using frame_getter_t = std::function<std::uint64_t()>;
-    void set_frame_getter(frame_getter_t frame_getter);
+    void          set_frame_getter(frame_getter_t frame_getter);
     std::uint64_t get_frame();
   }  // namespace ecs
 
@@ -44,8 +44,8 @@ namespace runtime {
     inline std::size_t size() const { return data.size(); }
     inline std::size_t capacity() const { return data.capacity(); }
     /// Ensure at least n elements will fit in the pool.
-    void expand(std::size_t n);
-    void reserve(std::size_t n);
+    void                       expand(std::size_t n);
+    void                       reserve(std::size_t n);
     std::shared_ptr<component> get(std::size_t n) const;
 
     template <typename T> std::shared_ptr<T> get(std::size_t n) const {
@@ -125,8 +125,8 @@ namespace runtime {
 
     bool operator!=(const entity& other) const { return !(other == *this); }
 
-    bool operator<(const entity& other) const { return other.id_ < id_; }
-    void set_name(const std::string& name);
+    bool               operator<(const entity& other) const { return other.id_ < id_; }
+    void               set_name(const std::string& name);
     const std::string& get_name() const;
     /**
      * Is this entity handle valid?
@@ -179,7 +179,7 @@ namespace runtime {
     void destroy();
 
   private:
-    entity::id_t id_ = INVALID;
+    entity::id_t             id_ = INVALID;
     entity_component_system* manager_ = nullptr;
   };
 
@@ -297,8 +297,8 @@ namespace runtime {
     virtual void start() {}
   };
 
-  extern event<void(entity)> on_entity_created;
-  extern event<void(entity)> on_entity_destroyed;
+  extern event<void(entity)>                     on_entity_created;
+  extern event<void(entity)>                     on_entity_destroyed;
   extern event<void(entity, chandle<component>)> on_component_added;
   extern event<void(entity, chandle<component>)> on_component_removed;
 
@@ -323,9 +323,9 @@ namespace runtime {
         next();
         return *static_cast<Delegate*>(this);
       }
-      bool operator==(const Delegate& rhs) const { return i_ == rhs.i_; }
-      bool operator!=(const Delegate& rhs) const { return i_ != rhs.i_; }
-      entity operator*() { return entity(manager_, manager_->create_id(i_)); }
+      bool         operator==(const Delegate& rhs) const { return i_ == rhs.i_; }
+      bool         operator!=(const Delegate& rhs) const { return i_ != rhs.i_; }
+      entity       operator*() { return entity(manager_, manager_->create_id(i_)); }
       const entity operator*() const { return entity(manager_, manager_->create_id(i_)); }
 
     protected:
@@ -369,10 +369,10 @@ namespace runtime {
       }
 
       entity_component_system* manager_;
-      component_mask_t mask_;
-      std::uint32_t i_;
-      size_t capacity_;
-      size_t free_cursor_;
+      component_mask_t         mask_;
+      std::uint32_t            i_;
+      size_t                   capacity_;
+      size_t                   free_cursor_;
     };
 
     template <bool All> class base_view {
@@ -405,7 +405,7 @@ namespace runtime {
         : manager_(manager), mask_(mask) {}
 
       entity_component_system* manager_;
-      component_mask_t mask_;
+      component_mask_t         mask_;
     };
 
     template <bool All, typename... Components> class typed_view : public base_view<All> {
@@ -482,8 +482,8 @@ namespace runtime {
         : manager_(manager), mask_(mask), unpacker_(handles...) {}
 
       entity_component_system* manager_;
-      component_mask_t mask_;
-      unpacker unpacker_;
+      component_mask_t         mask_;
+      unpacker                 unpacker_;
     };
 
     /**
@@ -587,7 +587,7 @@ namespace runtime {
       return std::make_tuple(get_component<Components>(id)...);
     }
 
-    std::vector<chandle<component>> all_components(entity::id_t id) const;
+    std::vector<chandle<component>>         all_components(entity::id_t id) const;
     std::vector<std::shared_ptr<component>> all_components_shared(entity::id_t id) const;
     /**
      * Find Entities that have all of the specified Components.
@@ -671,7 +671,7 @@ namespace runtime {
      */
     void dispose();
 
-    void set_entity_name(entity::id_t id, const std::string& name);
+    void               set_entity_name(entity::id_t id, const std::string& name);
     const std::string& get_entity_name(entity::id_t id);
 
   private:

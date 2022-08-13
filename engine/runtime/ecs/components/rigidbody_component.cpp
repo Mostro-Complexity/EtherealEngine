@@ -20,7 +20,7 @@ bool rigidbody_component::get_gravity_validity() const { return gravity_enabled_
 
 void rigidbody_component::update() {
   physics::rigidbody* body = physics::rigidbody::upcast(body_.get());
-  math::mat4 out;
+  math::mat4          out;
   {
     btTransform trans;
     if (body && body->getMotionState()) {

@@ -16,7 +16,7 @@ namespace fs {
     }
     static std::string replace_seq(
       const std::string& str, const std::string& old_sequence, const std::string& new_sequence) {
-      std::string s = str;
+      std::string            s = str;
       std::string::size_type location = 0;
       std::string::size_type old_length = old_sequence.length();
       std::string::size_type new_length = new_sequence.length();
@@ -110,7 +110,7 @@ namespace fs {
 
   path resolve_protocol(const path& _path) {
     const auto string_path = _path.generic_string();
-    auto pos = string_path.find(':', 0) + 1;
+    auto       pos = string_path.find(':', 0) + 1;
     if (pos == std::string::npos) { return path{}; };
 
     const auto root = string_path.substr(0, pos);
@@ -130,7 +130,7 @@ namespace fs {
 
   bool has_known_protocol(const path& _path) {
     const auto string_path = _path.generic_string();
-    auto pos = string_path.find(':', 0) + 1;
+    auto       pos = string_path.find(':', 0) + 1;
     if (pos == std::string::npos) { return false; }
 
     const auto root = string_path.substr(0, pos);

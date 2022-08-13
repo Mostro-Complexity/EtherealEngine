@@ -106,16 +106,16 @@ namespace editor {
     /// Current project name
     std::string project_name_;
 
-    fs::syncer app_meta_syncer_;
-    fs::syncer app_cache_syncer_;
+    fs::syncer                 app_meta_syncer_;
+    fs::syncer                 app_cache_syncer_;
     std::vector<std::uint64_t> app_watchers_;
 
-    fs::syncer editor_meta_syncer_;
-    fs::syncer editor_cache_syncer_;
+    fs::syncer                 editor_meta_syncer_;
+    fs::syncer                 editor_cache_syncer_;
     std::vector<std::uint64_t> editor_watchers_;
 
-    fs::syncer engine_meta_syncer_;
-    fs::syncer engine_cache_syncer_;
+    fs::syncer                 engine_meta_syncer_;
+    fs::syncer                 engine_cache_syncer_;
     std::vector<std::uint64_t> engine_watchers_;
   };
 }  // namespace editor

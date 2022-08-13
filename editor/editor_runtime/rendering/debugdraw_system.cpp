@@ -24,15 +24,15 @@ namespace editor {
     auto& selected = es.selection_data.object;
     if (!editor_camera || !editor_camera.has_component<camera_component>()) return;
 
-    const auto camera_comp = editor_camera.get_component<camera_component>();
-    const auto camera_comp_ptr = camera_comp.lock().get();
-    auto& render_view = camera_comp_ptr->get_render_view();
-    auto& camera = camera_comp_ptr->get_camera();
+    const auto  camera_comp = editor_camera.get_component<camera_component>();
+    const auto  camera_comp_ptr = camera_comp.lock().get();
+    auto&       render_view = camera_comp_ptr->get_render_view();
+    auto&       camera = camera_comp_ptr->get_camera();
     const auto& view = camera.get_view();
     const auto& proj = camera.get_projection();
     const auto& viewport_size = camera.get_viewport_size();
-    const auto surface = render_view.get_output_fbo(viewport_size);
-    const auto camera_posiiton = camera.get_position();
+    const auto  surface = render_view.get_output_fbo(viewport_size);
+    const auto  camera_posiiton = camera.get_position();
 
     gfx::render_pass pass("debug_draw_pass");
     pass.bind(surface.get());
@@ -42,15 +42,15 @@ namespace editor {
     if (es.show_grid) {
       auto draw_grid = [&](
                          std::uint32_t grid_color,
-                         float height,
-                         float height_intervals,
+                         float         height,
+                         float         height_intervals,
                          std::uint32_t size_intervals,
                          std::uint32_t iteration,
                          std::uint32_t max_iterations) {
         bool should_render = true;
         if (iteration + 1 != max_iterations) {
-          const auto iterationHeight = height_intervals * float(iteration + 1);
-          const float factor = math::clamp(height, 0.0f, iterationHeight) / iterationHeight;
+          const auto    iterationHeight = height_intervals * float(iteration + 1);
+          const float   factor = math::clamp(height, 0.0f, iterationHeight) / iterationHeight;
           std::uint32_t r = (grid_color) &0xff;
           std::uint32_t g = (grid_color >> 8) & 0xff;
           std::uint32_t b = (grid_color >> 16) & 0xff;
@@ -95,14 +95,14 @@ namespace editor {
 
     if (!selected_entity || !selected_entity.has_component<transform_component>()) return;
 
-    const auto transform_comp = selected_entity.get_component<transform_component>().lock();
-    const auto transform_comp_ptr = transform_comp.get();
+    const auto  transform_comp = selected_entity.get_component<transform_component>().lock();
+    const auto  transform_comp_ptr = transform_comp.get();
     const auto& world_transform = transform_comp_ptr->get_transform();
 
     if (selected_entity.has_component<camera_component>() && selected_entity != editor_camera) {
       const auto selected_camera_comp = selected_entity.get_component<camera_component>();
       const auto selected_camera_comp_ptr = selected_camera_comp.lock().get();
-      auto& selected_camera = selected_camera_comp_ptr->get_camera();
+      auto&      selected_camera = selected_camera_comp_ptr->get_camera();
       const auto view_proj = selected_camera.get_view_projection();
       const auto bounds = selected_camera.get_local_bounding_box();
       dd.encoder.push();
@@ -127,8 +127,8 @@ namespace editor {
     }
 
     if (selected_entity.has_component<light_component>()) {
-      const auto light_comp = selected_entity.get_component<light_component>();
-      const auto light_comp_ptr = light_comp.lock().get();
+      const auto  light_comp = selected_entity.get_component<light_component>();
+      const auto  light_comp_ptr = light_comp.lock().get();
       const auto& light = light_comp_ptr->get_light();
       if (light.type == light_type::spot) {
         auto adjacent = light.spot_data.get_range();
@@ -184,8 +184,8 @@ namespace editor {
     }
 
     if (selected_entity.has_component<reflection_probe_component>()) {
-      const auto probe_comp = selected_entity.get_component<reflection_probe_component>();
-      const auto probe_comp_ptr = probe_comp.lock().get();
+      const auto  probe_comp = selected_entity.get_component<reflection_probe_component>();
+      const auto  probe_comp_ptr = probe_comp.lock().get();
       const auto& probe = probe_comp_ptr->get_probe();
       if (probe.type == probe_type::box) {
         dd.encoder.push();
@@ -216,8 +216,8 @@ namespace editor {
     }
 
     if (selected_entity.has_component<model_component>()) {
-      const auto model_comp = selected_entity.get_component<model_component>();
-      const auto model_comp_ptr = model_comp.lock().get();
+      const auto  model_comp = selected_entity.get_component<model_component>();
+      const auto  model_comp_ptr = model_comp.lock().get();
       const auto& model = model_comp_ptr->get_model();
       if (!model.is_valid()) return;
 

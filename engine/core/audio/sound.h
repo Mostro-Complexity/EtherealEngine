@@ -3,25 +3,22 @@
 #include "sound_data.h"
 #include <memory>
 
-namespace audio
-{
-namespace priv
-{
-class sound_impl;
-}
+namespace audio {
+  namespace priv {
+    class sound_impl;
+  }
 
-//-----------------------------------------------------------------------------
-// Main Class Declarations
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//  Name : sound (Class)
-/// <summary>
-/// Storage for audio samples defining a sound.
-/// </summary>
-//-----------------------------------------------------------------------------
-class sound
-{
-public:
+  //-----------------------------------------------------------------------------
+  // Main Class Declarations
+  //-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //  Name : sound (Class)
+  /// <summary>
+  /// Storage for audio samples defining a sound.
+  /// </summary>
+  //-----------------------------------------------------------------------------
+  class sound {
+  public:
     sound();
     ~sound();
     sound(sound_data&& data, bool stream = false);
@@ -57,7 +54,7 @@ public:
     //-----------------------------------------------------------------------------
     uintptr_t uid() const;
 
-private:
+  private:
     friend class source;
 
     /// pimpl idiom
@@ -65,5 +62,5 @@ private:
 
     /// sound info
     sound_info info_;
-};
-}
+  };
+}  // namespace audio

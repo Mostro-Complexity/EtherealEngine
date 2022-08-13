@@ -6,19 +6,17 @@
 ////////////////////////////////////////////////////////////
 #include <mml/config.hpp>
 
-
 ////////////////////////////////////////////////////////////
 // Define portable import / export macros
 ////////////////////////////////////////////////////////////
 #if defined(MML_API_EXPORTS)
 
-    #define MML_WINDOW_API MML_API_EXPORT
+  #define MML_WINDOW_API MML_API_EXPORT
 
 #else
 
-    #define MML_WINDOW_API MML_API_IMPORT
+  #define MML_WINDOW_API MML_API_IMPORT
 
 #endif
 
-
-#endif // MML_WINDOW_EXPORT_HPP
+#endif  // MML_WINDOW_EXPORT_HPP

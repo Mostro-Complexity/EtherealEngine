@@ -90,7 +90,7 @@ namespace mml {
       ///
       ////////////////////////////////////////////////////////////
       virtual window_handle native_handle() const = 0;
-      virtual void* native_display_handle() const = 0;
+      virtual void*         native_display_handle() const = 0;
       ////////////////////////////////////////////////////////////
       /// \brief Get the position of the window
       ///

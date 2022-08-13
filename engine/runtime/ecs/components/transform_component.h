@@ -2,7 +2,7 @@
 /**
  * @file transform_component.h
  * @brief Source code of Transform Components
- * 
+ *
  */
 #include "../ecs.h"
 
@@ -10,9 +10,9 @@
 
 /**
  * @brief Class that contains and calculates spatial information of entities
- * 
+ *
  * @remark NOTE: customize your component by refering @link link-engine/runtime/meta/meta.h @endlink
- * 
+ *
  */
 class transform_component : public runtime::component_impl<transform_component> {
   SERIALIZABLE(transform_component)
@@ -20,8 +20,8 @@ class transform_component : public runtime::component_impl<transform_component> 
 
 public:
   /**
-   * @brief Construct a new transform component 
-   * 
+   * @brief Construct a new transform component
+   *
    */
   transform_component() = default;
 

@@ -110,8 +110,8 @@ namespace mml {
           for (unsigned int j = 0; j < joystick::axis_count; ++j) {
             if (caps.axes[j]) {
               joystick::axis axis = static_cast<joystick::axis>(j);
-              float prevPos = previousState.axes[axis];
-              float currPos = _joystick_states[i].axes[axis];
+              float          prevPos = previousState.axes[axis];
+              float          currPos = _joystick_states[i].axes[axis];
               if (fabs(currPos - prevPos) >= _joystick_threshold) {
                 platform_event event{ .type = platform_event::joystick_moved,
                                       .joystick_move = mml::platform_event::joystick_move_event{

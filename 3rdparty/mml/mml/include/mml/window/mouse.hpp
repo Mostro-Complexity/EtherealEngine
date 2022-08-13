@@ -1,47 +1,42 @@
 #ifndef MML_MOUSE_HPP
-#define MML_MOUSE_HPP
+  #define MML_MOUSE_HPP
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <mml/window/export.hpp>
-#include <array>
+  ////////////////////////////////////////////////////////////
+  // Headers
+  ////////////////////////////////////////////////////////////
+  #include <mml/window/export.hpp>
+  #include <array>
 
-namespace mml
-{
-class window;
+namespace mml {
+  class window;
 
-////////////////////////////////////////////////////////////
-/// \brief Give access to the real-time state of the mouse
-///
-////////////////////////////////////////////////////////////
-class MML_WINDOW_API mouse
-{
-public:
-
+  ////////////////////////////////////////////////////////////
+  /// \brief Give access to the real-time state of the mouse
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_WINDOW_API mouse {
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief mouse buttons
     ///
     ////////////////////////////////////////////////////////////
-    enum button
-    {
-        left,       ///< The left mouse button
-        right,      ///< The right mouse button
-        middle,     ///< The middle (wheel) mouse button
-        x_button1,   ///< The first extra mouse button
-        x_button2,   ///< The second extra mouse button
+    enum button {
+      left,       ///< The left mouse button
+      right,      ///< The right mouse button
+      middle,     ///< The middle (wheel) mouse button
+      x_button1,  ///< The first extra mouse button
+      x_button2,  ///< The second extra mouse button
 
-        button_count ///< Keep last -- the total number of mouse buttons
+      button_count  ///< Keep last -- the total number of mouse buttons
     };
 
     ////////////////////////////////////////////////////////////
     /// \brief mouse wheels
     ///
     ////////////////////////////////////////////////////////////
-    enum wheel
-    {
-        vertical_wheel,  ///< The vertical mouse wheel
-        horizontal_wheel ///< The horizontal mouse wheel
+    enum wheel {
+      vertical_wheel,   ///< The vertical mouse wheel
+      horizontal_wheel  ///< The horizontal mouse wheel
     };
 
     ////////////////////////////////////////////////////////////
@@ -100,13 +95,11 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     static void set_position(const std::array<std::int32_t, 2>& position, const window& relativeTo);
-};
+  };
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_MOUSE_HPP
-
+#endif  // MML_MOUSE_HPP
 
 ////////////////////////////////////////////////////////////
 /// \class mml::mouse

@@ -1,60 +1,54 @@
 #ifndef MML_JOYSTICK_HPP
-#define MML_JOYSTICK_HPP
+  #define MML_JOYSTICK_HPP
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <mml/window/export.hpp>
-#include <string>
+  ////////////////////////////////////////////////////////////
+  // Headers
+  ////////////////////////////////////////////////////////////
+  #include <mml/window/export.hpp>
+  #include <string>
 
-namespace mml
-{
-////////////////////////////////////////////////////////////
-/// \brief Give access to the real-time state of the joysticks
-///
-////////////////////////////////////////////////////////////
-class MML_WINDOW_API joystick
-{
-public:
-
+namespace mml {
+  ////////////////////////////////////////////////////////////
+  /// \brief Give access to the real-time state of the joysticks
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_WINDOW_API joystick {
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief Constants related to joysticks capabilities
     ///
     ////////////////////////////////////////////////////////////
-    enum
-    {
-        count       = 8,  ///< Maximum number of supported joysticks
-        button_count = 32, ///< Maximum number of supported buttons
-        axis_count   = 8   ///< Maximum number of supported axes
+    enum {
+      count = 8,          ///< Maximum number of supported joysticks
+      button_count = 32,  ///< Maximum number of supported buttons
+      axis_count = 8      ///< Maximum number of supported axes
     };
 
     ////////////////////////////////////////////////////////////
     /// \brief Axes supported by mml joysticks
     ///
     ////////////////////////////////////////////////////////////
-    enum axis
-    {
-        X,    ///< The X axis
-        Y,    ///< The Y axis
-        Z,    ///< The Z axis
-        R,    ///< The R axis
-        U,    ///< The U axis
-        V,    ///< The V axis
-        PovX, ///< The X axis of the point-of-view hat
-        PovY  ///< The Y axis of the point-of-view hat
+    enum axis {
+      X,     ///< The X axis
+      Y,     ///< The Y axis
+      Z,     ///< The Z axis
+      R,     ///< The R axis
+      U,     ///< The U axis
+      V,     ///< The V axis
+      PovX,  ///< The X axis of the point-of-view hat
+      PovY   ///< The Y axis of the point-of-view hat
     };
 
     ////////////////////////////////////////////////////////////
     /// \brief Structure holding a joystick's identification
     ///
     ////////////////////////////////////////////////////////////
-    struct MML_WINDOW_API identification
-    {
-        identification();
+    struct MML_WINDOW_API identification {
+      identification();
 
-        std::string  name;      ///< Name of the joystick
-        unsigned int vendor_id;  ///< Manufacturer identifier
-        unsigned int product_id; ///< Product identifier
+      std::string  name;        ///< Name of the joystick
+      unsigned int vendor_id;   ///< Manufacturer identifier
+      unsigned int product_id;  ///< Product identifier
     };
 
     ////////////////////////////////////////////////////////////
@@ -138,13 +132,11 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     static void update();
-};
+  };
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_JOYSTICK_HPP
-
+#endif  // MML_JOYSTICK_HPP
 
 ////////////////////////////////////////////////////////////
 /// \class mml::joystick

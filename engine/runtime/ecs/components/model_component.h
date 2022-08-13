@@ -107,8 +107,8 @@ public:
 
 private:
   /**
-   * @brief 
-   * 
+   * @brief
+   *
    */
   bool static_ = true;
   ///

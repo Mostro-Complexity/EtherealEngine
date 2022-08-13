@@ -38,7 +38,7 @@ template <typename asset_t> static bool process_drag_drop_target(asset_handle<as
           reinterpret_cast<const char*>(payload->Data), std::size_t(payload->DataSize));
 
         std::string key = fs::convert_to_protocol(fs::path(absolute_path)).generic_string();
-        auto entry_future = am.template find_asset_entry<asset_t>(key);
+        auto        entry_future = am.template find_asset_entry<asset_t>(key);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
 
         if (entry) { return true; }
@@ -52,12 +52,12 @@ template <typename asset_t> static bool process_drag_drop_target(asset_handle<as
 
 bool inspector_asset_handle_texture::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<asset_handle<gfx::texture>>();
+  auto  data = var.get_value<asset_handle<gfx::texture>>();
   auto& es = core::get_subsystem<editor::editing_system>();
   auto& am = core::get_subsystem<runtime::asset_manager>();
   auto& selected = es.selection_data.object;
-  bool is_selected = selected && selected.is_type<asset_handle<gfx::texture>>();
-  bool changed = false;
+  bool  is_selected = selected && selected.is_type<asset_handle<gfx::texture>>();
+  bool  changed = false;
 
   float available = math::min(64.0f, gui::GetContentRegionAvail().x / 1.5f);
 
@@ -66,9 +66,9 @@ bool inspector_asset_handle_texture::inspect(
   auto draw_image = [&]() {
     ImVec2 size = { available, available };
     if (data) {
-      auto asset_sz = data.link->asset->get_size();
-      float w = float(asset_sz.width);
-      float h = float(asset_sz.height);
+      auto       asset_sz = data.link->asset->get_size();
+      float      w = float(asset_sz.width);
+      float      h = float(asset_sz.height);
       const auto tex = data.link->asset;
       gui::ImageWithAspect(gui::get_info(tex), ImVec2(w, h), size);
     } else {
@@ -101,7 +101,7 @@ bool inspector_asset_handle_texture::inspect(
       var = data;
       changed = true;
     }
-    std::string item = !data.id().empty() ? data.id() : "none";
+    std::string   item = !data.id().empty() ? data.id() : "none";
     rttr::variant var_str = item;
     if (inspect_var(var_str)) {
       item = var_str.to_string();
@@ -135,7 +135,7 @@ bool inspector_asset_handle_texture::inspect(
         return false;
       }
       if (data) {
-        auto info = data.get()->info;
+        auto          info = data.get()->info;
         rttr::variant vari = info;
         changed |= inspect_var(vari);
       }
@@ -159,7 +159,7 @@ bool inspector_asset_handle_material::inspect(
   auto& am = core::get_subsystem<runtime::asset_manager>();
   auto& selected = es.selection_data.object;
   if (selected && !selected.is_type<asset_handle<material>>()) {
-    std::string item = !data.id().empty() ? data.id() : "none";
+    std::string   item = !data.id().empty() ? data.id() : "none";
     rttr::variant var_str = item;
     if (inspect_var(var_str)) {
       item = var_str.to_string();
@@ -205,7 +205,7 @@ bool inspector_asset_handle_mesh::inspect(
   auto& am = core::get_subsystem<runtime::asset_manager>();
   auto& selected = es.selection_data.object;
   if (selected && !selected.is_type<asset_handle<mesh>>()) {
-    std::string item = !data.id().empty() ? data.id() : "none";
+    std::string   item = !data.id().empty() ? data.id() : "none";
     rttr::variant var_str = item;
     if (inspect_var(var_str)) {
       item = var_str.to_string();
@@ -260,7 +260,7 @@ bool inspector_asset_handle_animation::inspect(
   auto& am = core::get_subsystem<runtime::asset_manager>();
   auto& selected = es.selection_data.object;
   if (selected && !selected.is_type<asset_handle<runtime::animation>>()) {
-    std::string item = !data.id().empty() ? data.id() : "none";
+    std::string   item = !data.id().empty() ? data.id() : "none";
     rttr::variant var_str = item;
     if (inspect_var(var_str)) {
       item = var_str.to_string();
@@ -298,7 +298,7 @@ bool inspector_asset_handle_sound::inspect(
   auto& am = core::get_subsystem<runtime::asset_manager>();
   auto& selected = es.selection_data.object;
   if (selected && !selected.is_type<asset_handle<audio::sound>>()) {
-    std::string item = !data.id().empty() ? data.id() : "none";
+    std::string   item = !data.id().empty() ? data.id() : "none";
     rttr::variant var_str = item;
     if (inspect_var(var_str)) {
       item = var_str.to_string();
@@ -349,7 +349,7 @@ bool inspector_asset_handle_prefab::inspect(
   auto& am = core::get_subsystem<runtime::asset_manager>();
   auto& selected = es.selection_data.object;
   if (selected && !selected.is_type<asset_handle<prefab>>()) {
-    std::string item = !data.id().empty() ? data.id() : "none";
+    std::string   item = !data.id().empty() ? data.id() : "none";
     rttr::variant var_str = item;
     if (inspect_var(var_str)) {
       item = var_str.to_string();

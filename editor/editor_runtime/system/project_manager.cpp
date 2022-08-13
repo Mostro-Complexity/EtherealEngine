@@ -77,11 +77,11 @@ namespace editor {
     const fs::syncer::on_entry_removed_t& on_removed,
     const fs::syncer::on_entry_renamed_t& on_renamed) {
     auto& ts = core::get_subsystem<core::task_system>();
-    auto on_modified =
+    auto  on_modified =
       [&ts](const auto& ref_path, const auto& synced_paths, bool is_initial_listing) {
         auto task = ts.push_on_worker_thread(
           [ref_path, synced_paths = remove_meta_tag(synced_paths), is_initial_listing]() {
-            fs::path output = synced_paths.front();
+            fs::path       output = synced_paths.front();
             fs::error_code err;
             if (is_initial_listing && fs::exists(output, err)) { return; }
             asset_compiler::compile<T>(ref_path, output);
@@ -109,7 +109,7 @@ namespace editor {
                                             synced_paths = remove_meta_tag(synced_paths),
                                             is_initial_listing]() {
         const auto& renderer_extension = gfx::get_renderer_filename_extension();
-        auto it = std::find_if(
+        auto        it = std::find_if(
           std::begin(synced_paths), std::end(synced_paths), [&renderer_extension](const auto& key) {
             return key.stem().extension() == renderer_extension;
           });
@@ -197,13 +197,13 @@ namespace editor {
     if (!fs::exists(project_config_file, err)) {
       save_config();
     } else {
-      std::ifstream output(project_config_file.string());
+      std::ifstream                  output(project_config_file.string());
       cereal::iarchive_associative_t ar(output);
 
       try_load(ar, cereal::make_nvp("options", options_));
 
       auto& items = options_.recent_project_paths;
-      auto iter = std::begin(items);
+      auto  iter = std::begin(items);
       while (iter != items.end()) {
         auto& item = *iter;
 
@@ -284,7 +284,7 @@ namespace editor {
 
     auto on_removed = [](const auto& /*ref_path*/, const auto& synced_paths) {
       for (const auto& synced_path : synced_paths) {
-        auto synced_asset = fs::replace(synced_path, ".meta", "");
+        auto           synced_asset = fs::replace(synced_path, ".meta", "");
         fs::error_code err;
         fs::remove_all(synced_asset, err);
       }
@@ -292,8 +292,8 @@ namespace editor {
 
     auto on_renamed = [](const auto& /*ref_path*/, const auto& synced_paths) {
       for (const auto& synced_path : synced_paths) {
-        auto synced_old_asset = fs::replace(synced_path.first, ".meta", "");
-        auto synced_new_asset = fs::replace(synced_path.second, ".meta", "");
+        auto           synced_old_asset = fs::replace(synced_path.first, ".meta", "");
+        auto           synced_new_asset = fs::replace(synced_path.second, ".meta", "");
         fs::error_code err;
         fs::rename(synced_old_asset, synced_new_asset, err);
       }
@@ -313,7 +313,7 @@ namespace editor {
 
   void project_manager::save_config() {
     auto& rp = options_.recent_project_paths;
-    auto project_path = fs::resolve_protocol("app:/");
+    auto  project_path = fs::resolve_protocol("app:/");
     if (
       project_path != ""
       && std::find(std::begin(rp), std::end(rp), project_path.generic_string()) == std::end(rp)) {
@@ -322,7 +322,7 @@ namespace editor {
 
     fs::error_code err;
     fs::create_directory(fs::resolve_protocol("editor:/config"), err);
-    const auto project_config_file = fs::resolve_protocol("editor:/config/project.cfg").string();
+    const auto    project_config_file = fs::resolve_protocol("editor:/config/project.cfg").string();
     std::ofstream output(project_config_file);
     cereal::oarchive_associative_t ar(output);
 

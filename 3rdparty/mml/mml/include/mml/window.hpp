@@ -18,6 +18,4 @@
 #include <mml/window/window_handle.hpp>
 #include <mml/window/window_style.hpp>
 
-
-
-#endif // MML_WINDOW_HPP
+#endif  // MML_WINDOW_HPP

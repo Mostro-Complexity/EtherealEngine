@@ -14,7 +14,7 @@ namespace gfx {
     key.ratio = backbuffer_ratio::Count;
 
     std::shared_ptr<texture> tex;
-    auto it = textures_.find(key);
+    auto                     it = textures_.find(key);
     if (it != textures_.end()) {
       tex = it->second.first;
       it->second.second = true;
@@ -29,7 +29,7 @@ namespace gfx {
   std::shared_ptr<texture> render_view::get_texture(
     const std::string& id, backbuffer_ratio _ratio, bool _hasMips, std::uint16_t _numLayers,
     texture_format _format, std::uint64_t _flags) {
-    texture_key key;
+    texture_key   key;
     std::uint16_t _width = 0;
     std::uint16_t _height = 0;
     get_size_from_ratio(_ratio, _width, _height);
@@ -40,7 +40,7 @@ namespace gfx {
     key.ratio = _ratio;
 
     std::shared_ptr<texture> tex;
-    auto it = textures_.find(key);
+    auto                     it = textures_.find(key);
     if (it != textures_.end()) {
       tex = it->second.first;
       it->second.second = true;
@@ -63,7 +63,7 @@ namespace gfx {
     key.ratio = backbuffer_ratio::Count;
 
     std::shared_ptr<texture> tex;
-    auto it = textures_.find(key);
+    auto                     it = textures_.find(key);
     if (it != textures_.end()) {
       tex = it->second.first;
       it->second.second = true;
@@ -86,7 +86,7 @@ namespace gfx {
     key.ratio = backbuffer_ratio::Count;
 
     std::shared_ptr<texture> tex;
-    auto it = textures_.find(key);
+    auto                     it = textures_.find(key);
     if (it != textures_.end()) {
       tex = it->second.first;
       it->second.second = true;
@@ -104,7 +104,7 @@ namespace gfx {
     key.id = id;
     key.textures = bind_textures;
     std::shared_ptr<frame_buffer> tex;
-    auto it = fbos_.find(key);
+    auto                          it = fbos_.find(key);
     if (it != fbos_.end()) {
       tex = it->second.first;
       it->second.second = true;

@@ -39,7 +39,7 @@ namespace asset_compiler {
     const std::string& process, const std::vector<std::string>& args_array, std::string& err) {
 
     std::string args;
-    size_t i = 0;
+    size_t      i = 0;
     for (const auto& arg : args_array) {
       if (arg.front() == '-') {
         args += arg;
@@ -50,7 +50,7 @@ namespace asset_compiler {
       if (i++ != args_array.size() - 1) args += " ";
     }
 
-    bx::Error error;
+    bx::Error         error;
     bx::ProcessReader process_reader;
 
     auto executable_dir = fs::resolve_protocol("binary:/");
@@ -84,20 +84,20 @@ namespace asset_compiler {
 
   template <> void compile<gfx::shader>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     std::string str_input = absolute_key.string();
     std::string file = absolute_key.stem().string();
-    fs::path dir = absolute_key.parent_path();
+    fs::path    dir = absolute_key.parent_path();
 
     fs::path temp = fs::temp_directory_path(err);
     temp /= uuids::random_uuid(str_input).to_string() + ".buildtemp";
 
     std::string str_output = temp.string();
-    fs::path include = fs::resolve_protocol("shader_include:/");
+    fs::path    include = fs::resolve_protocol("shader_include:/");
     std::string str_include = include.string();
-    fs::path varying = dir / (file + ".io");
+    fs::path    varying = dir / (file + ".io");
     std::string str_varying = varying.string();
 
     std::string str_platform;
@@ -164,7 +164,7 @@ namespace asset_compiler {
   template <>
   void compile<gfx::texture>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     std::string str_input = absolute_key.string();
@@ -196,7 +196,7 @@ namespace asset_compiler {
 
   template <> void compile<mesh>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     std::string str_input = absolute_key.string();
@@ -204,7 +204,7 @@ namespace asset_compiler {
     fs::path temp = fs::temp_directory_path(err);
     temp /= uuids::random_uuid(str_input).to_string() + ".buildtemp";
 
-    mesh::load_data data;
+    mesh::load_data                 data;
     std::vector<runtime::animation> animations;
     if (!importer::load_mesh_data_from_file(str_input, data, animations)) {
       APPLOG_ERROR("Failed compilation of {0}", str_input);
@@ -213,7 +213,7 @@ namespace asset_compiler {
 
     if (!data.vertex_data.empty()) {
       {
-        std::ofstream soutput(temp.string(), std::ios::out | std::ios::binary);
+        std::ofstream             soutput(temp.string(), std::ios::out | std::ios::binary);
         cereal::oarchive_binary_t ar(soutput);
         try_save(ar, cereal::make_nvp("mesh", data));
       }
@@ -230,7 +230,7 @@ namespace asset_compiler {
         temp = fs::temp_directory_path(err);
         temp.append(uuids::random_uuid(str_input).to_string() + ".buildtemp");
         {
-          std::ofstream soutput(temp.string(), std::ios::out | std::ios::binary);
+          std::ofstream                  soutput(temp.string(), std::ios::out | std::ios::binary);
           cereal::oarchive_associative_t ar(soutput);
           try_save(ar, cereal::make_nvp("animation", animation));
         }
@@ -247,12 +247,12 @@ namespace asset_compiler {
   template <>
   void compile<runtime::animation>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     std::string str_input = absolute_key.string();
 
-    bool has_loaded = false;
+    bool               has_loaded = false;
     runtime::animation anim;
     {
       std::ifstream stream(absolute_key.string());
@@ -280,7 +280,7 @@ namespace asset_compiler {
   template <>
   void compile<audio::sound>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
 
@@ -298,7 +298,7 @@ namespace asset_compiler {
 
     auto file_data = fs::read_stream(f);
 
-    auto ext = absolute_key.extension();
+    auto              ext = absolute_key.extension();
     audio::sound_data data;
 
     if (ext == ".ogg") {
@@ -319,7 +319,7 @@ namespace asset_compiler {
     }
 
     {
-      std::ofstream soutput(temp.string(), std::ios::out | std::ios::binary);
+      std::ofstream             soutput(temp.string(), std::ios::out | std::ios::binary);
       cereal::oarchive_binary_t ar(soutput);
       try_save(ar, cereal::make_nvp("sound", data));
     }
@@ -331,7 +331,7 @@ namespace asset_compiler {
 
   template <> void compile<material>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     std::string str_input = absolute_key.string();
@@ -360,7 +360,7 @@ namespace asset_compiler {
 
   template <> void compile<prefab>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     fs::copy_file(absolute_key, output, fs::copy_options::overwrite_existing, err);
@@ -369,7 +369,7 @@ namespace asset_compiler {
 
   template <> void compile<scene>(const fs::path& absolute_meta_key, const fs::path& output) {
     fs::error_code err;
-    fs::path absolute_key = fs::convert_to_protocol(absolute_meta_key);
+    fs::path       absolute_key = fs::convert_to_protocol(absolute_meta_key);
     absolute_key = fs::resolve_protocol(fs::replace(absolute_key, ":/meta", ":/data"));
     absolute_key.replace_extension();
     fs::copy_file(absolute_key, output, fs::copy_options::overwrite_existing, err);

@@ -5,7 +5,7 @@ namespace gui {
 };
 
 bool inspector_vec2::inspect(rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<math::vec2>();
+  auto        data = var.get_value<math::vec2>();
   const char* names[] = { "X", "Y" };
   if (gui::DragFloatNEx(names, &data[0], 2, 0.05f)) {
     var = data;
@@ -15,7 +15,7 @@ bool inspector_vec2::inspect(rttr::variant& var, bool read_only, const meta_gett
 }
 
 bool inspector_vec3::inspect(rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<math::vec3>();
+  auto        data = var.get_value<math::vec3>();
   const char* names[] = { "X", "Y", "Z" };
   if (gui::DragFloatNEx(names, &data[0], 3, 0.05f)) {
     var = data;
@@ -25,7 +25,7 @@ bool inspector_vec3::inspect(rttr::variant& var, bool read_only, const meta_gett
 }
 
 bool inspector_vec4::inspect(rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<math::vec4>();
+  auto        data = var.get_value<math::vec4>();
   const char* names[] = { "X", "Y", "Z", "W" };
   if (gui::DragFloatNEx(names, &data[0], 4, 0.05f)) {
     var = data;
@@ -46,7 +46,7 @@ bool inspector_color::inspect(rttr::variant& var, bool read_only, const meta_get
 
 bool inspector_quaternion::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<math::quat>();
+  auto        data = var.get_value<math::quat>();
   const char* names[] = { "X", "Y", "Z" };
 
   auto euler_angles = math::eulerAngles(data);
@@ -68,19 +68,19 @@ bool inspector_quaternion::inspect(
 
 bool inspector_transform::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<math::transform>();
+  auto        data = var.get_value<math::transform>();
   const char* names[] = { "X", "Y", "Z" };
-  math::vec3 position = data.get_position();
-  math::vec3 scale = data.get_scale();
-  math::quat rotation = data.get_rotation();
-  math::vec3 local_euler_angles = math::degrees(math::eulerAngles(rotation));
+  math::vec3  position = data.get_position();
+  math::vec3  scale = data.get_scale();
+  math::quat  rotation = data.get_rotation();
+  math::vec3  local_euler_angles = math::degrees(math::eulerAngles(rotation));
 
   const bool is_global = true;
 
   static math::quat old_quat(1.0f, 0.0f, 0.0f, 0.0f);
   static math::vec3 euler_angles(0.0f, 0.0f, 0.0f);
-  bool changed = false;
-  bool equal = math::all(math::equal(old_quat, rotation, math::epsilon<float>()));
+  bool              changed = false;
+  bool              equal = math::all(math::equal(old_quat, rotation, math::epsilon<float>()));
   if (!equal && (!gui::IsMouseDragging(0) || imguizmo::is_using())) {
     euler_angles = local_euler_angles;
     old_quat = rotation;

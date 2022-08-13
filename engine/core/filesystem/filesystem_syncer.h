@@ -23,10 +23,10 @@ namespace fs {
 
     struct mapping {
       std::vector<std::string> extensions;
-      on_entry_created_t on_entry_created;
-      on_entry_modified_t on_entry_modified;
-      on_entry_removed_t on_entry_removed;
-      on_entry_renamed_t on_entry_renamed;
+      on_entry_created_t       on_entry_created;
+      on_entry_modified_t      on_entry_modified;
+      on_entry_removed_t       on_entry_removed;
+      on_entry_renamed_t       on_entry_renamed;
     };
     using mapping_t = std::unordered_map<std::string, mapping>;
 
@@ -70,11 +70,11 @@ namespace fs {
     void unsync();
 
   private:
-    mapping get_mapping(const std::string& ext);
-    on_entry_created_t get_on_created_callback(const std::string& ext);
+    mapping             get_mapping(const std::string& ext);
+    on_entry_created_t  get_on_created_callback(const std::string& ext);
     on_entry_modified_t get_on_modified_callback(const std::string& ext);
-    on_entry_removed_t get_on_removed_callback(const std::string& ext);
-    on_entry_renamed_t get_on_renamed_callback(const std::string& ext);
+    on_entry_removed_t  get_on_removed_callback(const std::string& ext);
+    on_entry_renamed_t  get_on_renamed_callback(const std::string& ext);
     //-----------------------------------------------------------------------------
     //  Name : get_synced_directory ()
     /// <summary>

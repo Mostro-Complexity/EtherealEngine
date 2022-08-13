@@ -3,25 +3,22 @@
 #include <string>
 #include <vector>
 
-namespace audio
-{
-namespace priv
-{
-class device_impl;
-}
-//-----------------------------------------------------------------------------
-// Main Class Declarations
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//  Name : device (Class)
-/// <summary>
-/// Wrapper over the audio device and audio context. Can enumerate and query
-/// device properties.
-/// </summary>
-//-----------------------------------------------------------------------------
-class device
-{
-public:
+namespace audio {
+  namespace priv {
+    class device_impl;
+  }
+  //-----------------------------------------------------------------------------
+  // Main Class Declarations
+  //-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //  Name : device (Class)
+  /// <summary>
+  /// Wrapper over the audio device and audio context. Can enumerate and query
+  /// device properties.
+  /// </summary>
+  //-----------------------------------------------------------------------------
+  class device {
+  public:
     device(int devnum = 0);
     ~device();
 
@@ -97,8 +94,8 @@ public:
     //-----------------------------------------------------------------------------
     static std::vector<std::string> enumerate_capture_devices();
 
-private:
+  private:
     /// pimpl idiom
     std::unique_ptr<priv::device_impl> impl_;
-};
-}
+  };
+}  // namespace audio

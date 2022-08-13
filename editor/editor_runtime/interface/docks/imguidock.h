@@ -55,10 +55,10 @@ namespace imguidock {
     virtual ~dock() = default;
 
     // Container *parent = nullptr;
-    node* container = nullptr;
-    dockspace* redock_from = nullptr;
+    node*         container = nullptr;
+    dockspace*    redock_from = nullptr;
     std::uint32_t redock_from_window = INVALID_WINDOW;
-    dock* redock_to = nullptr;
+    dock*         redock_to = nullptr;
 
     slot redock_slot = slot::none;
     bool close_button = true;
@@ -68,9 +68,9 @@ namespace imguidock {
     ImVec2 last_size;
     ImVec2 min_size = { 100.0f, 100.0f };
 
-    std::string title;
+    std::string                        title;
     std::function<void(const ImVec2&)> draw_function;
-    std::function<bool(void)> on_close_func;
+    std::function<bool(void)>          on_close_func;
   };
 
   class dockspace {
@@ -86,7 +86,7 @@ namespace imguidock {
     void clear();
     void activate_dock(const std::string& name);
 
-    node root;
+    node               root;
     std::vector<node*> nodes;
 
   protected:
@@ -95,12 +95,12 @@ namespace imguidock {
     void render_container(uint32_t& idgen, node* container, ImVec2 size, ImVec2 cursor_pos);
     void render_tab_bar(
       node* container, const ImVec2& size, const ImVec2& cursorPos, float tabbar_height);
-    bool get_min_size(node* container, ImVec2& min);
+    bool          get_min_size(node* container, ImVec2& min);
     std::uint32_t is_any_window_dragged();
 
     enum dock_action { eUndock, eDrag, eClose, eNull };
 
-    dock* current_dock_to_ = nullptr;
+    dock*       current_dock_to_ = nullptr;
     dock_action current_dock_action_ = eNull;
 
   public:

@@ -37,14 +37,14 @@ const gfx::embedded_shader s_embedded_shaders[] = { BGFX_EMBEDDED_SHADER(vs_ocor
                                                     BGFX_EMBEDDED_SHADER_END() };
 // -------------------------------------------------------------------
 std::unique_ptr<gpu_program> s_program;
-asset_handle<gfx::texture> s_font_texture;
-std::uint32_t s_draw_calls = 0;
+asset_handle<gfx::texture>   s_font_texture;
+std::uint32_t                s_draw_calls = 0;
 
 void render_func(ImDrawData* _draw_data) {
   if (_draw_data == nullptr || s_program == nullptr) { return; }
   auto& io = gui::GetIO();
-  int fb_width = (int) (io.DisplaySize.x * io.DisplayFramebufferScale.x);
-  int fb_height = (int) (io.DisplaySize.y * io.DisplayFramebufferScale.y);
+  int   fb_width = (int) (io.DisplaySize.x * io.DisplayFramebufferScale.x);
+  int   fb_height = (int) (io.DisplaySize.y * io.DisplayFramebufferScale.y);
   if (fb_width == 0 || fb_height == 0) return;
 
   //_draw_data->ScaleClipRects(io.DisplayFramebufferScale);
@@ -54,11 +54,11 @@ void render_func(ImDrawData* _draw_data) {
   // Render command lists
   for (int32_t ii = 0, num = _draw_data->CmdListsCount; ii < num; ++ii) {
     gfx::transient_vertex_buffer tvb;
-    gfx::transient_index_buffer tib;
+    gfx::transient_index_buffer  tib;
 
     const ImDrawList* draw_list = _draw_data->CmdLists[ii];
-    std::uint32_t num_vertices = static_cast<std::uint32_t>(draw_list->VtxBuffer.size());
-    std::uint32_t num_indices = static_cast<std::uint32_t>(draw_list->IdxBuffer.size());
+    std::uint32_t     num_vertices = static_cast<std::uint32_t>(draw_list->VtxBuffer.size());
+    std::uint32_t     num_indices = static_cast<std::uint32_t>(draw_list->IdxBuffer.size());
 
     const auto& layout = gfx::pos_texcoord0_color0_vertex::get_layout();
 
@@ -123,7 +123,7 @@ void imgui_handle_event(const mml::platform_event& event) {
   }
 
   if (event.type == mml::platform_event::key_pressed) {
-    io.AddKeyEvent(event.key.code, true); // TODO: virtual key code 到imgui的映射
+    io.AddKeyEvent(event.key.code, true);  // TODO: virtual key code 到imgui的映射
     io.AddKeyEvent(ImGuiKey_LeftAlt, event.key.alt);
     io.AddKeyEvent(ImGuiKey_LeftCtrl, event.key.control);
     io.AddKeyEvent(ImGuiKey_LeftShift, event.key.shift);
@@ -185,7 +185,7 @@ const mml::cursor* map_cursor(ImGuiMouseCursor cursor) {
     { ImGuiMouseCursor_Cross, mml::cursor::cross },
 
   };
-  auto id = cursor_map[cursor];
+  auto                                                             id = cursor_map[cursor];
   static std::map<mml::cursor::type, std::unique_ptr<mml::cursor>> cursors;
   if (cursors.find(id) == cursors.end()) {
     auto cursor = std::make_unique<mml::cursor>();
@@ -216,12 +216,12 @@ void imgui_set_context(ImGuiContext* context) {
 
 void imgui_frame_update(render_window& window, delta_t dt) {
   auto& io = gui::GetIO();
-  auto view_size = window.get_surface()->get_size();
-  auto display_w = view_size.width;
-  auto display_h = view_size.height;
-  auto window_size = window.get_size();
-  auto w = window_size[0];
-  auto h = window_size[1];
+  auto  view_size = window.get_surface()->get_size();
+  auto  display_w = view_size.width;
+  auto  display_h = view_size.height;
+  auto  window_size = window.get_size();
+  auto  w = window_size[0];
+  auto  h = window_size[1];
 
   io.DisplayFramebufferScale =
     ImVec2(w > 0 ? ((float) display_w / w) : 0, h > 0 ? ((float) display_h / h) : 0);
@@ -239,7 +239,7 @@ void imgui_frame_update(render_window& window, delta_t dt) {
 
   if (window.has_focus() && relative_rect.contains({ mouse_pos[0], mouse_pos[1] })) {
     static auto last_cursor_type = gui::GetMouseCursor();
-    auto cursor = map_cursor(gui::GetMouseCursor());
+    auto        cursor = map_cursor(gui::GetMouseCursor());
     if ((cursor != nullptr) && last_cursor_type != gui::GetMouseCursor()) {
       window.set_mouse_cursor(*cursor);
     }
@@ -293,37 +293,37 @@ void imgui_init() {
     fs_ocornut_imgui);
 
   ImGuiIO& io = gui::GetIO();
-  //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-  //io.IniFilename = nullptr;
+  // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  // io.IniFilename = nullptr;
   //// init keyboard mapping
-  //io.KeyMap[ImGuiKey_Tab] = mml::keyboard::Tab;
-  //io.KeyMap[ImGuiKey_LeftArrow] = mml::keyboard::Left;
-  //io.KeyMap[ImGuiKey_RightArrow] = mml::keyboard::Right;
-  //io.KeyMap[ImGuiKey_UpArrow] = mml::keyboard::Up;
-  //io.KeyMap[ImGuiKey_DownArrow] = mml::keyboard::Down;
-  //io.KeyMap[ImGuiKey_PageUp] = mml::keyboard::PageUp;
-  //io.KeyMap[ImGuiKey_PageDown] = mml::keyboard::PageDown;
-  //io.KeyMap[ImGuiKey_Home] = mml::keyboard::Home;
-  //io.KeyMap[ImGuiKey_End] = mml::keyboard::End;
-  //io.KeyMap[ImGuiKey_Insert] = mml::keyboard::Insert;
-  //io.KeyMap[ImGuiKey_Delete] = mml::keyboard::Delete;
-  //io.KeyMap[ImGuiKey_Backspace] = mml::keyboard::Backspace;
-  //io.KeyMap[ImGuiKey_Space] = mml::keyboard::Space;
-  //io.KeyMap[ImGuiKey_Enter] = mml::keyboard::Enter;
-  //io.KeyMap[ImGuiKey_Escape] = mml::keyboard::Escape;
-  //io.KeyMap[ImGuiKey_A] = mml::keyboard::A;
-  //io.KeyMap[ImGuiKey_C] = mml::keyboard::C;
-  //io.KeyMap[ImGuiKey_V] = mml::keyboard::V;
-  //io.KeyMap[ImGuiKey_X] = mml::keyboard::X;
-  //io.KeyMap[ImGuiKey_Y] = mml::keyboard::Y;
-  //io.KeyMap[ImGuiKey_Z] = mml::keyboard::Z;
+  // io.KeyMap[ImGuiKey_Tab] = mml::keyboard::Tab;
+  // io.KeyMap[ImGuiKey_LeftArrow] = mml::keyboard::Left;
+  // io.KeyMap[ImGuiKey_RightArrow] = mml::keyboard::Right;
+  // io.KeyMap[ImGuiKey_UpArrow] = mml::keyboard::Up;
+  // io.KeyMap[ImGuiKey_DownArrow] = mml::keyboard::Down;
+  // io.KeyMap[ImGuiKey_PageUp] = mml::keyboard::PageUp;
+  // io.KeyMap[ImGuiKey_PageDown] = mml::keyboard::PageDown;
+  // io.KeyMap[ImGuiKey_Home] = mml::keyboard::Home;
+  // io.KeyMap[ImGuiKey_End] = mml::keyboard::End;
+  // io.KeyMap[ImGuiKey_Insert] = mml::keyboard::Insert;
+  // io.KeyMap[ImGuiKey_Delete] = mml::keyboard::Delete;
+  // io.KeyMap[ImGuiKey_Backspace] = mml::keyboard::Backspace;
+  // io.KeyMap[ImGuiKey_Space] = mml::keyboard::Space;
+  // io.KeyMap[ImGuiKey_Enter] = mml::keyboard::Enter;
+  // io.KeyMap[ImGuiKey_Escape] = mml::keyboard::Escape;
+  // io.KeyMap[ImGuiKey_A] = mml::keyboard::A;
+  // io.KeyMap[ImGuiKey_C] = mml::keyboard::C;
+  // io.KeyMap[ImGuiKey_V] = mml::keyboard::V;
+  // io.KeyMap[ImGuiKey_X] = mml::keyboard::X;
+  // io.KeyMap[ImGuiKey_Y] = mml::keyboard::Y;
+  // io.KeyMap[ImGuiKey_Z] = mml::keyboard::Z;
 
   std::uint8_t* data = nullptr;
-  int width = 0;
-  int height = 0;
+  int           width = 0;
+  int           height = 0;
 
   static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-  ImFontConfig config;
+  ImFontConfig         config;
   config.FontDataOwnedByAtlas = false;
   config.MergeMode = false;
 
@@ -465,7 +465,7 @@ void gui_style::set_style_colors(const hsv_setup& _setup) {
   ImVec4 col_main = ImColor::HSV(setup.col_main_hue, setup.col_main_sat, setup.col_main_val);
   ImVec4 col_back = ImColor::HSV(setup.col_back_hue, setup.col_back_sat, setup.col_back_val);
   ImVec4 col_area = ImColor::HSV(setup.col_area_hue, setup.col_area_sat, setup.col_area_val);
-  float rounding = setup.frame_rounding;
+  float  rounding = setup.frame_rounding;
 
   ImGuiStyle& style = gui::GetStyle();
   style.FrameRounding = rounding;
@@ -523,7 +523,7 @@ void gui_style::load_style() {
   if (!fs::exists(absoluteKey, err)) {
     save_style();
   } else {
-    std::ifstream output(absoluteKey.string());
+    std::ifstream                  output(absoluteKey.string());
     cereal::iarchive_associative_t ar(output);
 
     try_load(ar, cereal::make_nvp("style", setup));
@@ -531,8 +531,8 @@ void gui_style::load_style() {
 }
 
 void gui_style::save_style() {
-  const fs::path absoluteKey = fs::resolve_protocol("editor:/config/style.cfg");
-  std::ofstream output(absoluteKey.string());
+  const fs::path                 absoluteKey = fs::resolve_protocol("editor:/config/style.cfg");
+  std::ofstream                  output(absoluteKey.string());
   cereal::oarchive_associative_t ar(output);
 
   try_save(ar, cereal::make_nvp("style", setup));

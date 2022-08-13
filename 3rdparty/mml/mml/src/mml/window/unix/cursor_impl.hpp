@@ -6,73 +6,70 @@
 ////////////////////////////////////////////////////////////
 #include <mml/window/cursor.hpp>
 #include <mml/system/non_copyable.hpp>
-#include <mml/window/window_style.hpp> // Prevent conflict with macro None from Xlib
+#include <mml/window/window_style.hpp>  // Prevent conflict with macro None from Xlib
 #include <X11/Xlib.h>
 
-namespace mml
-{
+namespace mml {
 
-namespace priv
-{
-////////////////////////////////////////////////////////////
-/// \brief Unix implementation of cursor
-///
-////////////////////////////////////////////////////////////
-class cursor_impl : non_copyable
-{
-public:
-
+  namespace priv {
     ////////////////////////////////////////////////////////////
-    /// \brief Default constructor
-    ///
-    /// Refer to mml::cursor::cursor().
+    /// \brief Unix implementation of cursor
     ///
     ////////////////////////////////////////////////////////////
-    cursor_impl();
+    class cursor_impl : non_copyable {
+    public:
+      ////////////////////////////////////////////////////////////
+      /// \brief Default constructor
+      ///
+      /// Refer to mml::cursor::cursor().
+      ///
+      ////////////////////////////////////////////////////////////
+      cursor_impl();
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Destructor
-    ///
-    /// Refer to mml::cursor::~cursor().
-    ///
-    ////////////////////////////////////////////////////////////
-    ~cursor_impl();
+      ////////////////////////////////////////////////////////////
+      /// \brief Destructor
+      ///
+      /// Refer to mml::cursor::~cursor().
+      ///
+      ////////////////////////////////////////////////////////////
+      ~cursor_impl();
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Create a cursor with the provided image
-    ///
-    /// Refer to mml::cursor::load_from_pixels().
-    ///
-    ////////////////////////////////////////////////////////////
-    bool load_from_pixels(const std::uint8_t* pixels, std::array<std::uint32_t, 2> size, std::array<std::uint32_t, 2> hotspot);
+      ////////////////////////////////////////////////////////////
+      /// \brief Create a cursor with the provided image
+      ///
+      /// Refer to mml::cursor::load_from_pixels().
+      ///
+      ////////////////////////////////////////////////////////////
+      bool load_from_pixels(
+        const std::uint8_t* pixels, std::array<std::uint32_t, 2> size,
+        std::array<std::uint32_t, 2> hotspot);
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Create a native system cursor
-    ///
-    /// Refer to mml::cursor::load_from_system().
-    ///
-    ////////////////////////////////////////////////////////////
-    bool load_from_system(cursor::type type);
+      ////////////////////////////////////////////////////////////
+      /// \brief Create a native system cursor
+      ///
+      /// Refer to mml::cursor::load_from_system().
+      ///
+      ////////////////////////////////////////////////////////////
+      bool load_from_system(cursor::type type);
 
-private:
+    private:
+      friend class window_impl_x11;
 
-    friend class window_impl_x11;
+      ////////////////////////////////////////////////////////////
+      /// \brief Release the cursor, if we have loaded one.
+      ///
+      ////////////////////////////////////////////////////////////
+      void release();
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Release the cursor, if we have loaded one.
-    ///
-    ////////////////////////////////////////////////////////////
-    void release();
+      ////////////////////////////////////////////////////////////
+      // Member data
+      ////////////////////////////////////////////////////////////
+      ::Display* _display;
+      ::Cursor   _cursor;
+    };
 
-    ////////////////////////////////////////////////////////////
-    // Member data
-    ////////////////////////////////////////////////////////////
-    ::Display* _display;
-    ::Cursor   _cursor;
-};
+  }  // namespace priv
 
-} // namespace priv
+}  // namespace mml
 
-} // namespace mml
-
-#endif // MML_CUSROSIMPLUNIX_HPP
+#endif  // MML_CUSROSIMPLUNIX_HPP

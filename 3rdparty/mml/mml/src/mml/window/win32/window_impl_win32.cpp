@@ -33,9 +33,9 @@
 #endif
 
 namespace {
-  unsigned int windowCount = 0;  // Windows owned by mml
-  unsigned int handleCount = 0;  // All window handles
-  const wchar_t* className = L"MML_Window";
+  unsigned int                  windowCount = 0;  // Windows owned by mml
+  unsigned int                  handleCount = 0;  // All window handles
+  const wchar_t*                className = L"MML_Window";
   mml::priv::window_impl_win32* fullscreenWindow = NULL;
 
   void set_process_dpi_aware() {
@@ -853,7 +853,7 @@ namespace mml {
       // Check the scancode to distinguish between left and right shift
       case VK_SHIFT: {
         static UINT lShift = MapVirtualKeyW(VK_LSHIFT, MAPVK_VK_TO_VSC);
-        UINT scancode = static_cast<UINT>((flags & (0xFF << 16)) >> 16);
+        UINT        scancode = static_cast<UINT>((flags & (0xFF << 16)) >> 16);
         return scancode == lShift ? keyboard::LShift : keyboard::RShift;
       }
 

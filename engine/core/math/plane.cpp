@@ -17,7 +17,7 @@ namespace math {
     return result;
   }
   plane plane::from_point_normal(const vec3& point, const vec3& normal) {
-    vec3 normalizedNormal = glm::normalize(normal);
+    vec3  normalizedNormal = glm::normalize(normal);
     plane result(
       normalizedNormal.x,
       normalizedNormal.y,

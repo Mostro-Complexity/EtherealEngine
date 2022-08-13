@@ -29,7 +29,7 @@ public:
    * @param t const math::transform&
    */
   void update(const math::transform& t);
-  
+
   /**
    * @brief Set the loop to enable/disable loop play mode
    *
@@ -137,7 +137,7 @@ public:
 
   bool is_looping() const;
 
-  void set_sound(asset_handle<audio::sound> sound);
+  void                       set_sound(asset_handle<audio::sound> sound);
   asset_handle<audio::sound> get_sound() const;
 
   bool has_binded_sound() const;
@@ -146,12 +146,12 @@ private:
   void apply_all();
   bool is_sound_valid() const;
 
-  bool auto_play_ = true;
-  bool loop_ = true;
-  float volume_ = 1.0f;
-  float pitch_ = 1.0f;
-  float volume_rolloff_ = 1.0f;
-  frange_t range_ = { 1.0f, 20.0f };
-  audio::source source_;
+  bool                       auto_play_ = true;
+  bool                       loop_ = true;
+  float                      volume_ = 1.0f;
+  float                      pitch_ = 1.0f;
+  float                      volume_rolloff_ = 1.0f;
+  frange_t                   range_ = { 1.0f, 20.0f };
+  audio::source              source_;
   asset_handle<audio::sound> sound_;
 };

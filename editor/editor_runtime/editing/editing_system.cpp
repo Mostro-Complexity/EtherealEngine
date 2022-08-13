@@ -66,8 +66,8 @@ namespace editor {
 
     if (!object.has_component<camera_component>()) {
       const float radius = 10;
-      auto at_ = transform_comp->get_position() + radius * transform_comp->get_z_axis();
-      auto camera_comp = object.assign<camera_component>().lock();
+      auto        at_ = transform_comp->get_position() + radius * transform_comp->get_z_axis();
+      auto        camera_comp = object.assign<camera_component>().lock();
       camera_comp->set_looking_at_position(at_);
     }
 

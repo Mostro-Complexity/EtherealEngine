@@ -74,15 +74,15 @@ namespace runtime {
   void app::stop() {}
 
   void poll_events() {
-    auto& renderer = core::get_subsystem<runtime::renderer>();
+    auto&       renderer = core::get_subsystem<runtime::renderer>();
     const auto& windows = renderer.get_windows();
 
-    std::uint32_t focused_id = 0;
+    std::uint32_t                                             focused_id = 0;
     std::map<std::uint32_t, std::vector<mml::platform_event>> collected_events;
     for (const auto& window : windows) {
-      const auto id = window->get_id();
+      const auto                       id = window->get_id();
       std::vector<mml::platform_event> events;
-      mml::platform_event e;
+      mml::platform_event              e;
       while (window->poll_event(e)) { events.emplace_back(e); }
 
       if (window->has_focus()) { focused_id = id; }
@@ -91,8 +91,8 @@ namespace runtime {
     }
 
     for (const auto& event_pair : collected_events) {
-      const auto id = event_pair.first;
-      const auto& events = event_pair.second;
+      const auto                     id = event_pair.first;
+      const auto&                    events = event_pair.second;
       std::pair<std::uint32_t, bool> info{ id, (id == focused_id) };
       on_platform_events(info, events);
     }
@@ -101,9 +101,9 @@ namespace runtime {
   void app::run_one_frame() {
     using namespace std::literals;
 
-    auto& sim = core::get_subsystem<core::simulation>();
-    auto& tasks = core::get_subsystem<core::task_system>();
-    auto& renderer = core::get_subsystem<runtime::renderer>();
+    auto&      sim = core::get_subsystem<core::simulation>();
+    auto&      tasks = core::get_subsystem<core::task_system>();
+    auto&      renderer = core::get_subsystem<runtime::renderer>();
     const bool is_active = renderer.get_focused_window() != nullptr;
     sim.run_one_frame(is_active);
     tasks.run_on_owner_thread(5ms);

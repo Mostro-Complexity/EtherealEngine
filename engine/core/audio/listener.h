@@ -2,26 +2,23 @@
 #include "types.h"
 #include <memory>
 
-namespace audio
-{
-namespace priv
-{
-class listener_impl;
-}
+namespace audio {
+  namespace priv {
+    class listener_impl;
+  }
 
-//-----------------------------------------------------------------------------
-// Main Class Declarations
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//  Name : listener (Class)
-/// <summary>
-/// Receiver of a sound. It can control 3d spatial and listener properties like
-/// 3d position, 3d orientation, volume etc.
-/// </summary>
-//-----------------------------------------------------------------------------
-class listener
-{
-public:
+  //-----------------------------------------------------------------------------
+  // Main Class Declarations
+  //-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //  Name : listener (Class)
+  /// <summary>
+  /// Receiver of a sound. It can control 3d spatial and listener properties like
+  /// 3d position, 3d orientation, volume etc.
+  /// </summary>
+  //-----------------------------------------------------------------------------
+  class listener {
+  public:
     listener();
     ~listener();
 
@@ -61,8 +58,8 @@ public:
     //-----------------------------------------------------------------------------
     void set_orientation(const float3& direction, const float3& up);
 
-private:
+  private:
     /// pimpl idiom
     std::unique_ptr<priv::listener_impl> impl_;
-};
-}
+  };
+}  // namespace audio

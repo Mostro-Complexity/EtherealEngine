@@ -3,25 +3,17 @@
 
 #include "math.hpp"
 
-namespace generator
-{
+namespace generator {
 
-class edge_t
-{
-public:
-	gml::ivec2 vertices;
+  class edge_t {
+  public:
+    gml::ivec2 vertices;
 
-	edge_t() noexcept
-		: vertices{}
-	{
-	}
+    edge_t() noexcept : vertices{} {}
 
-	explicit edge_t(const gml::ivec2& vertices) noexcept
-		: vertices{vertices}
-	{
-	}
-};
+    explicit edge_t(const gml::ivec2& vertices) noexcept : vertices{ vertices } {}
+  };
 
-}
+}  // namespace generator
 
 #endif

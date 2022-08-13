@@ -22,9 +22,9 @@ bool inspector_float::inspect(rttr::variant& var, bool read_only, const meta_get
     gui::AlignTextToFramePadding();
     gui::TextUnformatted(std::to_string(data).c_str());
   } else {
-    float min = 0.0f;
-    float max = 0.0f;
-    float step = 0.05f;
+    float       min = 0.0f;
+    float       max = 0.0f;
+    float       step = 0.05f;
     std::string format = "%.3f";
 
     auto min_var = get_metadata("min");
@@ -64,9 +64,9 @@ bool inspector_double::inspect(
     gui::AlignTextToFramePadding();
     gui::TextUnformatted(std::to_string(data).c_str());
   } else {
-    float min = 0.0f;
-    float max = 0.0f;
-    float step = 0.05f;
+    float       min = 0.0f;
+    float       max = 0.0f;
+    float       step = 0.05f;
     std::string format = "%.3f";
 
     auto min_var = get_metadata("min");
@@ -388,11 +388,11 @@ bool inspector_string::inspect(
 
 bool inspector_duration_sec_float::inspect(
   rttr::variant& var, bool read_only, const inspector::meta_getter& get_metadata) {
-  auto data = var.get_value<std::chrono::duration<float>>();
+  auto            data = var.get_value<std::chrono::duration<float>>();
   inspector_float inspector;
-  auto count = data.count();
-  rttr::variant v = count;
-  bool changed = inspector.inspect(v, read_only, get_metadata);
+  auto            count = data.count();
+  rttr::variant   v = count;
+  bool            changed = inspector.inspect(v, read_only, get_metadata);
   if (changed) {
     count = v.get_value<float>();
     var = std::chrono::duration<float>(count);
@@ -403,11 +403,11 @@ bool inspector_duration_sec_float::inspect(
 
 bool inspector_duration_sec_double::inspect(
   rttr::variant& var, bool read_only, const inspector::meta_getter& get_metadata) {
-  auto data = var.get_value<std::chrono::duration<double>>();
+  auto             data = var.get_value<std::chrono::duration<double>>();
   inspector_double inspector;
-  auto count = data.count();
-  rttr::variant v = count;
-  bool changed = inspector.inspect(v, read_only, get_metadata);
+  auto             count = data.count();
+  rttr::variant    v = count;
+  bool             changed = inspector.inspect(v, read_only, get_metadata);
   if (changed) {
     count = v.get_value<double>();
     var = std::chrono::duration<double>(count);

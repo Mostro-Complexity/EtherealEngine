@@ -154,10 +154,10 @@ namespace math {
 
       // Compute the point at which the three planes intersect
       float cosTheta, secTheta;
-      vec3 n1_n2, n2_n0, n0_n1;
-      vec3 n0(p0.data);
-      vec3 n1(p1.data);
-      vec3 n2(p2.data);
+      vec3  n1_n2, n2_n0, n0_n1;
+      vec3  n0(p0.data);
+      vec3  n1(p1.data);
+      vec3  n2(p2.data);
 
       n1_n2 = glm::cross(n1, n2);
       n2_n0 = glm::cross(n2, n0);
@@ -183,7 +183,7 @@ namespace math {
   //-----------------------------------------------------------------------------
   volume_query frustum::classify_aabb(const bbox& AABB) const {
     volume_query Result = volume_query::inside;
-    vec3 NearPoint, FarPoint;
+    vec3         NearPoint, FarPoint;
     for (const auto& plane : planes) {
       // Calculate near / far extreme points
       if (plane.data.x > 0.0f) {
@@ -245,7 +245,7 @@ namespace math {
   volume_query
   frustum::classify_aabb(const bbox& AABB, unsigned int& FrustumBits, int& LastOutside) const {
     // If the 'last outside plane' index was specified, test it first!
-    vec3 NearPoint, FarPoint;
+    vec3         NearPoint, FarPoint;
     volume_query Result = volume_query::inside;
     if (LastOutside >= 0 && (((FrustumBits >> LastOutside) & 0x1) == 0x0)) {
       const plane& plane = planes[size_t(LastOutside)];
@@ -442,7 +442,7 @@ namespace math {
   /// </summary>
   //-----------------------------------------------------------------------------
   bool frustum::test_extruded_aabb(const bbox_extruded& Box) const {
-    bool bIntersect1, bIntersect2;
+    bool         bIntersect1, bIntersect2;
     unsigned int i;
 
     //  Build an imaginary sphere around the origin, representing the volume of
@@ -602,9 +602,9 @@ namespace math {
   bool frustum::test_swept_sphere(
     const vec3& vecCenter, float fRadius, const vec3& vecSweepDirection) const {
     unsigned int i, nCount = 0;
-    float t0, t1, fDisplacedRadius;
-    float pDisplacements[12];
-    vec3 vDisplacedCenter;
+    float        t0, t1, fDisplacedRadius;
+    float        pDisplacements[12];
+    vec3         vDisplacedCenter;
 
     // Determine all 12 intersection points of the swept sphere with the view
     // frustum.
@@ -648,10 +648,10 @@ namespace math {
   /// </summary>
   //-----------------------------------------------------------------------------
   bool frustum::test_line(const vec3& v1, const vec3& v2) const {
-    int nCode1 = 0, nCode2 = 0;
-    float fDist1, fDist2, t;
-    int nSide1, nSide2;
-    vec3 vDir, vIntersect;
+    int          nCode1 = 0, nCode2 = 0;
+    float        fDist1, fDist2, t;
+    int          nSide1, nSide2;
+    vec3         vDir, vIntersect;
     unsigned int i;
 
     // Test each plane
@@ -821,7 +821,7 @@ namespace math {
   //-----------------------------------------------------------------------------
   frustum& frustum::mul(const transform& t) {
     const transform& mtx = t;
-    transform mtxIT = transpose(inverse(mtx));
+    transform        mtxIT = transpose(inverse(mtx));
 
     // transform planes
     for (auto& plane : planes) { plane = plane::normalize(plane::mul(plane, mtxIT)); }

@@ -1,29 +1,25 @@
 #ifndef MML_CURSOR_HPP
-#define MML_CURSOR_HPP
+  #define MML_CURSOR_HPP
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <mml/window/export.hpp>
-#include <mml/system/non_copyable.hpp>
-#include <array>
-#include <cstdint>
+  ////////////////////////////////////////////////////////////
+  // Headers
+  ////////////////////////////////////////////////////////////
+  #include <mml/window/export.hpp>
+  #include <mml/system/non_copyable.hpp>
+  #include <array>
+  #include <cstdint>
 
-namespace mml
-{
-namespace priv
-{
+namespace mml {
+  namespace priv {
     class cursor_impl;
-}
+  }
 
-////////////////////////////////////////////////////////////
-/// \brief cursor defines the appearance of a system cursor
-///
-////////////////////////////////////////////////////////////
-class MML_WINDOW_API cursor : non_copyable
-{
-public:
-
+  ////////////////////////////////////////////////////////////
+  /// \brief cursor defines the appearance of a system cursor
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_WINDOW_API cursor : non_copyable {
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief Enumeration of the native system cursor types
     ///
@@ -47,25 +43,23 @@ public:
     ///  cursor::not_allowed				|  yes  |    yes   |   yes
     ///
     ////////////////////////////////////////////////////////////
-    enum type
-    {
-        arrow,                  ///< arrow cursor (default)
-        arrow_wait,              ///< Busy arrow cursor
-        wait,                   ///< Busy cursor
-        text,                   ///< I-beam, cursor when hovering over a field allowing text entry
-        hand,                   ///< Pointing hand cursor
-        size_horizontal,         ///< Horizontal double arrow cursor
-        size_vertical,           ///< Vertical double arrow cursor
-        size_top_left_bottom_right, ///< Double arrow cursor going from top-left to bottom-right
-        size_bottom_left_top_right, ///< Double arrow cursor going from bottom-left to top-right
-        size_all,                ///< Combination of SizeHorizontal and SizeVertical
-        cross,                  ///< Crosshair cursor
-        help,                   ///< Help cursor
-        not_allowed              ///< Action not allowed cursor
+    enum type {
+      arrow,            ///< arrow cursor (default)
+      arrow_wait,       ///< Busy arrow cursor
+      wait,             ///< Busy cursor
+      text,             ///< I-beam, cursor when hovering over a field allowing text entry
+      hand,             ///< Pointing hand cursor
+      size_horizontal,  ///< Horizontal double arrow cursor
+      size_vertical,    ///< Vertical double arrow cursor
+      size_top_left_bottom_right,  ///< Double arrow cursor going from top-left to bottom-right
+      size_bottom_left_top_right,  ///< Double arrow cursor going from bottom-left to top-right
+      size_all,                    ///< Combination of SizeHorizontal and SizeVertical
+      cross,                       ///< Crosshair cursor
+      help,                        ///< Help cursor
+      not_allowed                  ///< Action not allowed cursor
     };
 
-public:
-
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
     ///
@@ -115,7 +109,9 @@ public:
     ///         false otherwise
     ///
     ////////////////////////////////////////////////////////////
-    bool load_from_pixels(const std::uint8_t* pixels, const std::array<std::uint32_t, 2>& size, const std::array<std::uint32_t, 2>& hotspot);
+    bool load_from_pixels(
+      const std::uint8_t* pixels, const std::array<std::uint32_t, 2>& size,
+      const std::array<std::uint32_t, 2>& hotspot);
 
     ////////////////////////////////////////////////////////////
     /// \brief Create a native system cursor
@@ -133,8 +129,7 @@ public:
     ////////////////////////////////////////////////////////////
     bool load_from_system(type t);
 
-private:
-
+  private:
     friend class window;
 
     ////////////////////////////////////////////////////////////
@@ -148,19 +143,16 @@ private:
     ////////////////////////////////////////////////////////////
     const priv::cursor_impl& get_impl() const;
 
-private:
-
+  private:
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    priv::cursor_impl* _impl; ///< Platform-specific implementation of the cursor
-};
+    priv::cursor_impl* _impl;  ///< Platform-specific implementation of the cursor
+  };
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_CURSOR_HPP
-
+#endif  // MML_CURSOR_HPP
 
 ////////////////////////////////////////////////////////////
 /// \class mml::cursor

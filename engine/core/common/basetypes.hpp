@@ -78,8 +78,8 @@ template <typename T> struct rect {
   T right = 0;
   T bottom = 0;
 
-  inline T width() const { return right - left; }
-  inline T height() const { return bottom - top; }
+  inline T    width() const { return right - left; }
+  inline T    height() const { return bottom - top; }
   inline bool empty() const { return (left == 0 && right == 0 && top == 0 && bottom == 0); }
 
   template <typename T1 = T> inline size<T1> size() const {

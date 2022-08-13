@@ -30,7 +30,7 @@ namespace core {
     }
 
     decltype(auto) valid() const { return future_.valid(); }
-    bool is_ready() const {
+    bool           is_ready() const {
       using namespace std::chrono_literals;
       return valid() && wait_for(0s) == std::future_status::ready;
     }
@@ -75,8 +75,8 @@ namespace core {
   private:
     friend class task_system;
     std::shared_future<T> future_;
-    task_system* executor_ = nullptr;
-    std::uint64_t id_ = 0;
+    task_system*          executor_ = nullptr;
+    std::uint64_t         id_ = 0;
   };
 
   /*
@@ -182,8 +182,8 @@ namespace core {
     struct task_concept {
       task_concept() noexcept;
       virtual ~task_concept() noexcept;
-      virtual void invoke_() = 0;
-      virtual bool ready_() const noexcept = 0;
+      virtual void  invoke_() = 0;
+      virtual bool  ready_() const noexcept = 0;
       std::uint64_t id_ = 0;
     };
 
@@ -213,7 +213,7 @@ namespace core {
       bool ready_() const noexcept override { return true; }
 
     private:
-      std::packaged_task<R(Args...)> f_;
+      std::packaged_task<R(Args...)>               f_;
       std::tuple<nonstd::special_decay_t<Args>...> args_;
     };
 
@@ -283,7 +283,7 @@ namespace core {
         return nonstd::check_all_true(call_ready(std::get<I>(args_))...);
       }
 
-      std::packaged_task<R(CallArgs...)> f_;
+      std::packaged_task<R(CallArgs...)>              f_;
       std::tuple<nonstd::special_decay_t<FutArgs>...> args_;
     };
 
@@ -299,7 +299,7 @@ namespace core {
       std::size_t pending_tasks = 0;
     };
     struct system_info {
-      std::size_t pending_tasks = 0;
+      std::size_t             pending_tasks = 0;
       std::vector<queue_info> queue_infos;
     };
 
@@ -625,11 +625,11 @@ namespace core {
       task_queue(task_queue const&) = delete;
       task_queue(task_queue&& other) noexcept;
 
-      std::size_t get_pending_tasks() const;
-      void set_done();
-      bool is_done() const;
+      std::size_t           get_pending_tasks() const;
+      void                  set_done();
+      bool                  is_done() const;
       std::pair<bool, task> try_pop();
-      bool try_push(task& t);
+      bool                  try_push(task& t);
       std::pair<bool, task> pop(duration_t pop_timeout = duration_t::max());
 
       void push(task t);
@@ -639,19 +639,19 @@ namespace core {
       void clear();
 
     private:
-      void sort();
-      std::deque<task> tasks_;
+      void                    sort();
+      std::deque<task>        tasks_;
       std::condition_variable cv_;
-      mutable std::mutex mutex_;
-      std::atomic_bool done_{ false };
+      mutable std::mutex      mutex_;
+      std::atomic_bool        done_{ false };
     };
 
-    std::vector<task_queue> queues_;
+    std::vector<task_queue>  queues_;
     std::vector<std::thread> threads_;
-    std::size_t threads_count_;
+    std::size_t              threads_count_;
     //
     const std::thread::id owner_thread_id_ = std::this_thread::get_id();
-    bool wait_on_destruct_ = false;
+    bool                  wait_on_destruct_ = false;
   };
 
   template <typename T>

@@ -42,7 +42,7 @@ public:
   // Describes how a bone influences a specific vertex.
   struct vertex_influence {
     std::uint32_t vertex_index = 0;
-    float weight = 0.0f;
+    float         weight = 0.0f;
 
     // Constructors
     vertex_influence() = default;
@@ -372,7 +372,7 @@ public:
   struct triangle {
     std::uint32_t data_group_id = 0;
     std::uint32_t indices[3] = { 0, 0, 0 };
-    std::uint8_t flags = 0;
+    std::uint8_t  flags = 0;
   };
 
   using triangle_array_t = std::vector<triangle>;
@@ -380,8 +380,8 @@ public:
   using bone_palette_array_t = std::vector<bone_palette>;
 
   struct armature_node {
-    std::string name;
-    math::transform local_transform;
+    std::string                                 name;
+    math::transform                             local_transform;
     std::vector<std::unique_ptr<armature_node>> children;
   };
 
@@ -875,7 +875,7 @@ protected:
   // to accelerate the bone index combination process.
   struct bone_combination_key {
     face_influences* influences = nullptr;
-    std::uint32_t data_group_id = 0;
+    std::uint32_t    data_group_id = 0;
     // Constructor
     bone_combination_key(face_influences* _influences, std::uint32_t group_id)
       : influences(_influences), data_group_id(group_id) {}

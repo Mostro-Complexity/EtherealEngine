@@ -155,7 +155,7 @@ void process_bones(aiMesh* mesh, std::uint32_t subset_offset, mesh::load_data& l
     auto& bone_influences = load_data.skin_data.get_bones();
 
     for (size_t i = 0; i < mesh->mNumBones; ++i) {
-      aiBone* assimp_bone = mesh->mBones[i];
+      aiBone*           assimp_bone = mesh->mBones[i];
       const std::string bone_name = assimp_bone->mName.C_Str();
 
       auto it = std::find_if(
@@ -167,7 +167,7 @@ void process_bones(aiMesh* mesh, std::uint32_t subset_offset, mesh::load_data& l
       if (it != std::end(bone_influences)) {
         bone_ptr = &(*it);
       } else {
-        const auto& assimp_matrix = assimp_bone->mOffsetMatrix;
+        const auto&                    assimp_matrix = assimp_bone->mOffsetMatrix;
         skin_bind_data::bone_influence bone_influence;
         bone_influence.bone_id = bone_name;
         bone_influence.bind_pose_transform = process_matrix(assimp_matrix);
@@ -234,7 +234,7 @@ void process_animation(const aiAnimation* assimp_anim, runtime::animation& anim)
 
   for (size_t i = 0; i < assimp_anim->mNumChannels; ++i) {
     const aiNodeAnim* assimp_node_anim = assimp_anim->mChannels[i];
-    auto& node_anim = anim.channels[i];
+    auto&             node_anim = anim.channels[i];
     node_anim.node_name = assimp_node_anim->mNodeName.C_Str();
 
     if (assimp_node_anim->mNumPositionKeys > 0) {
@@ -243,7 +243,7 @@ void process_animation(const aiAnimation* assimp_anim, runtime::animation& anim)
 
     for (size_t idx = 0; idx < assimp_node_anim->mNumPositionKeys; ++idx) {
       const auto& anim_key = assimp_node_anim->mPositionKeys[idx];
-      auto& key = node_anim.position_keys[idx];
+      auto&       key = node_anim.position_keys[idx];
       key.time = decltype(key.time)(anim_key.mTime);
       key.value.x = anim_key.mValue.x;
       key.value.y = anim_key.mValue.y;
@@ -256,7 +256,7 @@ void process_animation(const aiAnimation* assimp_anim, runtime::animation& anim)
 
     for (size_t idx = 0; idx < assimp_node_anim->mNumRotationKeys; ++idx) {
       const auto& anim_key = assimp_node_anim->mRotationKeys[idx];
-      auto& key = node_anim.rotation_keys[idx];
+      auto&       key = node_anim.rotation_keys[idx];
       key.time = decltype(key.time)(anim_key.mTime);
       key.value.x = anim_key.mValue.x;
       key.value.y = anim_key.mValue.y;
@@ -270,7 +270,7 @@ void process_animation(const aiAnimation* assimp_anim, runtime::animation& anim)
 
     for (size_t idx = 0; idx < assimp_node_anim->mNumScalingKeys; ++idx) {
       const auto& anim_key = assimp_node_anim->mScalingKeys[idx];
-      auto& key = node_anim.scaling_keys[idx];
+      auto&       key = node_anim.scaling_keys[idx];
       key.time = decltype(key.time)(anim_key.mTime);
       key.value.x = anim_key.mValue.x;
       key.value.y = anim_key.mValue.y;
@@ -283,7 +283,7 @@ void process_animations(const aiScene* scene, std::vector<runtime::animation>& a
 
   for (size_t i = 0; i < scene->mNumAnimations; ++i) {
     const aiAnimation* assimp_anim = scene->mAnimations[i];
-    auto& anim = animations[i];
+    auto&              anim = animations[i];
     process_animation(assimp_anim, anim);
   }
 }

@@ -6,17 +6,14 @@
 ////////////////////////////////////////////////////////////
 #include <mml/system/export.hpp>
 
-namespace mml
-{
-////////////////////////////////////////////////////////////
-/// \brief Utility class that makes any derived
-///        class non-copyable
-///
-////////////////////////////////////////////////////////////
-class MML_SYSTEM_API non_copyable
-{
-protected:
-
+namespace mml {
+  ////////////////////////////////////////////////////////////
+  /// \brief Utility class that makes any derived
+  ///        class non-copyable
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_SYSTEM_API non_copyable {
+  protected:
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
     ///
@@ -27,8 +24,7 @@ protected:
     ////////////////////////////////////////////////////////////
     non_copyable() {}
 
-private:
-
+  private:
     ////////////////////////////////////////////////////////////
     /// \brief Disabled copy constructor
     ///
@@ -51,10 +47,9 @@ private:
     /// produce an error if the first protection was inefficient.
     ///
     ////////////////////////////////////////////////////////////
-    non_copyable& operator =(const non_copyable&);
-};
+    non_copyable& operator=(const non_copyable&);
+  };
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_NONCOPYABLE_HPP
+#endif  // MML_NONCOPYABLE_HPP

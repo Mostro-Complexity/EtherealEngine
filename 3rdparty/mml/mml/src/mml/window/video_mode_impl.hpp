@@ -6,39 +6,33 @@
 ////////////////////////////////////////////////////////////
 #include <mml/window/video_mode.hpp>
 
-
-namespace mml
-{
-namespace priv
-{
-////////////////////////////////////////////////////////////
-/// \brief OS-specific implementation of video modes functions
-///
-////////////////////////////////////////////////////////////
-class video_mode_impl
-{
-public:
-
+namespace mml {
+  namespace priv {
     ////////////////////////////////////////////////////////////
-    /// \brief Get the list of all the supported fullscreen video modes
-    ///
-    /// \return Array filled with the fullscreen video modes
+    /// \brief OS-specific implementation of video modes functions
     ///
     ////////////////////////////////////////////////////////////
-    static std::vector<video_mode> get_fullscreen_modes();
+    class video_mode_impl {
+    public:
+      ////////////////////////////////////////////////////////////
+      /// \brief Get the list of all the supported fullscreen video modes
+      ///
+      /// \return Array filled with the fullscreen video modes
+      ///
+      ////////////////////////////////////////////////////////////
+      static std::vector<video_mode> get_fullscreen_modes();
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Get the current desktop video mode
-    ///
-    /// \return Current desktop video mode
-    ///
-    ////////////////////////////////////////////////////////////
-    static video_mode get_desktop_mode();
-};
+      ////////////////////////////////////////////////////////////
+      /// \brief Get the current desktop video mode
+      ///
+      /// \return Current desktop video mode
+      ///
+      ////////////////////////////////////////////////////////////
+      static video_mode get_desktop_mode();
+    };
 
-} // namespace priv
+  }  // namespace priv
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_VIDEOMODEIMPL_HPP
+#endif  // MML_VIDEOMODEIMPL_HPP

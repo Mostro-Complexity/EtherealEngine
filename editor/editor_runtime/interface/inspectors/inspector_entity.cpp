@@ -8,7 +8,7 @@ bool inspector_entity::inspect(
   bool changed = false;
   {
     property_layout prop_name("Name");
-    rttr::variant var_name = data.to_string();
+    rttr::variant   var_name = data.to_string();
 
     changed |= inspect_var(var_name);
 
@@ -23,7 +23,7 @@ bool inspector_entity::inspect(
     auto component_type = rttr::type::get(*component);
 
     std::string name = component_type.get_name().data();
-    auto meta_id = component_type.get_metadata("pretty_name");
+    auto        meta_id = component_type.get_metadata("pretty_name");
     if (meta_id) { name = meta_id.to_string(); }
     gui::PushID(component);
     gui::SetNextItemOpen(true, ImGuiCond_FirstUseEver);
@@ -61,7 +61,7 @@ bool inspector_entity::inspect(
       auto cstructor = component_type.get_constructor();
       if (cstructor) {
         std::string name = component_type.get_name().data();
-        auto meta_id = component_type.get_metadata("pretty_name");
+        auto        meta_id = component_type.get_metadata("pretty_name");
         if (meta_id) { name = meta_id.to_string(); }
         if (!filter.PassFilter(name.c_str())) continue;
 

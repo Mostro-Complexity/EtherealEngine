@@ -8,9 +8,9 @@
 namespace uuids {
   template <typename random_generator_t = ::std::mt19937>
   inline random_generator_t make_seeded_engine() {
-    std::random_device r;
+    std::random_device         r;
     std::hash<std::thread::id> hasher;
-    std::seed_seq seed(std::initializer_list<typename random_generator_t::result_type>{
+    std::seed_seq              seed(std::initializer_list<typename random_generator_t::result_type>{
       static_cast<typename random_generator_t::result_type>(
         ::std::chrono::system_clock::now().time_since_epoch().count()),
       static_cast<typename random_generator_t::result_type>(hasher(std::this_thread::get_id())),
@@ -49,7 +49,7 @@ namespace uuids {
       return hash;
     };
 
-    auto seed = hash32(str.c_str());
+    auto                                      seed = hash32(str.c_str());
     random_uuid_generator<random_generator_t> gen(seed);
 
     return gen();

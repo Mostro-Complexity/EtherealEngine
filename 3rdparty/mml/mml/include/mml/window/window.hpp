@@ -1,36 +1,32 @@
 #ifndef MML_WINDOW_HPP
-#define MML_WINDOW_HPP
+  #define MML_WINDOW_HPP
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <mml/window/export.hpp>
-#include <mml/window/cursor.hpp>
-#include <mml/window/video_mode.hpp>
-#include <mml/window/window_handle.hpp>
-#include <mml/window/window_style.hpp>
-#include <mml/window/event.hpp>
-#include <mml/system/non_copyable.hpp>
-#include <string>
-#include <array>
+  ////////////////////////////////////////////////////////////
+  // Headers
+  ////////////////////////////////////////////////////////////
+  #include <mml/window/export.hpp>
+  #include <mml/window/cursor.hpp>
+  #include <mml/window/video_mode.hpp>
+  #include <mml/window/window_handle.hpp>
+  #include <mml/window/window_style.hpp>
+  #include <mml/window/event.hpp>
+  #include <mml/system/non_copyable.hpp>
+  #include <string>
+  #include <array>
 
-namespace mml
-{
-namespace priv
-{
+namespace mml {
+  namespace priv {
     class window_impl;
-}
+  }
 
-class platform_event;
+  class platform_event;
 
-////////////////////////////////////////////////////////////
-/// \brief window that serves as a target for OpenGL rendering
-///
-////////////////////////////////////////////////////////////
-class MML_WINDOW_API window : non_copyable
-{
-public:
-
+  ////////////////////////////////////////////////////////////
+  /// \brief window that serves as a target for OpenGL rendering
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_WINDOW_API window : non_copyable {
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
     ///
@@ -53,9 +49,9 @@ public:
     /// advanced OpenGL context settings such as antialiasing,
     /// depth-buffer bits, etc.
     ///
-    /// \param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)
-    /// \param title    Title of the window
-    /// \param style    %window style, a bitwise OR combination of mml::style enumerators
+    /// \param mode     Video mode to use (defines the width, height and depth of the rendering area
+    /// of the window) \param title    Title of the window \param style    %window style, a bitwise
+    /// OR combination of mml::style enumerators
     ///
     ////////////////////////////////////////////////////////////
     window(video_mode mode, const std::string& title, std::uint32_t style = style::standard);
@@ -94,10 +90,10 @@ public:
     /// advanced OpenGL context settings such as antialiasing,
     /// depth-buffer bits, etc.
     ///
-    /// \param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)
-    /// \param title    Title of the window
-    /// \param style    %window style, a bitwise OR combination of mml::style enumerators
-    /// \param settings Additional settings for the underlying OpenGL context
+    /// \param mode     Video mode to use (defines the width, height and depth of the rendering area
+    /// of the window) \param title    Title of the window \param style    %window style, a bitwise
+    /// OR combination of mml::style enumerators \param settings Additional settings for the
+    /// underlying OpenGL context
     ///
     ////////////////////////////////////////////////////////////
     void create(video_mode mode, const std::string& title, std::uint32_t style = style::standard);
@@ -131,13 +127,13 @@ public:
     ////////////////////////////////////////////////////////////
     void dispose();
 
-	////////////////////////////////////////////////////////////
-	/// \brief  Request the current window to be closed
-	///
-	/// 
-	/// 
-	////////////////////////////////////////////////////////////
-	void request_close();
+    ////////////////////////////////////////////////////////////
+    /// \brief  Request the current window to be closed
+    ///
+    ///
+    ///
+    ////////////////////////////////////////////////////////////
+    void request_close();
 
     ////////////////////////////////////////////////////////////
     /// \brief Tell whether or not the window is open
@@ -290,26 +286,26 @@ public:
     void set_visible(bool visible);
     bool is_visible() const;
 
-	////////////////////////////////////////////////////////////
-	/// \brief Request to maxiize the window
-	////////////////////////////////////////////////////////////
-	void maximize();
+    ////////////////////////////////////////////////////////////
+    /// \brief Request to maxiize the window
+    ////////////////////////////////////////////////////////////
+    void maximize();
 
-	////////////////////////////////////////////////////////////
-	/// \brief Request to minimize the window
-	////////////////////////////////////////////////////////////
-	void minimize();
+    ////////////////////////////////////////////////////////////
+    /// \brief Request to minimize the window
+    ////////////////////////////////////////////////////////////
+    void minimize();
 
-	////////////////////////////////////////////////////////////
-	/// \brief Request to restore the window
-	////////////////////////////////////////////////////////////
-	void restore();
+    ////////////////////////////////////////////////////////////
+    /// \brief Request to restore the window
+    ////////////////////////////////////////////////////////////
+    void restore();
 
-	////////////////////////////////////////////////////////////
-	/// \brief Request to change window transparency
-	////////////////////////////////////////////////////////////
-	void set_opacity(float opacity);
-   
+    ////////////////////////////////////////////////////////////
+    /// \brief Request to change window transparency
+    ////////////////////////////////////////////////////////////
+    void set_opacity(float opacity);
+
     ////////////////////////////////////////////////////////////
     /// \brief Show or hide the mouse cursor
     ///
@@ -420,9 +416,9 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     window_handle native_handle() const;
-    void* native_display_handle() const;
-protected:
+    void*         native_display_handle() const;
 
+  protected:
     ////////////////////////////////////////////////////////////
     /// \brief Function called after the window has been created
     ///
@@ -456,7 +452,7 @@ protected:
     ////////////////////////////////////////////////////////////
     virtual bool filter_event(const platform_event& event);
 
-private:
+  private:
     ////////////////////////////////////////////////////////////
     /// \brief Perform some common internal initializations
     ///
@@ -466,16 +462,14 @@ private:
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    priv::window_impl* _impl;           ///< Platform-specific implementation of the window
-    std::array<std::uint32_t, 2> _size;           ///< Current size of the window
-    bool _visible;
-};
+    priv::window_impl*           _impl;  ///< Platform-specific implementation of the window
+    std::array<std::uint32_t, 2> _size;  ///< Current size of the window
+    bool                         _visible;
+  };
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_WINDOW_HPP
-
+#endif  // MML_WINDOW_HPP
 
 ////////////////////////////////////////////////////////////
 /// \class mml::window

@@ -8,7 +8,7 @@ int string_utils::compare(const std::string& s1, const std::string& s2, bool ign
 }
 
 std::string string_utils::trim(const std::string& str) {
-  std::string s = str;
+  std::string            s = str;
   std::string::size_type pos;
 
   // Early out
@@ -89,7 +89,7 @@ bool string_utils::ends_with(
 
 std::string string_utils::replace(
   const std::string& str, const std::string& old_seq, const std::string& new_seq) {
-  std::string s = str;
+  std::string            s = str;
   std::string::size_type location = 0;
   std::string::size_type old_length = old_seq.length();
   std::string::size_type new_length = new_seq.length();
@@ -112,7 +112,7 @@ std::string string_utils::replace(
 
 std::string string_utils::replace(
   const std::string& str, std::string::value_type old_char, std::string::value_type new_char) {
-  std::string s = str;
+  std::string            s = str;
   std::string::size_type location = 0;
 
   // Search for all replace std::string occurances.
@@ -146,8 +146,8 @@ std::string string_utils::word_wrap(
   const std::string& value, std::string::size_type max_length,
   const std::string& line_padding /*= ""*/) {
   std::string wrap_string, current_line;
-  auto last_space = std::string::size_type(-1);
-  auto line_length = std::string::size_type(0);
+  auto        last_space = std::string::size_type(-1);
+  auto        line_length = std::string::size_type(0);
 
   // TODO: Add support for tab character to wrapping method.
 
@@ -242,9 +242,9 @@ std::string string_utils::random_string(std::string::size_type length) {
   using random_generator_t = ::std::mt19937;
 
   static const auto make_seeded_engine = []() {
-    std::random_device r;
+    std::random_device         r;
     std::hash<std::thread::id> hasher;
-    std::seed_seq seed(std::initializer_list<typename random_generator_t::result_type>{
+    std::seed_seq              seed(std::initializer_list<typename random_generator_t::result_type>{
       static_cast<typename random_generator_t::result_type>(
         ::std::chrono::system_clock::now().time_since_epoch().count()),
       static_cast<typename random_generator_t::result_type>(hasher(std::this_thread::get_id())),
@@ -266,7 +266,7 @@ std::string string_utils::random_string(std::string::size_type length) {
                                      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                      "abcdefghijklmnopqrstuvwxyz";
 
-    const size_t max_index = (sizeof(charset) - 1);
+    const size_t                                          max_index = (sizeof(charset) - 1);
     std::uniform_int_distribution<std::string::size_type> dist(0, max_index);
 
     return charset[dist(engine)];

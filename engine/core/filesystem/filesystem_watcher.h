@@ -29,12 +29,12 @@ namespace fs {
 
     struct entry {
 
-      fs::path path;
-      fs::path last_path;
-      entry_status status = unmodified;
+      fs::path           path;
+      fs::path           last_path;
+      entry_status       status = unmodified;
       fs::file_time_type last_mod_time;
-      std::uintmax_t size = 0;
-      fs::file_type type;
+      std::uintmax_t     size = 0;
+      fs::file_type      type;
     };
 
     using notify_callback = std::function<void(const std::vector<entry>&, bool)>;

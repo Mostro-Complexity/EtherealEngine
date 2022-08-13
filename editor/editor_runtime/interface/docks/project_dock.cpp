@@ -50,14 +50,14 @@ get_preview(const fs::path&, const std::string& type, editor::editing_system& es
 static bool
 process_drag_drop_source(const asset_handle<gfx::texture>& preview, const fs::path& absolute_path) {
   if (gui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-    const auto filename = absolute_path.filename();
+    const auto        filename = absolute_path.filename();
     const std::string extension =
       filename.has_extension() ? filename.extension().string() : "folder";
     const std::string id = absolute_path.string();
     const std::string strfilename = filename.string();
-    const auto& tex = preview;
-    ImVec2 item_size = { 32, 32 };
-    ImVec2 texture_size = item_size;
+    const auto&       tex = preview;
+    ImVec2            item_size = { 32, 32 };
+    ImVec2            texture_size = item_size;
     if (tex) { texture_size = { float(tex->info.width), float(tex->info.height) }; }
     ImVec2 uv0 = { 0.0f, 0.0f };
     ImVec2 uv1 = { 1.0f, 1.0f };
@@ -139,7 +139,7 @@ static bool draw_entry(
   const fs::path& absolute_path, bool is_selected, const float size,
   const std::function<void()>& on_click, const std::function<void()>& on_double_click,
   const std::function<void(const std::string&)>& on_rename,
-  const std::function<void()>& on_delete) {
+  const std::function<void()>&                   on_delete) {
   enum class entry_action {
     none,
     clicked,
@@ -148,7 +148,7 @@ static bool draw_entry(
     deleted,
   };
 
-  bool is_popup_opened = false;
+  bool         is_popup_opened = false;
   entry_action action = entry_action::none;
 
   bool open_rename_menu = false;
@@ -172,7 +172,7 @@ static bool draw_entry(
   gui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(col.x, col.y, col.z, 1.0f));
 
   const int padding = 0;
-  auto pos = gui::GetCursorScreenPos();
+  auto      pos = gui::GetCursorScreenPos();
   pos.y += item_size.y + padding * 2.0f;
   if (gui::ImageButtonWithAspectAndTextDOWN(
         gui::get_info(icon), name, texture_size, item_size, uv0, uv1, padding)) {
@@ -199,7 +199,7 @@ static bool draw_entry(
   }
 
   std::array<char, 64> input_buff{};
-  auto name_sz = std::min(name.size(), input_buff.size() - 1);
+  auto                 name_sz = std::min(name.size(), input_buff.size() - 1);
   std::memcpy(input_buff.data(), name.c_str(), name_sz);
 
   if (gui::BeginPopupContextItem("ENTRY_CONTEXT_MENU")) {
@@ -272,7 +272,7 @@ static bool draw_entry(
 }
 
 fs::path get_new_file(const fs::path& path, const std::string& name, const std::string& ext = "") {
-  int i = 0;
+  int            i = 0;
   fs::error_code err;
   while (fs::exists(path / (string_utils::format("%s (%d)", name.c_str(), i) + ext), err)) { ++i; }
 
@@ -322,8 +322,8 @@ void project_dock::render(const ImVec2& /*area*/) {
 
   gui::Separator();
 
-  auto& es = core::get_subsystem<editor::editing_system>();
-  auto& am = core::get_subsystem<runtime::asset_manager>();
+  auto&            es = core::get_subsystem<editor::editing_system>();
+  auto&            am = core::get_subsystem<runtime::asset_manager>();
   ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove
                            | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings;
   fs::path current_path = cache_.get_path();
@@ -374,7 +374,7 @@ void project_dock::render(const ImVec2& /*area*/) {
 
         using entry_t = fs::path;
         const entry_t& entry = absolute_path;
-        const auto& icon = folder_preview;
+        const auto&    icon = folder_preview;
         is_popup_opened |= draw_entry(
           icon,
           false,
@@ -413,7 +413,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? entry : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -461,7 +461,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? sound_preview : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -484,7 +484,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? shader_preview : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -508,7 +508,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? material_preview : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -532,7 +532,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? animation_preview : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -556,7 +556,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? prefab_preview : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -580,7 +580,7 @@ void project_dock::render(const ImVec2& /*area*/) {
         auto entry_future = am.find_asset_entry<asset_t>(relative);
         if (entry_future.is_ready()) { entry = entry_future.get(); }
         const auto& icon = entry ? scene_preview : loading_preview;
-        bool is_loading = !entry;
+        bool        is_loading = !entry;
         is_popup_opened |= draw_entry(
           icon,
           is_loading,
@@ -605,17 +605,18 @@ void project_dock::render(const ImVec2& /*area*/) {
     };
     gui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
     const auto& style = gui::GetStyle();
-    auto avail = gui::GetContentRegionAvail().x;
-    auto item_size = size + style.ItemSpacing.x;
-    auto items_per_line_exact = avail / item_size;
-    auto items_per_line_floor = ImFloor(items_per_line_exact);
-    auto count = cache_.size();
-    auto items_per_line = std::min(size_t(items_per_line_floor), count);
-    auto extra = ((items_per_line_exact - items_per_line_floor) * item_size)
+    auto        avail = gui::GetContentRegionAvail().x;
+    auto        item_size = size + style.ItemSpacing.x;
+    auto        items_per_line_exact = avail / item_size;
+    auto        items_per_line_floor = ImFloor(items_per_line_exact);
+    auto        count = cache_.size();
+    auto        items_per_line = std::min(size_t(items_per_line_floor), count);
+    auto        extra = ((items_per_line_exact - items_per_line_floor) * item_size)
                  / std::max(1.0f, items_per_line_floor - 1);
-    auto lines = std::max<int>(1, int(ImCeil(float(count) / float(items_per_line))));
+    auto             lines = std::max<int>(1, int(ImCeil(float(count) / float(items_per_line))));
     ImGuiListClipper clipper;
-    clipper.Begin(lines, 1);  // NOTE: the second param is temporally defined, and don't understand the meaning
+    clipper.Begin(
+      lines, 1);  // NOTE: the second param is temporally defined, and don't understand the meaning
 
     while (clipper.Step()) {
       for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
@@ -663,7 +664,7 @@ void project_dock::context_menu() {
 void project_dock::context_create_menu() {
   if (gui::BeginMenu("CREATE")) {
     if (gui::MenuItem("FOLDER")) {
-      const auto available = get_new_file(cache_.get_path(), "New Folder");
+      const auto     available = get_new_file(cache_.get_path(), "New Folder");
       fs::error_code err;
       fs::create_directory(available, err);
     }
@@ -675,7 +676,7 @@ void project_dock::context_create_menu() {
       const auto& key = fs::convert_to_protocol(available).generic_string();
 
       auto& am = core::get_subsystem<runtime::asset_manager>();
-      auto new_mat_future =
+      auto  new_mat_future =
         am.load_asset_from_instance<material>(key, std::make_shared<standard_material>());
       auto& asset = new_mat_future.get();
       runtime::asset_writer::save_to_file(asset.id(), asset);
@@ -703,7 +704,7 @@ void project_dock::import() {
       auto task = ts.push_on_worker_thread(
         [opened = cache_.get_path()](const fs::path& path, const fs::path& filename) {
           fs::error_code err;
-          fs::path dir = opened / filename;
+          fs::path       dir = opened / filename;
           fs::copy_file(path, dir, fs::copy_options::overwrite_existing, err);
         },
         p,

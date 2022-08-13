@@ -301,8 +301,8 @@ private:
   //-------------------------------------------------------------------------
   // Private Member Variables.
   //-------------------------------------------------------------------------
-  float mass_;
-  bool gravity_enabled_;
+  float                               mass_;
+  bool                                gravity_enabled_;
   std::shared_ptr<physics::rigidbody> body_;
-  math::vec3 velocity_;
+  math::vec3                          velocity_;
 };

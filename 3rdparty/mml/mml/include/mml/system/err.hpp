@@ -7,12 +7,9 @@
 #include <mml/system/export.hpp>
 #include <ostream>
 
+namespace mml {
+  MML_SYSTEM_API std::ostream& err();
 
-namespace mml
-{
-MML_SYSTEM_API std::ostream& err();
+}  // namespace mml
 
-} // namespace mml
-
-
-#endif // MML_ERR_HPP
+#endif  // MML_ERR_HPP

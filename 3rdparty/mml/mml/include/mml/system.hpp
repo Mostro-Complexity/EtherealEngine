@@ -10,5 +10,4 @@
 #include <mml/system/non_copyable.hpp>
 #include <mml/system/utf.hpp>
 
-
-#endif // SFML_SYSTEM_HPP
+#endif  // SFML_SYSTEM_HPP

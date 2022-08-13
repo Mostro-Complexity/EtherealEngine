@@ -39,14 +39,14 @@ namespace math {
     //-------------------------------------------------------------------------
     // Public Operators
     //-------------------------------------------------------------------------
-    plane operator*(float s) const;
-    plane operator/(float s) const;
+    plane  operator*(float s) const;
+    plane  operator/(float s) const;
     plane& operator*=(float s);
     plane& operator/=(float s);
-    plane operator+() const;
-    plane operator-() const;
-    bool operator==(const plane& p) const;
-    bool operator!=(const plane& p) const;
+    plane  operator+() const;
+    plane  operator-() const;
+    bool   operator==(const plane& p) const;
+    bool   operator!=(const plane& p) const;
     plane& operator=(const vec4& rhs);
 
     //-------------------------------------------------------------------------

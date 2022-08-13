@@ -40,8 +40,8 @@ namespace gui {
 namespace editor {
   namespace {
     template <typename T> void create_window_with_dock(const std::string& dock_name) {
-      auto& rend = core::get_subsystem<runtime::renderer>();
-      auto& docking = core::get_subsystem<docking_system>();
+      auto&           rend = core::get_subsystem<runtime::renderer>();
+      auto&           docking = core::get_subsystem<docking_system>();
       mml::video_mode desktop = mml::video_mode::get_desktop_mode();
       desktop.width = 1280;
       desktop.height = 720;
@@ -56,10 +56,10 @@ namespace editor {
       docking.register_dock(std::move(dock));
     }
     std::vector<runtime::entity> gather_scene_data() {
-      auto& es = core::get_subsystem<editor::editing_system>();
-      auto& sg = core::get_subsystem<runtime::scene_graph>();
-      const auto& roots = sg.get_roots();
-      auto editor_camera = es.camera;
+      auto&                        es = core::get_subsystem<editor::editing_system>();
+      auto&                        sg = core::get_subsystem<runtime::scene_graph>();
+      const auto&                  roots = sg.get_roots();
+      auto                         editor_camera = es.camera;
       std::vector<runtime::entity> entities;
       for (auto root : roots) {
         if (root.valid() && root != editor_camera) entities.push_back(root);
@@ -121,7 +121,7 @@ namespace editor {
         object.set_name("platform");
         object.assign<transform_component>();
 
-        auto asset_future = am.load<mesh>("embedded:/plane");
+        auto  asset_future = am.load<mesh>("embedded:/plane");
         model model;
         model.set_lod(asset_future.get(), 0);
 
@@ -137,7 +137,7 @@ namespace editor {
         auto transf_comp = object.assign<transform_component>().lock();
         transf_comp->set_local_position({ -2.0f, 0.5f, 0.0f });
 
-        auto asset_future = am.load<mesh>("embedded:/sphere");
+        auto  asset_future = am.load<mesh>("embedded:/sphere");
         model model;
         model.set_lod(asset_future.get(), 0);
 
@@ -201,7 +201,7 @@ namespace editor {
     }
 
     auto save_scene() {
-      auto& es = core::get_subsystem<editor::editing_system>();
+      auto&       es = core::get_subsystem<editor::editing_system>();
       const auto& path = es.scene;
       if (path != "") {
         auto entities = gather_scene_data();
@@ -228,10 +228,10 @@ namespace editor {
   }  // namespace
 
   void app::draw_menubar(render_window& window) {
-    auto& es = core::get_subsystem<editor::editing_system>();
-    auto& pm = core::get_subsystem<editor::project_manager>();
-    auto& rend = core::get_subsystem<runtime::renderer>();
-    auto& input = core::get_subsystem<runtime::input>();
+    auto&       es = core::get_subsystem<editor::editing_system>();
+    auto&       pm = core::get_subsystem<editor::project_manager>();
+    auto&       rend = core::get_subsystem<runtime::renderer>();
+    auto&       input = core::get_subsystem<runtime::input>();
     const auto& current_project = pm.get_name();
 
     if (input.is_key_down(mml::keyboard::LControl)) {
@@ -350,11 +350,11 @@ namespace editor {
       // TODO: put standalone game code to somewhere
 
       auto& ts = core::get_subsystem<core::task_system>();
-      auto task = ts.push_on_worker_thread([]() {
-        int argc = 1;
-        char* argv[] = { "game" };
+      auto  task = ts.push_on_worker_thread([]() {
+        int                argc = 1;
+        char*              argv[] = { "game" };
         editor::standalone standalone;
-        int return_code = standalone.run(argc, argv);
+        int                return_code = standalone.run(argc, argv);
       });
     }
     gui::SameLine(0.0f);
@@ -440,9 +440,9 @@ namespace editor {
   }
 
   void app::draw_docks(delta_t dt) {
-    auto& gui = core::get_subsystem<gui_system>();
-    auto& docking = core::get_subsystem<docking_system>();
-    auto& renderer = core::get_subsystem<runtime::renderer>();
+    auto&       gui = core::get_subsystem<gui_system>();
+    auto&       docking = core::get_subsystem<docking_system>();
+    auto&       renderer = core::get_subsystem<runtime::renderer>();
     const auto& windows = renderer.get_windows();
 
     for (std::size_t i = 0; i < windows.size(); ++i) {
@@ -450,7 +450,7 @@ namespace editor {
       window->begin_present_pass();
 
       const auto id = window->get_id();
-      auto& dockspace = docking.get_dockspace(id);
+      auto&      dockspace = docking.get_dockspace(id);
       gui.push_context(id);
       gui.draw_begin(*window, dt);
 
@@ -492,7 +492,7 @@ namespace editor {
   void app::draw_footer(render_window&, imguidock::dockspace& dockspace) {
     if (!console_log_) return;
 
-    auto& ts = core::get_subsystem<core::task_system>();
+    auto&      ts = core::get_subsystem<core::task_system>();
     const auto tasks_info = ts.get_info();
     const auto items = console_log_->get_items();
 
@@ -503,7 +503,7 @@ namespace editor {
     if (items.size() > 0) {
       const auto& last_item = items.back();
       const auto& colorization = console_log_->get_level_colorization(last_item.second);
-      ImVec4 col = { colorization[0], colorization[1], colorization[2], colorization[3] };
+      ImVec4      col = { colorization[0], colorization[1], colorization[2], colorization[3] };
 
       gui::SetCursorPosY(ImGui::GetCursorPosY());
       gui::PushStyleColor(ImGuiCol_Text, col);
@@ -541,7 +541,7 @@ namespace editor {
 
     auto on_create_project = [&](const std::string& p) {
       auto& rend = core::get_subsystem<runtime::renderer>();
-      auto path = fs::path(p).make_preferred();
+      auto  path = fs::path(p).make_preferred();
       pm.create_project(path);
       window.maximize();
       rend.show_all_secondary_windows();
@@ -549,7 +549,7 @@ namespace editor {
     };
     auto on_open_project = [&](const std::string& p) {
       auto& rend = core::get_subsystem<runtime::renderer>();
-      auto path = fs::path(p).make_preferred();
+      auto  path = fs::path(p).make_preferred();
       pm.open_project(path);
       window.maximize();
       rend.show_all_secondary_windows();

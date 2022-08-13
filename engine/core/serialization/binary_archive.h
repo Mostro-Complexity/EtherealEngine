@@ -8,8 +8,7 @@
 //}
 
 #include "cereal/archives/binary.hpp"
-namespace cereal
-{
-using oarchive_binary_t = BinaryOutputArchive;
-using iarchive_binary_t = BinaryInputArchive;
-}
+namespace cereal {
+  using oarchive_binary_t = BinaryOutputArchive;
+  using iarchive_binary_t = BinaryInputArchive;
+}  // namespace cereal

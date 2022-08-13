@@ -26,7 +26,7 @@ namespace gfx {
 
   void program::set_texture(
     std::uint8_t _stage, const std::string& _sampler, gfx::frame_buffer* frameBuffer,
-    uint8_t _attachment /*= 0 */,
+    uint8_t       _attachment /*= 0 */,
     std::uint32_t _flags /*= std::numeric_limits<std::uint32_t>::max()*/) {
     if (frameBuffer == nullptr) { return; }
 
@@ -54,7 +54,7 @@ namespace gfx {
 
   std::shared_ptr<gfx::uniform> program::get_uniform(const std::string& _name, bool texture) {
     std::shared_ptr<gfx::uniform> hUniform;
-    auto it = uniforms.find(_name);
+    auto                          it = uniforms.find(_name);
     if (it != uniforms.end()) {
       hUniform = it->second;
     } else {

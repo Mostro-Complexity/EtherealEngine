@@ -4,8 +4,7 @@
 #include <fstream>
 #include <memory>
 
-struct prefab
-{
-	runtime::entity instantiate();
-	std::shared_ptr<std::istream> data;
+struct prefab {
+  runtime::entity               instantiate();
+  std::shared_ptr<std::istream> data;
 };

@@ -8,58 +8,48 @@
 #include <mml/window/joystick.hpp>
 #include <algorithm>
 
-
-namespace mml
-{
-namespace priv
-{
-////////////////////////////////////////////////////////////
-/// \brief Structure holding a joystick's information
-///
-////////////////////////////////////////////////////////////
-struct joystick_caps
-{
-    joystick_caps()
-    {
+namespace mml {
+  namespace priv {
+    ////////////////////////////////////////////////////////////
+    /// \brief Structure holding a joystick's information
+    ///
+    ////////////////////////////////////////////////////////////
+    struct joystick_caps {
+      joystick_caps() {
         button_count = 0;
         std::fill(axes, axes + joystick::axis_count, false);
-    }
+      }
 
-    unsigned int button_count;               ///< Number of buttons supported by the joystick
-    bool         axes[joystick::axis_count]; ///< Support for each axis
-};
+      unsigned int button_count;                ///< Number of buttons supported by the joystick
+      bool         axes[joystick::axis_count];  ///< Support for each axis
+    };
 
-
-////////////////////////////////////////////////////////////
-/// \brief Structure holding a joystick's state
-///
-////////////////////////////////////////////////////////////
-struct joystick_state
-{
-    joystick_state()
-    {
+    ////////////////////////////////////////////////////////////
+    /// \brief Structure holding a joystick's state
+    ///
+    ////////////////////////////////////////////////////////////
+    struct joystick_state {
+      joystick_state() {
         connected = false;
         std::fill(axes, axes + joystick::axis_count, 0.f);
         std::fill(buttons, buttons + joystick::button_count, false);
-    }
+      }
 
-    bool  connected;                      ///< Is the joystick currently connected?
-    float axes[joystick::axis_count];      ///< Position of each axis, in range [-100, 100]
-    bool  buttons[joystick::button_count]; ///< Status of each button (true = pressed)
-};
+      bool  connected;                        ///< Is the joystick currently connected?
+      float axes[joystick::axis_count];       ///< Position of each axis, in range [-100, 100]
+      bool  buttons[joystick::button_count];  ///< Status of each button (true = pressed)
+    };
 
-} // namespace priv
+  }  // namespace priv
 
-} // namespace mml
-
+}  // namespace mml
 
 #if defined(MML_SYSTEM_WINDOWS)
-    #include "win32/joystick_impl.hpp"
+  #include "win32/joystick_impl.hpp"
 #elif defined(MML_SYSTEM_LINUX)
-	#include "unix/joystick_impl.hpp"
+  #include "unix/joystick_impl.hpp"
 #elif defined(MML_SYSTEM_FREEBSD)
-    #include "free_bsd/joystick_impl.hpp"
+  #include "free_bsd/joystick_impl.hpp"
 #endif
 
-
-#endif // MML_JOYSTICKIMPL_HPP
+#endif  // MML_JOYSTICKIMPL_HPP

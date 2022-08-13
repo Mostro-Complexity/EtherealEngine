@@ -8,8 +8,7 @@
 // }
 
 #include "cereal/archives/json.hpp"
-namespace cereal
-{
-using oarchive_associative_t = JSONOutputArchive;
-using iarchive_associative_t = JSONInputArchive;
-}
+namespace cereal {
+  using oarchive_associative_t = JSONOutputArchive;
+  using iarchive_associative_t = JSONInputArchive;
+}  // namespace cereal

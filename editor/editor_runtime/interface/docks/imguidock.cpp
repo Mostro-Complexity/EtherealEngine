@@ -221,7 +221,7 @@ namespace imguidock {
 
     if (split && split->active_dock) {
       auto& active_dock = split->active_dock;
-      bool mouseleft = mml::mouse::is_button_pressed(mml::mouse::left);
+      bool  mouseleft = mml::mouse::is_button_pressed(mml::mouse::left);
       if (active_dock->draging && mouseleft) {
         auto pos = mml::mouse::get_position();
         pos[0] -= 40;
@@ -253,8 +253,8 @@ namespace imguidock {
   void
   dockspace::render_container(uint32_t& idgen, node* container, ImVec2 size, ImVec2 cursor_pos) {
     const float tabbar_height = ImGui::GetFrameHeightWithSpacing();
-    ImVec2 calculated_size = size;
-    ImVec2 calculated_cursor_pos = cursor_pos;
+    ImVec2      calculated_size = size;
+    ImVec2      calculated_cursor_pos = cursor_pos;
 
     idgen++;
 
@@ -289,7 +289,7 @@ namespace imguidock {
         if (dockspace.root.splits[0]->active_dock != container->active_dock) {
           auto& owner = renderer.get_window(owner_id);
 
-          auto mouse_pos = mml::mouse::get_position(*owner);
+          auto   mouse_pos = mml::mouse::get_position(*owner);
           ImVec2 cursor_pos = { float(mouse_pos[0]), float(mouse_pos[1]) };
           if (
             (mouse_pos[0] > screen_cursor_pos.x && mouse_pos[0] < (screen_cursor_pos.x + size.x))
@@ -314,8 +314,8 @@ namespace imguidock {
       }
     } else {
       ImVec2 calculated_size0 = size, calculated_size1;
-      auto& split0 = container->splits[0];
-      auto& split1 = container->splits[1];
+      auto&  split0 = container->splits[0];
+      auto&  split1 = container->splits[1];
 
       if (split0 && split1) {
         float acontsizeX = split0->size != 0.0f   ? split0->size
@@ -416,7 +416,7 @@ namespace imguidock {
 
   void dockspace::update_and_draw(ImVec2 dockspaceSize) {
     uint32_t idgen = 0;
-    ImVec2 backup_pos = ImGui::GetCursorPos();
+    ImVec2   backup_pos = ImGui::GetCursorPos();
 
     render_container(idgen, &root, dockspaceSize, backup_pos);
     if (current_dock_to_) {
@@ -427,7 +427,7 @@ namespace imguidock {
 
           auto& renderer = core::get_subsystem<runtime::renderer>();
           auto& docking = core::get_subsystem<docking_system>();
-          auto window = std::make_unique<render_window>(
+          auto  window = std::make_unique<render_window>(
             mml::video_mode(
               static_cast<unsigned int>(current_dock_to_->last_size.x),
               static_cast<unsigned int>(current_dock_to_->last_size.y)),
@@ -482,11 +482,11 @@ namespace imguidock {
   void dockspace::activate_dock(const std::string& name) { activete_dock_impl(&root, name); }
 
   std::uint32_t dockspace::is_any_window_dragged() {
-    auto& docking = core::get_subsystem<docking_system>();
+    auto&       docking = core::get_subsystem<docking_system>();
     const auto& dockspaces = docking.get_dockspaces();
 
     for (const auto& p : dockspaces) {
-      auto id = p.first;
+      auto  id = p.first;
       auto& dockspace = p.second;
       if (dockspace.root.splits[0] && dockspace.root.splits[0]->active_dock) {
         if (dockspace.root.splits[0]->active_dock->draging) return id;
@@ -547,14 +547,14 @@ namespace imguidock {
 
   static void get_slot_convex(ImRect parent_rect, slot dock_slot, std::vector<ImVec2>& convex) {
     convex.clear();
-    ImVec2 size = parent_rect.Max - parent_rect.Min;
+    ImVec2      size = parent_rect.Max - parent_rect.Min;
     const float tabbar_height = ImGui::GetFrameHeightWithSpacing();
-    ImVec2 top_left_corner = parent_rect.Min;
-    ImVec2 bottom_right_corner = parent_rect.Max;
-    ImVec2 top_right_corner = ImVec2(parent_rect.Max.x, parent_rect.Min.y);
-    ImVec2 bottom_left_corner = ImVec2(parent_rect.Min.x, parent_rect.Max.y);
-    ImVec2 sz = size * 0.18f;
-    float offset = 0.0f;
+    ImVec2      top_left_corner = parent_rect.Min;
+    ImVec2      bottom_right_corner = parent_rect.Max;
+    ImVec2      top_right_corner = ImVec2(parent_rect.Max.x, parent_rect.Min.y);
+    ImVec2      bottom_left_corner = ImVec2(parent_rect.Min.x, parent_rect.Max.y);
+    ImVec2      sz = size * 0.18f;
+    float       offset = 0.0f;
 
     switch (dock_slot) {
     default: {
@@ -641,9 +641,9 @@ namespace imguidock {
       }
     };
 
-    ImVec2 offset = ImGui::GetStyle().FramePadding * 2.0f;
+    ImVec2              offset = ImGui::GetStyle().FramePadding * 2.0f;
     std::vector<ImVec2> convex;
-    ImRect preview_rect = rect;
+    ImRect              preview_rect = rect;
     if (check_slot(rect, slot::tab, convex)) {
       preview_rect = { cPos, ImVec2(cPos.x + cSize.x, cPos.y + cSize.y) };
       dock_slot = slot::tab;
@@ -739,13 +739,13 @@ namespace imguidock {
       const auto& style = ImGui::GetStyle();
 
       const ImVec2 title_label_size = ImGui::CalcTextSize(dockTitle.c_str(), NULL, true);
-      ImVec2 title_sz = ImGui::CalcItemSize(
+      ImVec2       title_sz = ImGui::CalcItemSize(
         ImVec2(0, tabbar_height),
         title_label_size.x + style.FramePadding.x * 2.0f,
         title_label_size.y + style.FramePadding.y * 2.0f);
 
       const ImVec2 close_label_size = ImGui::CalcTextSize("X", NULL, true);
-      ImVec2 close_sz = ImGui::CalcItemSize(
+      ImVec2       close_sz = ImGui::CalcItemSize(
         ImVec2(0, tabbar_height),
         close_label_size.x + style.FramePadding.x * 2.0f,
         close_label_size.y + style.FramePadding.y * 2.0f);

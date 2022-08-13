@@ -11,7 +11,7 @@
 namespace runtime {
   void physics_system::frame_update(delta_t dt) {
     auto& ecs = core::get_subsystem<runtime::entity_component_system>();
-    auto all_entities = ecs.all_entities();
+    auto  all_entities = ecs.all_entities();
     for (const auto entity : all_entities) {  // TODO:optimization
       auto rigidbody_comp = entity.get_component<rigidbody_component>().lock();
       if (rigidbody_comp) { rigidbody_comp->update(); }
@@ -24,7 +24,7 @@ namespace runtime {
 
   void physics_system::start() {
     auto& ecs = core::get_subsystem<runtime::entity_component_system>();
-    auto all_entities = ecs.all_entities();
+    auto  all_entities = ecs.all_entities();
     for (const auto entity : all_entities) {  // TODO: optimization
       auto rigidbody_comp = entity.get_component<rigidbody_component>().lock();
       auto transform_comp = entity.get_component<transform_component>().lock();

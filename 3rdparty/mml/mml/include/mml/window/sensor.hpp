@@ -1,36 +1,34 @@
 #ifndef MML_SENSOR_HPP
-#define MML_SENSOR_HPP
+  #define MML_SENSOR_HPP
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <mml/window/export.hpp>
-#include <array>
+  ////////////////////////////////////////////////////////////
+  // Headers
+  ////////////////////////////////////////////////////////////
+  #include <mml/window/export.hpp>
+  #include <array>
 
-namespace mml
-{
-////////////////////////////////////////////////////////////
-/// \brief Give access to the real-time state of the sensors
-///
-////////////////////////////////////////////////////////////
-class MML_WINDOW_API sensor
-{
-public:
-
+namespace mml {
+  ////////////////////////////////////////////////////////////
+  /// \brief Give access to the real-time state of the sensors
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_WINDOW_API sensor {
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief sensor type
     ///
     ////////////////////////////////////////////////////////////
-    enum type
-    {
-        accelerometer,    ///< Measures the raw acceleration (m/s^2)
-        gyroscope,        ///< Measures the raw rotation rates (degrees/s)
-        magnetometer,     ///< Measures the ambient magnetic field (micro-teslas)
-        gravity,          ///< Measures the direction and intensity of gravity, independent of device acceleration (m/s^2)
-        user_acceleration, ///< Measures the direction and intensity of device acceleration, independent of the gravity (m/s^2)
-        orientation,      ///< Measures the absolute 3D orientation (degrees)
+    enum type {
+      accelerometer,  ///< Measures the raw acceleration (m/s^2)
+      gyroscope,      ///< Measures the raw rotation rates (degrees/s)
+      magnetometer,   ///< Measures the ambient magnetic field (micro-teslas)
+      gravity,        ///< Measures the direction and intensity of gravity, independent of device
+                      ///< acceleration (m/s^2)
+      user_acceleration,  ///< Measures the direction and intensity of device acceleration,
+                          ///< independent of the gravity (m/s^2)
+      orientation,        ///< Measures the absolute 3D orientation (degrees)
 
-        count             ///< Keep last -- the total number of sensor types
+      count  ///< Keep last -- the total number of sensor types
     };
 
     ////////////////////////////////////////////////////////////
@@ -67,13 +65,11 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     static std::array<float, 3> get_value(type sensor);
-};
+  };
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_SENSOR_HPP
-
+#endif  // MML_SENSOR_HPP
 
 ////////////////////////////////////////////////////////////
 /// \class mml::sensor

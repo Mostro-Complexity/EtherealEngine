@@ -20,7 +20,7 @@ bool inspector_audio_source_component::inspect(
 
     if (data->has_binded_sound()) {
       float total_time = floorf(float(data->get_playing_duration().count()) * 100.0f) / 100.0f;
-      auto current_time = data->get_playing_offset();
+      auto  current_time = data->get_playing_offset();
       float cur = float(current_time.count());
 
       if (total_time > 0.0f) {

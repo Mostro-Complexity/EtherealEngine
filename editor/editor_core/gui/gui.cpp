@@ -2,11 +2,11 @@
 #include <vector>
 namespace gui {
   static std::vector<std::shared_ptr<void>> s_textures;
-  void Image(
-    texture_info info, const ImVec2& _size, const ImVec2& _uv0 /*= ImVec2(0.0f, 0.0f) */,
-    const ImVec2& _uv1 /*= ImVec2(1.0f, 1.0f) */,
-    const ImVec4& _tintCol /*= ImVec4(1.0f, 1.0f, 1.0f, 1.0f) */,
-    const ImVec4& _borderCol /*= ImVec4(0.0f, 0.0f, 0.0f, 0.0f) */) {
+  void                                      Image(
+                                         texture_info info, const ImVec2& _size, const ImVec2& _uv0 /*= ImVec2(0.0f, 0.0f) */,
+                                         const ImVec2& _uv1 /*= ImVec2(1.0f, 1.0f) */,
+                                         const ImVec4& _tintCol /*= ImVec4(1.0f, 1.0f, 1.0f, 1.0f) */,
+                                         const ImVec4& _borderCol /*= ImVec4(0.0f, 0.0f, 0.0f, 0.0f) */) {
     s_textures.push_back(info.texture);
 
     ImVec2 uv0 = _uv0;

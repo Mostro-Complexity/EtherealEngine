@@ -53,7 +53,7 @@ namespace uuids {
     }
 
   private:
-    engine_type generator_;
+    engine_type       generator_;
     distribution_type distribution_;
   };
 }  // namespace uuids

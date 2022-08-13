@@ -10,8 +10,8 @@ style_dock::style_dock(const std::string& dtitle, bool close_button, const ImVec
 }
 
 void style_dock::render(const ImVec2& /*unused*/) {
-  auto& style = get_gui_style();
-  auto& setup = style.setup;
+  auto&  style = get_gui_style();
+  auto&  setup = style.setup;
   ImVec4 rgb;
 
   auto& col_main_hue = setup.col_main_hue;

@@ -53,9 +53,9 @@ namespace mml {
       /// \brief joystick information and state
       ///
       struct item {
-        joystick_impl joystick;                   ///< joystick implementation
-        joystick_state state;                     ///< The current joystick state
-        joystick_caps capabilities;               ///< The joystick capabilities
+        joystick_impl            joystick;        ///< joystick implementation
+        joystick_state           state;           ///< The current joystick state
+        joystick_caps            capabilities;    ///< The joystick capabilities
         joystick::identification identification;  ///< The joystick identification
       };
 

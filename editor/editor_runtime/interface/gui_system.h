@@ -42,8 +42,8 @@ private:
   void platform_events(const window_info& info, const std::vector<mml::platform_event>&);
 
   std::map<uint32_t, ImGuiContext*> contexts_;
-  ImFontAtlas atlas_;
-  ImGuiContext* initial_context_ = nullptr;
+  ImFontAtlas                       atlas_;
+  ImGuiContext*                     initial_context_ = nullptr;
 };
 
 namespace gui {
@@ -81,13 +81,13 @@ struct gui_style {
     float frame_rounding = 0.0f;
   };
 
-  void reset_style();
-  void set_style_colors(const hsv_setup& _setup);
-  void load_style();
-  void save_style();
+  void             reset_style();
+  void             set_style_colors(const hsv_setup& _setup);
+  void             load_style();
+  void             save_style();
   static hsv_setup get_dark_style();
   static hsv_setup get_lighter_red();
-  hsv_setup setup;
+  hsv_setup        setup;
 };
 
 gui_style& get_gui_style();

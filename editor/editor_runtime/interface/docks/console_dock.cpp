@@ -47,7 +47,7 @@ void console_dock::render(const ImVec2&) {
     const char* item_cstr = pair_msg.first.c_str();
     if (!filter.PassFilter(item_cstr)) continue;
     const auto& colorization = console_log_->get_level_colorization(pair_msg.second);
-    ImVec4 col = { colorization[0], colorization[1], colorization[2], colorization[3] };
+    ImVec4      col = { colorization[0], colorization[1], colorization[2], colorization[3] };
     gui::PushStyleColor(ImGuiCol_Text, col);
     gui::TextWrapped("%s", item_cstr);
     gui::PopStyleColor();

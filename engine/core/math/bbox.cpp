@@ -531,9 +531,9 @@ namespace math {
     // source box. Begin by generating the plane itself. Note: We need
     // the edge vectors for later tests, so keep them around.
 
-    vec3 vEdge0 = v1 - v0;
-    vec3 vEdge1 = v2 - v1;
-    vec3 vNormal = glm::cross(vEdge0, vEdge1);
+    vec3  vEdge0 = v1 - v0;
+    vec3  vEdge1 = v2 - v1;
+    vec3  vNormal = glm::cross(vEdge0, vEdge1);
     float fPlaneDistance = -glm::dot(vNormal, v0);
 
     // Calculate near / far extreme points
@@ -568,7 +568,7 @@ namespace math {
     if (glm::dot(vNormal, vFarPoint - vCenter) + fPlaneDistance < 0.0f) { return false; }
 
     // AXISTEST macro required variables
-    vec3 vAbsEdge;
+    vec3  vAbsEdge;
     float fTemp0, fTemp1, fMin, fMax;
 #define AXISTEST(vEdge, vP0, vP1, nComponent0, nComponent1)                                        \
   fTemp0 = vEdge[nComponent1] * vP0[nComponent0] - vEdge[nComponent0] * vP0[nComponent1];          \
@@ -657,9 +657,9 @@ namespace math {
     // source box. Begin by generating the plane itself. Note: We need
     // the edge vectors for later tests, so keep them around.
 
-    vec3 vEdge0 = v1 - v0;
-    vec3 vEdge1 = v2 - v1;
-    vec3 vNormal = glm::cross(vEdge0, vEdge1);
+    vec3  vEdge0 = v1 - v0;
+    vec3  vEdge1 = v2 - v1;
+    vec3  vNormal = glm::cross(vEdge0, vEdge1);
     float fPlaneDistance = -glm::dot(vNormal, v0);
 
     // Calculate near / far extreme points
@@ -694,7 +694,7 @@ namespace math {
     if (glm::dot(vNormal, vFarPoint - vCenter) + fPlaneDistance < 0.0f) { return false; }
 
     // AXISTEST macro required variables
-    vec3 vAbsEdge;
+    vec3  vAbsEdge;
     float fTemp0, fTemp1, fMin, fMax;
 #define AXISTEST(vEdge, vP0, vP1, nComponent0, nComponent1)                                        \
   fTemp0 = vEdge[nComponent1] * vP0[nComponent0] - vEdge[nComponent0] * vP0[nComponent1];          \
@@ -859,12 +859,12 @@ namespace math {
     const auto x_axis = t.x_axis();
     const auto y_axis = t.y_axis();
     const auto z_axis = t.z_axis();
-    auto xa = x_axis * bounds.min.x;
-    auto xb = x_axis * bounds.max.x;
-    auto ya = y_axis * bounds.min.y;
-    auto yb = y_axis * bounds.max.y;
-    auto za = z_axis * bounds.min.z;
-    auto zb = z_axis * bounds.max.z;
+    auto       xa = x_axis * bounds.min.x;
+    auto       xb = x_axis * bounds.max.x;
+    auto       ya = y_axis * bounds.min.y;
+    auto       yb = y_axis * bounds.max.y;
+    auto       za = z_axis * bounds.min.z;
+    auto       zb = z_axis * bounds.max.z;
 
     return bbox(
       math::min(xa, xb) + math::min(ya, yb) + math::min(za, zb) + t.get_position(),

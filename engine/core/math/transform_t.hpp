@@ -35,17 +35,17 @@ namespace math {
     transform_t(const mat4_t& m);
 
     const vec3_t& get_position() const;
-    void set_position(const vec3_t& position);
+    void          set_position(const vec3_t& position);
 
     vec3_t get_rotation_euler() const;
-    void set_rotation_euler(const vec3_t& euler_angles);
+    void   set_rotation_euler(const vec3_t& euler_angles);
 
     const vec3_t& get_scale() const;
-    void set_scale(const vec3_t& scale);
+    void          set_scale(const vec3_t& scale);
 
     const quat_t& get_rotation() const;
-    void set_rotation(const quat_t& rotation);
-    void set_rotation(const vec3_t& x, const vec3_t& y, const vec3_t& z);
+    void          set_rotation(const quat_t& rotation);
+    void          set_rotation(const vec3_t& x, const vec3_t& y, const vec3_t& z);
 
     vec3_t x_axis() const;
     vec3_t y_axis() const;
@@ -67,8 +67,8 @@ namespace math {
     void translate_local(T x, T y, T z);
     void translate_local(const vec3_t& v);
 
-    bool is_equal(const transform_t& t) const;
-    bool is_equal(const transform_t& t, T tolerance) const;
+    bool   is_equal(const transform_t& t) const;
+    bool   is_equal(const transform_t& t, T tolerance) const;
     vec3_t transform_coord(const vec3_t& v) const;
     vec3_t inverse_transform_coord(const vec3_t& v) const;
     vec3_t transform_normal(const vec3_t& v) const;
@@ -87,7 +87,7 @@ namespace math {
     operator const mat4_t*() const;
     operator const typename mat4_t::value_type *() const;
 
-    transform_t operator*(const transform_t& t) const;
+    transform_t                      operator*(const transform_t& t) const;
     typename mat4_t::col_type const& operator[](typename mat4_t::length_type i) const {
       return get_matrix()[i];
     }
@@ -350,7 +350,7 @@ namespace math {
   inline typename transform_t<T, Q>::vec3_t
   transform_t<T, Q>::transform_coord(const typename transform_t::vec3_t& v, const transform_t& t) {
     const mat4_t& m = t.get_matrix();
-    vec4_t result = m * vec4_t{ v, 1.0f };
+    vec4_t        result = m * vec4_t{ v, 1.0f };
     result /= result.w;
     return result;
   }
@@ -359,8 +359,8 @@ namespace math {
   inline typename transform_t<T, Q>::vec3_t transform_t<T, Q>::inverse_transform_coord(
     const typename transform_t::vec3_t& v, const transform_t& t) {
     const mat4_t& m = t.get_matrix();
-    mat4_t im = glm::inverse(m);
-    vec3_t result = im * vec4_t{ v, 1.0f };
+    mat4_t        im = glm::inverse(m);
+    vec3_t        result = im * vec4_t{ v, 1.0f };
     return result;
   }
 
@@ -368,7 +368,7 @@ namespace math {
   inline typename transform_t<T, Q>::vec3_t
   transform_t<T, Q>::transform_normal(const typename transform_t::vec3_t& v, const transform_t& t) {
     const mat4_t& m = t.get_matrix();
-    vec4_t result = m * vec4_t{ v, 0.0f };
+    vec4_t        result = m * vec4_t{ v, 0.0f };
     result /= result.w;
     return result;
   }
@@ -377,8 +377,8 @@ namespace math {
   inline typename transform_t<T, Q>::vec3_t transform_t<T, Q>::inverse_transform_normal(
     const typename transform_t::vec3_t& v, const transform_t& t) {
     const mat4_t& m = t.get_matrix();
-    mat4_t im = glm::inverse(m);
-    vec3_t result = im * vec4_t{ v, 0.0f };
+    mat4_t        im = glm::inverse(m);
+    vec3_t        result = im * vec4_t{ v, 0.0f };
     return result;
   }
 

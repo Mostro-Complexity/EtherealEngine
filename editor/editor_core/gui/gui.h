@@ -16,8 +16,8 @@ namespace gui {
 
   struct texture_info {
     std::shared_ptr<void> texture;
-    bool is_rt = false;
-    bool is_origin_bl = false;
+    bool                  is_rt = false;
+    bool                  is_origin_bl = false;
   };
 
   // Helper function for passing Texture to ImGui::Image.

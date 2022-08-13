@@ -6,11 +6,9 @@
 #include <string>
 #include <vector>
 
-namespace audio
-{
+namespace audio {
 
-struct sound_data
-{
+  struct sound_data {
     //-----------------------------------------------------------------------------
     //  Name : convert_to_mono ()
     /// <summary>
@@ -33,5 +31,5 @@ struct sound_data
 
     /// data buffer of pcm sound stored in uint8_t buffer
     std::vector<std::uint8_t> data;
-};
-}
+  };
+}  // namespace audio

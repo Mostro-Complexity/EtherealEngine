@@ -2,8 +2,8 @@
 
 bool inspector_irect32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<irect32_t>();
-  bool changed = false;
+  auto        data = var.get_value<irect32_t>();
+  bool        changed = false;
   const char* namesLT[] = { "L", "T" };
   const char* namesRB[] = { "R", "B" };
 
@@ -26,8 +26,8 @@ bool inspector_irect32_t::inspect(
 
 bool inspector_urect32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<urect32_t>();
-  bool changed = false;
+  auto        data = var.get_value<urect32_t>();
+  bool        changed = false;
   const char* namesLT[] = { "L", "T" };
   const char* namesRB[] = { "R", "B" };
 
@@ -50,14 +50,14 @@ bool inspector_urect32_t::inspect(
 
 bool inspector_frect_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<frect_t>();
-  bool changed = false;
+  auto        data = var.get_value<frect_t>();
+  bool        changed = false;
   const char* namesLT[] = { "L", "T" };
   const char* namesRB[] = { "R", "B" };
 
   std::string format = "%.3f";
-  float min = 0.0f;
-  float max = 0.0f;
+  float       min = 0.0f;
+  float       max = 0.0f;
 
   auto format_var = get_metadata("format");
   if (format_var) format = format_var.to_string();
@@ -77,8 +77,8 @@ bool inspector_frect_t::inspect(
 
 bool inspector_ipoint32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<ipoint32_t>();
-  bool changed = false;
+  auto        data = var.get_value<ipoint32_t>();
+  bool        changed = false;
   const char* names[] = { "X", "Y" };
 
   std::int32_t min = 0;
@@ -99,8 +99,8 @@ bool inspector_ipoint32_t::inspect(
 
 bool inspector_upoint32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<upoint32_t>();
-  bool changed = false;
+  auto        data = var.get_value<upoint32_t>();
+  bool        changed = false;
   const char* names[] = { "X", "Y" };
 
   std::uint32_t min = 0;
@@ -121,13 +121,13 @@ bool inspector_upoint32_t::inspect(
 
 bool inspector_fpoint_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<fpoint_t>();
-  bool changed = false;
+  auto        data = var.get_value<fpoint_t>();
+  bool        changed = false;
   const char* names[] = { "X", "Y" };
 
   std::string format = "%.3f";
-  float min = 0.0f;
-  float max = 0.0f;
+  float       min = 0.0f;
+  float       max = 0.0f;
 
   auto format_var = get_metadata("format");
   if (format_var) format = format_var.to_string();
@@ -146,8 +146,8 @@ bool inspector_fpoint_t::inspect(
 
 bool inspector_isize32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<isize32_t>();
-  bool changed = false;
+  auto        data = var.get_value<isize32_t>();
+  bool        changed = false;
   const char* names[] = { "W", "H" };
 
   std::int32_t min = 0;
@@ -168,8 +168,8 @@ bool inspector_isize32_t::inspect(
 
 bool inspector_usize32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<usize32_t>();
-  bool changed = false;
+  auto        data = var.get_value<usize32_t>();
+  bool        changed = false;
   const char* names[] = { "W", "H" };
 
   std::uint32_t min = 0;
@@ -190,13 +190,13 @@ bool inspector_usize32_t::inspect(
 
 bool inspector_fsize_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<fsize_t>();
-  bool changed = false;
+  auto        data = var.get_value<fsize_t>();
+  bool        changed = false;
   const char* names[] = { "W", "H" };
 
   std::string format = "%.3f";
-  float min = 0.0f;
-  float max = 0.0f;
+  float       min = 0.0f;
+  float       max = 0.0f;
 
   auto format_var = get_metadata("format");
   if (format_var) format = format_var.to_string();
@@ -214,8 +214,8 @@ bool inspector_fsize_t::inspect(
 
 bool inspector_irange32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<irange32_t>();
-  bool changed = false;
+  auto        data = var.get_value<irange32_t>();
+  bool        changed = false;
   const char* names[] = { "Min", "Max" };
 
   std::int32_t min = 0;
@@ -236,8 +236,8 @@ bool inspector_irange32_t::inspect(
 
 bool inspector_urange32_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<urange32_t>();
-  bool changed = false;
+  auto        data = var.get_value<urange32_t>();
+  bool        changed = false;
   const char* names[] = { "Min", "Max" };
 
   std::uint32_t min = 0;
@@ -258,13 +258,13 @@ bool inspector_urange32_t::inspect(
 
 bool inspector_frange_t::inspect(
   rttr::variant& var, bool read_only, const meta_getter& get_metadata) {
-  auto data = var.get_value<frange_t>();
-  bool changed = false;
+  auto        data = var.get_value<frange_t>();
+  bool        changed = false;
   const char* names[] = { "Min", "Max" };
 
   std::string format = "%.3f";
-  float min = 0.0f;
-  float max = 0.0f;
+  float       min = 0.0f;
+  float       max = 0.0f;
 
   auto format_var = get_metadata("format");
   if (format_var) format = format_var.to_string();

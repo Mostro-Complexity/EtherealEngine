@@ -3,26 +3,23 @@
 #include "sound.h"
 #include "types.h"
 
-namespace audio
-{
-namespace priv
-{
-class source_impl;
-}
+namespace audio {
+  namespace priv {
+    class source_impl;
+  }
 
-//-----------------------------------------------------------------------------
-// Main Class Declarations
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//  Name : source (Class)
-/// <summary>
-/// Emitter of a sound. It can control 3d spatial and emitter properties like
-/// 3d position, 3d orientation, pitch, volume etc.
-/// </summary>
-//-----------------------------------------------------------------------------
-class source
-{
-public:
+  //-----------------------------------------------------------------------------
+  // Main Class Declarations
+  //-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //  Name : source (Class)
+  /// <summary>
+  /// Emitter of a sound. It can control 3d spatial and emitter properties like
+  /// 3d position, 3d orientation, pitch, volume etc.
+  /// </summary>
+  //-----------------------------------------------------------------------------
+  class source {
+  public:
     source();
     ~source();
     source(source&& rhs) noexcept;
@@ -221,8 +218,9 @@ public:
     /// </summary>
     //-----------------------------------------------------------------------------
     uintptr_t get_bound_sound_uid() const;
-private:
+
+  private:
     /// pimpl idiom
     std::unique_ptr<priv::source_impl> impl_;
-};
-}
+  };
+}  // namespace audio

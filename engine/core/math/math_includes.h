@@ -56,7 +56,7 @@ namespace math {
       // Tangent a
       if (Pza > 0) {
         float Pxa = -Pza * Nza / Nxa;
-        vec4 P = proj * vec4(axis.x * Pxa, axis.y * Pxa, Pza, 1);
+        vec4  P = proj * vec4(axis.x * Pxa, axis.y * Pxa, Pza, 1);
         float X = (dot(vec3(P), axis) / P.w + 1.0f * axis_sign) / 2.0f * axis_sign;
         if (is_negative_float(Nxa) ^ is_negative_float(axis_sign)) {
 
@@ -71,7 +71,7 @@ namespace math {
       // Tangent b
       if (Pzb > 0) {
         float Pxb = -Pzb * Nzb / Nxb;
-        vec4 P = proj * vec4(axis.x * Pxb, axis.y * Pxb, Pzb, 1);
+        vec4  P = proj * vec4(axis.x * Pxb, axis.y * Pxb, Pzb, 1);
         float X = (dot(vec3(P), axis) / P.w + 1.0f * axis_sign) / 2.0f * axis_sign;
         if (is_negative_float(Nxb) ^ is_negative_float(axis_sign)) {
           in_out_max_x =
@@ -193,10 +193,10 @@ namespace math {
 
     static std::uint32_t float4_to_u32(const vec4& in) {
       std::uint32_t out;
-      out = ((std::uint32_t) (saturate<float, highp>(in.x) * 255.0f));
-      out |= ((std::uint32_t) (saturate<float, highp>(in.y) * 255.0f)) << 8;
-      out |= ((std::uint32_t) (saturate<float, highp>(in.z) * 255.0f)) << 16;
-      out |= ((std::uint32_t) (saturate<float, highp>(in.w) * 255.0f)) << 24;
+      out = ((std::uint32_t)(saturate<float, highp>(in.x) * 255.0f));
+      out |= ((std::uint32_t)(saturate<float, highp>(in.y) * 255.0f)) << 8;
+      out |= ((std::uint32_t)(saturate<float, highp>(in.z) * 255.0f)) << 16;
+      out |= ((std::uint32_t)(saturate<float, highp>(in.w) * 255.0f)) << 24;
       return out;
     }
 
@@ -235,7 +235,7 @@ namespace math {
       }
 
       h = glm::mod(h, 1.0f) / (60.0f / 360.0f);
-      auto i = int(h);
+      auto  i = int(h);
       float f = h - float(i);
       float p = v * (1.0f - s);
       float q = v * (1.0f - s * f);

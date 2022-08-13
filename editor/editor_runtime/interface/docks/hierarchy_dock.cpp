@@ -29,8 +29,8 @@ namespace gui {
 
 math::bbox calc_bounds(runtime::entity entity) {
   const math::vec3 one = { 1.0f, 1.0f, 1.0f };
-  math::bbox bounds = math::bbox(-one, one);
-  auto ent_trans_comp = entity.get_component<transform_component>().lock();
+  math::bbox       bounds = math::bbox(-one, one);
+  auto             ent_trans_comp = entity.get_component<transform_component>().lock();
   if (ent_trans_comp) {
     auto target_pos = ent_trans_comp->get_position();
     bounds = math::bbox(target_pos - one, target_pos + one);
@@ -50,8 +50,8 @@ math::bbox calc_bounds(runtime::entity entity) {
 };
 
 void focus_entity_on_bounds(runtime::entity entity, const math::bbox& bounds) {
-  auto trans_comp = entity.get_component<transform_component>().lock();
-  auto camera_comp = entity.get_component<camera_component>().lock();
+  auto        trans_comp = entity.get_component<transform_component>().lock();
+  auto        camera_comp = entity.get_component<camera_component>().lock();
   const auto& cam = camera_comp->get_camera();
 
   math::vec3 cen = bounds.get_center();
@@ -82,9 +82,9 @@ enum class context_action {
 };
 
 static context_action check_context_menu(runtime::entity entity) {
-  auto& es = core::get_subsystem<editor::editing_system>();
-  auto& ecs = core::get_subsystem<runtime::entity_component_system>();
-  auto& editor_camera = es.camera;
+  auto&          es = core::get_subsystem<editor::editing_system>();
+  auto&          ecs = core::get_subsystem<runtime::entity_component_system>();
+  auto&          editor_camera = es.camera;
   context_action action = context_action::none;
   if (entity && entity != editor_camera) {
     if (gui::BeginPopupContextItem("Entity Context Menu")) {
@@ -146,8 +146,8 @@ static context_action check_context_menu(runtime::entity entity) {
             for (const auto& name : objects_name) {
               if (gui::MenuItem(name.c_str())) {
                 const auto id = "embedded:/" + string_utils::to_lower(name);
-                auto asset_future = am.load<mesh>(id);
-                model model;
+                auto       asset_future = am.load<mesh>(id);
+                model      model;
                 model.set_lod(asset_future.get(), 0);
 
                 auto object = ecs.create();
@@ -365,12 +365,12 @@ void hierarchy_dock::draw_entity(runtime::entity entity) {
   auto& es = core::get_subsystem<editor::editing_system>();
   auto& input = core::get_subsystem<runtime::input>();
   auto& selected = es.selection_data.object;
-  bool is_selected = false;
+  bool  is_selected = false;
   if (selected && selected.is_type<runtime::entity>()) {
     is_selected = selected.get_value<runtime::entity>() == entity;
   }
 
-  std::string name = entity.to_string();
+  std::string        name = entity.to_string();
   ImGuiTreeNodeFlags flags =
     0 | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_OpenOnArrow;
 
@@ -539,7 +539,7 @@ void hierarchy_dock::render(const ImVec2& /*unused*/) {
         0 | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_OpenOnArrow;
       // FIXME: draw scenes first
       std::uint32_t scene_index = 0;
-      auto s = scene(scene::id_t(scene_index));
+      auto          s = scene(scene::id_t(scene_index));
 
       gui::PushID(static_cast<int>(s.id().index()));
       gui::PushID(static_cast<int>(s.id().version()));

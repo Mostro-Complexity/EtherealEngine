@@ -24,7 +24,7 @@ namespace core {
 
         if (elapsed < duration_t(0)) { break; }
         duration_t sleep_time = (target_duration - elapsed);
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(sleep_time);
+        auto       ms = std::chrono::duration_cast<std::chrono::milliseconds>(sleep_time);
 
         if (sleep_time > std::chrono::microseconds(1000)) {
           if (ms.count() > 0) { sleep_time /= ms.count(); }

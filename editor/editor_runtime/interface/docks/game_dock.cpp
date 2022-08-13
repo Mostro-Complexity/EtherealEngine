@@ -22,10 +22,10 @@ void game_dock::render(const ImVec2&) {
         camera_comp.set_viewport_size(
           { static_cast<std::uint32_t>(size.x), static_cast<std::uint32_t>(size.y) });
         const auto& camera = camera_comp.get_camera();
-        auto& render_view = camera_comp.get_render_view();
+        auto&       render_view = camera_comp.get_render_view();
         const auto& viewport_size = camera.get_viewport_size();
-        const auto surface = render_view.get_output_fbo(viewport_size);
-        auto tex = surface->get_attachment(0).texture;
+        const auto  surface = render_view.get_output_fbo(viewport_size);
+        auto        tex = surface->get_attachment(0).texture;
         gui::Image(gui::get_info(tex), size);
       }
     });

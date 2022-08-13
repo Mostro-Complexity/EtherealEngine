@@ -43,7 +43,7 @@ namespace gfx {
     buffer.reserve(textures.size());
 
     usize32_t size = { 0, 0 };
-    auto ratio = backbuffer_ratio::Count;
+    auto      ratio = backbuffer_ratio::Count;
     for (auto& tex : textures) {
       ratio = tex.texture->ratio;
       size = { tex.texture->info.width, tex.texture->info.height };

@@ -1,23 +1,19 @@
 #ifndef MML_VIDEOMODE_HPP
-#define MML_VIDEOMODE_HPP
+  #define MML_VIDEOMODE_HPP
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <mml/window/export.hpp>
-#include <vector>
+  ////////////////////////////////////////////////////////////
+  // Headers
+  ////////////////////////////////////////////////////////////
+  #include <mml/window/export.hpp>
+  #include <vector>
 
-
-namespace mml
-{
-////////////////////////////////////////////////////////////
-/// \brief video_mode defines a video mode (width, height, bpp)
-///
-////////////////////////////////////////////////////////////
-class MML_WINDOW_API video_mode
-{
-public:
-
+namespace mml {
+  ////////////////////////////////////////////////////////////
+  /// \brief video_mode defines a video mode (width, height, bpp)
+  ///
+  ////////////////////////////////////////////////////////////
+  class MML_WINDOW_API video_mode {
+  public:
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
     ///
@@ -75,88 +71,86 @@ public:
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    unsigned int width;        ///< Video mode width, in pixels
-    unsigned int height;       ///< Video mode height, in pixels
-    unsigned int bits_per_pixel; ///< Video mode pixel depth, in bits per pixels
-};
+    unsigned int width;           ///< Video mode width, in pixels
+    unsigned int height;          ///< Video mode height, in pixels
+    unsigned int bits_per_pixel;  ///< Video mode pixel depth, in bits per pixels
+  };
 
-////////////////////////////////////////////////////////////
-/// \relates video_mode
-/// \brief Overload of == operator to compare two video modes
-///
-/// \param left  Left operand (a video mode)
-/// \param right Right operand (a video mode)
-///
-/// \return True if modes are equal
-///
-////////////////////////////////////////////////////////////
-MML_WINDOW_API bool operator ==(const video_mode& left, const video_mode& right);
+  ////////////////////////////////////////////////////////////
+  /// \relates video_mode
+  /// \brief Overload of == operator to compare two video modes
+  ///
+  /// \param left  Left operand (a video mode)
+  /// \param right Right operand (a video mode)
+  ///
+  /// \return True if modes are equal
+  ///
+  ////////////////////////////////////////////////////////////
+  MML_WINDOW_API bool operator==(const video_mode& left, const video_mode& right);
 
-////////////////////////////////////////////////////////////
-/// \relates video_mode
-/// \brief Overload of != operator to compare two video modes
-///
-/// \param left  Left operand (a video mode)
-/// \param right Right operand (a video mode)
-///
-/// \return True if modes are different
-///
-////////////////////////////////////////////////////////////
-MML_WINDOW_API bool operator !=(const video_mode& left, const video_mode& right);
+  ////////////////////////////////////////////////////////////
+  /// \relates video_mode
+  /// \brief Overload of != operator to compare two video modes
+  ///
+  /// \param left  Left operand (a video mode)
+  /// \param right Right operand (a video mode)
+  ///
+  /// \return True if modes are different
+  ///
+  ////////////////////////////////////////////////////////////
+  MML_WINDOW_API bool operator!=(const video_mode& left, const video_mode& right);
 
-////////////////////////////////////////////////////////////
-/// \relates video_mode
-/// \brief Overload of < operator to compare video modes
-///
-/// \param left  Left operand (a video mode)
-/// \param right Right operand (a video mode)
-///
-/// \return True if \a left is lesser than \a right
-///
-////////////////////////////////////////////////////////////
-MML_WINDOW_API bool operator <(const video_mode& left, const video_mode& right);
+  ////////////////////////////////////////////////////////////
+  /// \relates video_mode
+  /// \brief Overload of < operator to compare video modes
+  ///
+  /// \param left  Left operand (a video mode)
+  /// \param right Right operand (a video mode)
+  ///
+  /// \return True if \a left is lesser than \a right
+  ///
+  ////////////////////////////////////////////////////////////
+  MML_WINDOW_API bool operator<(const video_mode& left, const video_mode& right);
 
-////////////////////////////////////////////////////////////
-/// \relates video_mode
-/// \brief Overload of > operator to compare video modes
-///
-/// \param left  Left operand (a video mode)
-/// \param right Right operand (a video mode)
-///
-/// \return True if \a left is greater than \a right
-///
-////////////////////////////////////////////////////////////
-MML_WINDOW_API bool operator >(const video_mode& left, const video_mode& right);
+  ////////////////////////////////////////////////////////////
+  /// \relates video_mode
+  /// \brief Overload of > operator to compare video modes
+  ///
+  /// \param left  Left operand (a video mode)
+  /// \param right Right operand (a video mode)
+  ///
+  /// \return True if \a left is greater than \a right
+  ///
+  ////////////////////////////////////////////////////////////
+  MML_WINDOW_API bool operator>(const video_mode& left, const video_mode& right);
 
-////////////////////////////////////////////////////////////
-/// \relates video_mode
-/// \brief Overload of <= operator to compare video modes
-///
-/// \param left  Left operand (a video mode)
-/// \param right Right operand (a video mode)
-///
-/// \return True if \a left is lesser or equal than \a right
-///
-////////////////////////////////////////////////////////////
-MML_WINDOW_API bool operator <=(const video_mode& left, const video_mode& right);
+  ////////////////////////////////////////////////////////////
+  /// \relates video_mode
+  /// \brief Overload of <= operator to compare video modes
+  ///
+  /// \param left  Left operand (a video mode)
+  /// \param right Right operand (a video mode)
+  ///
+  /// \return True if \a left is lesser or equal than \a right
+  ///
+  ////////////////////////////////////////////////////////////
+  MML_WINDOW_API bool operator<=(const video_mode& left, const video_mode& right);
 
-////////////////////////////////////////////////////////////
-/// \relates video_mode
-/// \brief Overload of >= operator to compare video modes
-///
-/// \param left  Left operand (a video mode)
-/// \param right Right operand (a video mode)
-///
-/// \return True if \a left is greater or equal than \a right
-///
-////////////////////////////////////////////////////////////
-MML_WINDOW_API bool operator >=(const video_mode& left, const video_mode& right);
+  ////////////////////////////////////////////////////////////
+  /// \relates video_mode
+  /// \brief Overload of >= operator to compare video modes
+  ///
+  /// \param left  Left operand (a video mode)
+  /// \param right Right operand (a video mode)
+  ///
+  /// \return True if \a left is greater or equal than \a right
+  ///
+  ////////////////////////////////////////////////////////////
+  MML_WINDOW_API bool operator>=(const video_mode& left, const video_mode& right);
 
-} // namespace mml
+}  // namespace mml
 
-
-#endif // MML_VIDEOMODE_HPP
-
+#endif  // MML_VIDEOMODE_HPP
 
 ////////////////////////////////////////////////////////////
 /// \class mml::video_mode

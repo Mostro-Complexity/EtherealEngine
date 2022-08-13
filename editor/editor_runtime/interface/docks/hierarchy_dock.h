@@ -12,6 +12,6 @@ struct hierarchy_dock : public imguidock::dock {
   void draw_entity(runtime::entity entity);
 
 private:
-  bool edit_label_ = false;
+  bool    edit_label_ = false;
   ImGuiID id_ = 0;
 };

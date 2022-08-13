@@ -8,10 +8,9 @@
 #include <mml/window/sensor.hpp>
 
 #if defined(MML_SYSTEM_WINDOWS)
-    #include <mml/window/win32/sensor_impl.hpp>
+  #include <mml/window/win32/sensor_impl.hpp>
 #elif defined(MML_SYSTEM_LINUX) || defined(MML_SYSTEM_FREEBSD)
-    #include <mml/window/unix/sensor_impl.hpp>
+  #include <mml/window/unix/sensor_impl.hpp>
 #endif
 
-
-#endif // MML_SENSORIMPL_HPP
+#endif  // MML_SENSORIMPL_HPP

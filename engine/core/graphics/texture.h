@@ -76,7 +76,7 @@ namespace gfx {
     //-----------------------------------------------------------------------------
     texture(
       std::uint16_t _size, bool _hasMips, std::uint16_t _numLayers, texture_format _format,
-      std::uint64_t _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE,
+      std::uint64_t      _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE,
       const memory_view* _mem = nullptr);
 
     //-----------------------------------------------------------------------------

@@ -81,9 +81,9 @@ math::bbox camera::get_local_bounding_box() {
       far_clip_);
   }
 
-  float spread = far_clip_ - near_clip_;
+  float      spread = far_clip_ - near_clip_;
   math::vec3 center = { 0.0f, 0.0f, (far_clip_ + near_clip_) * 0.5f };
-  float orthographicSize = get_ortho_size();
+  float      orthographicSize = get_ortho_size();
   math::vec3 size = { orthographicSize * 2.0f * aspect_ratio_, orthographicSize * 2.0f, spread };
   return math::bbox(center - (size / 2.0f), center + (size / 2.0f));
 }
@@ -114,7 +114,7 @@ const math::transform& camera::get_projection() const {
   if (get_projection_mode() == projection_mode::perspective) {
     if (projection_dirty_) {
       // Generate the updated perspective projection matrix
-      float fov_radians = math::radians<float>(get_fov());
+      float             fov_radians = math::radians<float>(get_fov());
       static const auto perspective_ =
         gfx::is_homogeneous_depth() ? math::perspectiveNO<float> : math::perspectiveZO<float>;
 
@@ -142,8 +142,8 @@ const math::transform& camera::get_projection() const {
   else if (get_projection_mode() == projection_mode::orthographic) {
     if (projection_dirty_ || aspect_dirty_) {
       // Generate the updated orthographic projection matrix
-      float zoom = get_zoom_factor();
-      const frect_t rect = { -float(viewport_size_.width) / 2.0f,
+      float             zoom = get_zoom_factor();
+      const frect_t     rect = { -float(viewport_size_.width) / 2.0f,
                              float(viewport_size_.height) / 2.0f,
                              float(viewport_size_.width) / 2.0f,
                              -float(viewport_size_.height) / 2.0f };
@@ -478,7 +478,7 @@ float camera::estimate_zoom_factor(const math::vec3& world_pos, float max_val) c
   // New Zoom factor is based on the distance to this position
   // along the camera's look vector.
   math::vec3 view_pos = math::transform::transform_coord(world_pos, get_view());
-  float distance = view_pos.z / (float(viewport_size_.height) * (45.0f / get_fov()));
+  float      distance = view_pos.z / (float(viewport_size_.height) * (45.0f / get_fov()));
   return std::min<float>(max_val, distance);
 }
 
@@ -522,8 +522,8 @@ void camera::set_aa_data(
       //   ..B
       //   .C.
       // Rolling circle pattern (A,B,C).
-      float SamplesX[] = { -2.0f / 3.0f, 2.0f / 3.0f, 0.0f / 3.0f };
-      float SamplesY[] = { -2.0f / 3.0f, 0.0f / 3.0f, 2.0f / 3.0f };
+      float         SamplesX[] = { -2.0f / 3.0f, 2.0f / 3.0f, 0.0f / 3.0f };
+      float         SamplesY[] = { -2.0f / 3.0f, 0.0f / 3.0f, 2.0f / 3.0f };
       std::uint32_t Index = current_subpixel_index;
       SampleX = SamplesX[Index];
       SampleY = SamplesY[Index];
@@ -536,8 +536,8 @@ void camera::set_aa_data(
       //   W...
       //   ..S.
       // Rolling circle pattern (N,E,S,W).
-      float SamplesX[] = { -2.0f / 16.0f, 6.0f / 16.0f, 2.0f / 16.0f, -6.0f / 16.0f };
-      float SamplesY[] = { -6.0f / 16.0f, -2.0f / 16.0f, 6.0f / 16.0f, 2.0f / 16.0f };
+      float         SamplesX[] = { -2.0f / 16.0f, 6.0f / 16.0f, 2.0f / 16.0f, -6.0f / 16.0f };
+      float         SamplesY[] = { -6.0f / 16.0f, -2.0f / 16.0f, 6.0f / 16.0f, 2.0f / 16.0f };
       std::uint32_t Index = current_subpixel_index;
       SampleX = SamplesX[Index];
       SampleY = SamplesY[Index];
@@ -584,10 +584,10 @@ camera camera::get_face_camera(uint32_t face, const math::transform& transform) 
 
   // Configurable axis vectors used to construct view matrices. In the
   // case of the omni light, we align all frustums to the world axes.
-  math::vec3 X(1, 0, 0);
-  math::vec3 Y(0, 1, 0);
-  math::vec3 Z(0, 0, 1);
-  math::vec3 Zero(0, 0, 0);
+  math::vec3      X(1, 0, 0);
+  math::vec3      Y(0, 1, 0);
+  math::vec3      Z(0, 0, 1);
+  math::vec3      Zero(0, 0, 0);
   math::transform t;
   // Generate the correct view matrix for the frustum
 

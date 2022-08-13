@@ -112,13 +112,13 @@ namespace fs {
       entries_.clear();
 
       fs::error_code err;
-      iterator_t it(path_, err);
+      iterator_t     it(path_, err);
       for (const auto& p : it) {
         entries_.emplace_back();
         auto& cache_entry = entries_.back();
         cache_entry.entry = p;
         const auto& absolute_path = cache_entry.entry.path();
-        auto filename = absolute_path.filename();
+        auto        filename = absolute_path.filename();
         cache_entry.protocol_path = fs::convert_to_protocol(absolute_path).generic_string();
         cache_entry.filename = absolute_path.filename().string();
         cache_entry.extension = filename.extension().string();
@@ -157,10 +157,10 @@ namespace fs {
 
     struct cache_entry {
       directory_entry entry;
-      std::string filename;
-      std::string stem;
-      std::string extension;
-      std::string protocol_path;
+      std::string     filename;
+      std::string     stem;
+      std::string     extension;
+      std::string     protocol_path;
     };
 
   private:

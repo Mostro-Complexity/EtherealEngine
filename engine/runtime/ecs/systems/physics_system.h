@@ -44,10 +44,10 @@ namespace runtime {
     void start();
 
   private:
-    physics::default_collision_configuration collision_configuration_;
-    physics::collision_dispatcher dispatcher_;
-    physics::dbv_broadphase broadphase_;
+    physics::default_collision_configuration      collision_configuration_;
+    physics::collision_dispatcher                 dispatcher_;
+    physics::dbv_broadphase                       broadphase_;
     physics::sequential_impulse_constraint_solver solver_;
-    physics::discrete_dynamics_world world_;
+    physics::discrete_dynamics_world              world_;
   };
 }  // namespace runtime

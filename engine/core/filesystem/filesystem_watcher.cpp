@@ -4,12 +4,12 @@
 namespace fs {
   using namespace std::literals;
 
-  static void log_path(const fs::path& /*unused*/) {}
+  static void                         log_path(const fs::path& /*unused*/) {}
   static std::pair<path, std::string> get_path_filter_pair(const fs::path& path) {
     // extract wild card and parent path
     std::string key = path.string();
-    fs::path p = path;
-    size_t wildCardPos = key.find('*');
+    fs::path    p = path;
+    size_t      wildCardPos = key.find('*');
     std::string filter;
     if (wildCardPos != std::string::npos) {
       filter = path.filename().string();
@@ -27,20 +27,20 @@ namespace fs {
     const std::function<bool(const fs::path&)>& visitor) {
     std::pair<fs::path, std::string> path_filter = get_path_filter_pair(path);
     if (!path_filter.second.empty()) {
-      std::string full = (path_filter.first / path_filter.second).string();
-      size_t wildcard_pos = full.find('*');
-      std::string before = full.substr(0, wildcard_pos);
-      std::string after = full.substr(wildcard_pos + 1);
+      std::string            full = (path_filter.first / path_filter.second).string();
+      size_t                 wildcard_pos = full.find('*');
+      std::string            before = full.substr(0, wildcard_pos);
+      std::string            after = full.substr(wildcard_pos + 1);
       fs::directory_iterator end;
-      fs::error_code err;
+      fs::error_code         err;
       if (visit_empty && fs::is_empty(path_filter.first, err)) {
         visitor(path_filter.first);
       } else if (fs::exists(path_filter.first, err)) {
         const auto iterate = [&](auto& it) {
           for (const auto& entry : it) {
             std::string current = entry.path().string();
-            size_t before_pos = current.find(before);
-            size_t after_pos = current.find(after);
+            size_t      before_pos = current.find(before);
+            size_t      after_pos = current.find(after);
             if (
               (before_pos != std::string::npos || before.empty())
               && (after_pos != std::string::npos || after.empty())) {
@@ -78,8 +78,8 @@ namespace fs {
         recursive_(recursive) {
       root_ = path;
       std::vector<filesystem_watcher::entry> entries;
-      std::vector<size_t> created;
-      std::vector<size_t> modified;
+      std::vector<size_t>                    created;
+      std::vector<size_t>                    modified;
       // make sure we store all initial write time
       if (!filter_.empty()) {
         visit_wild_card_path(
@@ -112,8 +112,8 @@ namespace fs {
     void watch() {
 
       std::vector<filesystem_watcher::entry> entries;
-      std::vector<size_t> created;
-      std::vector<size_t> modified;
+      std::vector<size_t>                    created;
+      std::vector<size_t>                    modified;
       // otherwise we check the whole parent directory
       if (!filter_.empty()) {
         visit_wild_card_path(
@@ -140,7 +140,7 @@ namespace fs {
 
       auto it = std::begin(entries_);
       while (it != std::end(entries_)) {
-        auto& fi = it->second;
+        auto&          fi = it->second;
         fs::error_code err;
         if (!fs::exists(fi.path, err)) {
           bool was_removed = true;
@@ -185,13 +185,13 @@ namespace fs {
       const fs::path& path, std::vector<filesystem_watcher::entry>& modifications,
       std::vector<size_t>& created, std::vector<size_t>& modified) {
       // get the last modification time
-      fs::error_code err;
-      auto time = fs::last_write_time(path, err);
-      auto size = fs::file_size(path, err);
+      fs::error_code  err;
+      auto            time = fs::last_write_time(path, err);
+      auto            size = fs::file_size(path, err);
       fs::file_status status = fs::status(path, err);
       // add a new modification time to the map
       std::string key = path.string();
-      auto it = entries_.find(key);
+      auto        it = entries_.find(key);
       if (it != entries_.end()) {
         auto& fi = it->second;
 
@@ -334,7 +334,7 @@ namespace fs {
     // add a new watcher
     if (list_callback) {
       std::string filter;
-      fs::path p = path;
+      fs::path    p = path;
       // try to see if there's a match for the wild card
       if (path.string().find('*') != std::string::npos) {
         std::pair<fs::path, std::string> path_filter =

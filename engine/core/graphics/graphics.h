@@ -536,9 +536,9 @@ namespace gfx {
 
   void flush();
 
-  bool is_origin_bottom_left();
-  bool is_homogeneous_depth();
-  float get_half_texel();
+  bool          is_origin_bottom_left();
+  bool          is_homogeneous_depth();
+  float         get_half_texel();
   std::uint32_t get_max_blend_transforms();
 
   std::uint64_t screen_quad(
@@ -549,5 +549,5 @@ namespace gfx {
   void get_size_from_ratio(backbuffer_ratio _ratio, std::uint16_t& _width, std::uint16_t& _height);
 
   const std::string& get_renderer_filename_extension();
-  bool is_supported(uint64_t flag);
+  bool               is_supported(uint64_t flag);
 }  // namespace gfx

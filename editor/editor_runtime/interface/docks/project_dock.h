@@ -15,7 +15,7 @@ private:
   void import();
 
   fs::directory_cache cache_;
-  fs::path cache_path_with_protocol_;
-  fs::path root_;
-  float scale_ = 0.75f;
+  fs::path            cache_path_with_protocol_;
+  fs::path            root_;
+  float               scale_ = 0.75f;
 };

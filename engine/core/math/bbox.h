@@ -29,31 +29,31 @@ namespace math {
     // Public Methods
     //-------------------------------------------------------------------------
     plane get_plane(volume_plane::e side) const;
-    void get_plane_points(volume_plane::e side, vec3 points_out[]) const;
+    void  get_plane_points(volume_plane::e side, vec3 points_out[]) const;
     bbox& from_points(
       const char* point_buffer, unsigned int point_count, unsigned int point_stride,
       bool reset = true);
     bbox& from_sphere(const vec3& center, float radius);
-    bool intersect(const bbox& bounds) const;
-    bool intersect(const bbox& bounds, bool& contained) const;
-    bool intersect(const bbox& bounds, bbox& intersection) const;
-    bool intersect(const bbox& bounds, const vec3& tolerance) const;
+    bool  intersect(const bbox& bounds) const;
+    bool  intersect(const bbox& bounds, bool& contained) const;
+    bool  intersect(const bbox& bounds, bbox& intersection) const;
+    bool  intersect(const bbox& bounds, const vec3& tolerance) const;
     bool
     intersect(const vec3& origin, const vec3& velocity, float& t, bool restrict_range = true) const;
     bool
     intersect(const vec3& v0, const vec3& v1, const vec3& v2, const bbox& triangle_bounds) const;
-    bool intersect(const vec3& v0, const vec3& v1, const vec3& v2) const;
-    bool contains_point(const vec3& point) const;
-    bool contains_point(const vec3& point, const vec3& tolerance) const;
-    bool contains_point(const vec3& point, float tolerance) const;
-    vec3 closest_point(const vec3& source_point) const;
-    void validate();
-    void reset();
-    bbox& mul(const transform& t);
-    void inflate(float amount);
-    void inflate(const vec3& amount);
-    bool is_populated() const;
-    bool is_degenerate() const;
+    bool         intersect(const vec3& v0, const vec3& v1, const vec3& v2) const;
+    bool         contains_point(const vec3& point) const;
+    bool         contains_point(const vec3& point, const vec3& tolerance) const;
+    bool         contains_point(const vec3& point, float tolerance) const;
+    vec3         closest_point(const vec3& source_point) const;
+    void         validate();
+    void         reset();
+    bbox&        mul(const transform& t);
+    void         inflate(float amount);
+    void         inflate(const vec3& amount);
+    bool         is_populated() const;
+    bool         is_degenerate() const;
     inline float width() const { return max.x - min.x; }
     inline float height() const { return max.y - min.y; }
     inline float depth() const { return max.z - min.z; }
@@ -66,13 +66,13 @@ namespace math {
     //-------------------------------------------------------------------------
     // Public Operators
     //-------------------------------------------------------------------------
-    bbox operator*(float scale) const;
+    bbox  operator*(float scale) const;
     bbox& operator+=(const vec3& shift);
     bbox& operator-=(const vec3& shift);
     bbox& operator*=(const transform& t);
     bbox& operator*=(float scale);
-    bool operator!=(const bbox& bounds) const;
-    bool operator==(const bbox& bounds) const;
+    bool  operator!=(const bbox& bounds) const;
+    bool  operator==(const bbox& bounds) const;
 
     //-------------------------------------------------------------------------
     // Public Inline Methods

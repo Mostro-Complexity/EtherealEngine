@@ -29,7 +29,7 @@ void Tooltip(const std::string& tooltip) {
 }
 property_layout::property_layout(const rttr::property& prop, bool columns /*= true*/) {
   std::string pretty_name = prop.get_name().to_string();
-  auto meta_pretty_name = prop.get_metadata("pretty_name");
+  auto        meta_pretty_name = prop.get_metadata("pretty_name");
   if (meta_pretty_name) { pretty_name = meta_pretty_name.get_value<std::string>(); }
 
   if (columns) {
