@@ -123,19 +123,19 @@ void imgui_handle_event(const mml::platform_event& event) {
   }
 
   if (event.type == mml::platform_event::key_pressed) {
-    io.KeysDown[event.key.code] = true;
-    io.KeyAlt = event.key.alt;
-    io.KeyCtrl = event.key.control;
-    io.KeyShift = event.key.shift;
-    io.KeySuper = event.key.system;
+    io.AddKeyEvent(event.key.code, true); // TODO: virtual key code µ½imguiµÄÓ³Éä
+    io.AddKeyEvent(ImGuiKey_LeftAlt, event.key.alt);
+    io.AddKeyEvent(ImGuiKey_LeftCtrl, event.key.control);
+    io.AddKeyEvent(ImGuiKey_LeftShift, event.key.shift);
+    io.AddKeyEvent(ImGuiKey_LeftSuper, event.key.system);
   }
 
   if (event.type == mml::platform_event::key_released) {
-    io.KeysDown[event.key.code] = false;
-    io.KeyAlt = event.key.alt;
-    io.KeyCtrl = event.key.control;
-    io.KeyShift = event.key.shift;
-    io.KeySuper = event.key.system;
+    io.AddKeyEvent(event.key.code, false);
+    io.AddKeyEvent(ImGuiKey_LeftAlt, event.key.alt);
+    io.AddKeyEvent(ImGuiKey_LeftCtrl, event.key.control);
+    io.AddKeyEvent(ImGuiKey_LeftShift, event.key.shift);
+    io.AddKeyEvent(ImGuiKey_LeftSuper, event.key.system);
   }
 
   if (event.type == mml::platform_event::mouse_wheel_scrolled) {
@@ -200,7 +200,7 @@ void imgui_frame_begin() { gui::CleanupTextures(); }
 void imgui_set_context(ImGuiContext* context) {
   ImGuiContext* last_context = gui::GetCurrentContext();
   if (last_context != nullptr && last_context != context) {
-    std::memcpy(&context->Style, &last_context->Style, sizeof(ImGuiStyle));
+    std::memcpy(&context->Style, &last_context->Style, sizeof(context->Style));
     std::memcpy(&context->IO.KeyMap, &last_context->IO.KeyMap, sizeof(last_context->IO.KeyMap));
     std::memcpy(
       &context->IO.NavInputs, &last_context->IO.NavInputs, sizeof(last_context->IO.NavInputs));
@@ -293,30 +293,30 @@ void imgui_init() {
     fs_ocornut_imgui);
 
   ImGuiIO& io = gui::GetIO();
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-  io.IniFilename = nullptr;
-  // init keyboard mapping
-  io.KeyMap[ImGuiKey_Tab] = mml::keyboard::Tab;
-  io.KeyMap[ImGuiKey_LeftArrow] = mml::keyboard::Left;
-  io.KeyMap[ImGuiKey_RightArrow] = mml::keyboard::Right;
-  io.KeyMap[ImGuiKey_UpArrow] = mml::keyboard::Up;
-  io.KeyMap[ImGuiKey_DownArrow] = mml::keyboard::Down;
-  io.KeyMap[ImGuiKey_PageUp] = mml::keyboard::PageUp;
-  io.KeyMap[ImGuiKey_PageDown] = mml::keyboard::PageDown;
-  io.KeyMap[ImGuiKey_Home] = mml::keyboard::Home;
-  io.KeyMap[ImGuiKey_End] = mml::keyboard::End;
-  io.KeyMap[ImGuiKey_Insert] = mml::keyboard::Insert;
-  io.KeyMap[ImGuiKey_Delete] = mml::keyboard::Delete;
-  io.KeyMap[ImGuiKey_Backspace] = mml::keyboard::Backspace;
-  io.KeyMap[ImGuiKey_Space] = mml::keyboard::Space;
-  io.KeyMap[ImGuiKey_Enter] = mml::keyboard::Enter;
-  io.KeyMap[ImGuiKey_Escape] = mml::keyboard::Escape;
-  io.KeyMap[ImGuiKey_A] = mml::keyboard::A;
-  io.KeyMap[ImGuiKey_C] = mml::keyboard::C;
-  io.KeyMap[ImGuiKey_V] = mml::keyboard::V;
-  io.KeyMap[ImGuiKey_X] = mml::keyboard::X;
-  io.KeyMap[ImGuiKey_Y] = mml::keyboard::Y;
-  io.KeyMap[ImGuiKey_Z] = mml::keyboard::Z;
+  //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  //io.IniFilename = nullptr;
+  //// init keyboard mapping
+  //io.KeyMap[ImGuiKey_Tab] = mml::keyboard::Tab;
+  //io.KeyMap[ImGuiKey_LeftArrow] = mml::keyboard::Left;
+  //io.KeyMap[ImGuiKey_RightArrow] = mml::keyboard::Right;
+  //io.KeyMap[ImGuiKey_UpArrow] = mml::keyboard::Up;
+  //io.KeyMap[ImGuiKey_DownArrow] = mml::keyboard::Down;
+  //io.KeyMap[ImGuiKey_PageUp] = mml::keyboard::PageUp;
+  //io.KeyMap[ImGuiKey_PageDown] = mml::keyboard::PageDown;
+  //io.KeyMap[ImGuiKey_Home] = mml::keyboard::Home;
+  //io.KeyMap[ImGuiKey_End] = mml::keyboard::End;
+  //io.KeyMap[ImGuiKey_Insert] = mml::keyboard::Insert;
+  //io.KeyMap[ImGuiKey_Delete] = mml::keyboard::Delete;
+  //io.KeyMap[ImGuiKey_Backspace] = mml::keyboard::Backspace;
+  //io.KeyMap[ImGuiKey_Space] = mml::keyboard::Space;
+  //io.KeyMap[ImGuiKey_Enter] = mml::keyboard::Enter;
+  //io.KeyMap[ImGuiKey_Escape] = mml::keyboard::Escape;
+  //io.KeyMap[ImGuiKey_A] = mml::keyboard::A;
+  //io.KeyMap[ImGuiKey_C] = mml::keyboard::C;
+  //io.KeyMap[ImGuiKey_V] = mml::keyboard::V;
+  //io.KeyMap[ImGuiKey_X] = mml::keyboard::X;
+  //io.KeyMap[ImGuiKey_Y] = mml::keyboard::Y;
+  //io.KeyMap[ImGuiKey_Z] = mml::keyboard::Z;
 
   std::uint8_t* data = nullptr;
   int width = 0;

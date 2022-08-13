@@ -4,6 +4,9 @@ project(mml)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Macros.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake)
 
+# Set cpp standard
+set(CMAKE_CXX_STANDARD 20)
+
 # CMake's built-in Android support requires 3.7.0
 if(CMAKE_SYSTEM_NAME MATCHES "Android")
     cmake_minimum_required(VERSION 3.7.2)
