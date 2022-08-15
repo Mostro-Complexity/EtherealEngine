@@ -371,13 +371,13 @@ namespace mml {
         SetForegroundWindow(_handle);
       } else {
         // Different process: don't steal focus, but create a taskbar notification ("flash")
-        FLASHWINFO info;
-        info.cbSize = sizeof(info);
-        info.hwnd = _handle;
-        info.dwFlags = FLASHW_TRAY;
-        info.dwTimeout = 0;
-        info.uCount = 3;
-
+        FLASHWINFO info{
+          .cbSize = sizeof(info),
+          .hwnd = _handle,
+          .dwFlags = FLASHW_TRAY,
+          .uCount = 3,
+          .dwTimeout = 0,
+        };
         FlashWindowEx(&info);
       }
     }
@@ -385,27 +385,29 @@ namespace mml {
     bool window_impl_win32::has_focus() const { return _handle == GetForegroundWindow(); }
 
     void window_impl_win32::register_window_class() {
-      WNDCLASSW windowClass;
-      windowClass.style = 0;
-      windowClass.lpfnWndProc = &window_impl_win32::global_on_event;
-      windowClass.cbClsExtra = 0;
-      windowClass.cbWndExtra = 0;
-      windowClass.hInstance = GetModuleHandleW(NULL);
-      windowClass.hIcon = NULL;
-      windowClass.hCursor = 0;
-      windowClass.hbrBackground = 0;
-      windowClass.lpszMenuName = NULL;
-      windowClass.lpszClassName = className;
+      WNDCLASSW windowClass{
+        .style = 0,
+        .lpfnWndProc = &window_impl_win32::global_on_event,
+        .cbClsExtra = 0,
+        .cbWndExtra = 0,
+        .hInstance = GetModuleHandleW(nullptr),
+        .hIcon = nullptr,
+        .hCursor = 0,
+        .hbrBackground = 0,
+        .lpszMenuName = nullptr,
+        .lpszClassName = className,
+      };
       RegisterClassW(&windowClass);
     }
 
     void window_impl_win32::switch_to_fullscreen(const video_mode& mode) {
-      DEVMODEW devMode;
-      devMode.dmSize = sizeof(devMode);
-      devMode.dmPelsWidth = mode.width;
-      devMode.dmPelsHeight = mode.height;
-      devMode.dmBitsPerPel = mode.bits_per_pixel;
-      devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
+      DEVMODEW devMode{
+        .dmSize = sizeof(devMode),
+        .dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL,
+        .dmBitsPerPel = mode.bits_per_pixel,
+        .dmPelsWidth = mode.width,
+        .dmPelsHeight = mode.height,
+      };
 
       // Apply fullscreen mode
       if (ChangeDisplaySettingsW(&devMode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL) {
@@ -443,11 +445,12 @@ namespace mml {
     }
 
     void window_impl_win32::set_tracking(bool track) {
-      TRACKMOUSEEVENT mouseEvent;
-      mouseEvent.cbSize = sizeof(TRACKMOUSEEVENT);
-      mouseEvent.dwFlags = track ? TME_LEAVE : TME_CANCEL;
-      mouseEvent.hwndTrack = _handle;
-      mouseEvent.dwHoverTime = HOVER_DEFAULT;
+      TRACKMOUSEEVENT mouseEvent{
+        .cbSize = sizeof(TRACKMOUSEEVENT),
+        .dwFlags = track ? TME_LEAVE : TME_CANCEL,
+        .hwndTrack = _handle,
+        .dwHoverTime = HOVER_DEFAULT,
+      };
       TrackMouseEvent(&mouseEvent);
     }
 
@@ -484,9 +487,7 @@ namespace mml {
 
       // Close event
       case WM_CLOSE: {
-        platform_event event;
-        event.type = platform_event::closed;
-        push_event(event);
+        push_event(platform_event{ .type = platform_event::closed });
         break;
       }
 
@@ -498,11 +499,8 @@ namespace mml {
           _last_size = get_size();
 
           // Push a resize event
-          platform_event event;
-          event.type = platform_event::resized;
-          event.size.width = _last_size[0];
-          event.size.height = _last_size[1];
-          push_event(event);
+          push_event(platform_event{ .type = platform_event::resized,
+                                     .size{ .width = _last_size[0], .height = _last_size[1] } });
 
           // Restore/update cursor grabbing
           grab_cursor(_cursor_grabbed);
@@ -527,11 +525,13 @@ namespace mml {
           _last_size = get_size();
 
           // Push a resize event
-          platform_event event;
-          event.type = platform_event::resized;
-          event.size.width = _last_size[0];
-          event.size.height = _last_size[1];
-          push_event(event);
+          push_event(platform_event{
+            .type = platform_event::resized,
+            .size{
+              .width = _last_size[0],
+              .height = _last_size[1],
+            },
+          });
         }
 
         // Restore/update cursor grabbing
@@ -554,9 +554,7 @@ namespace mml {
         // Restore cursor grabbing
         grab_cursor(_cursor_grabbed);
 
-        platform_event event;
-        event.type = platform_event::gained_focus;
-        push_event(event);
+        push_event(platform_event{ .type = platform_event::gained_focus });
         break;
       }
 
@@ -565,15 +563,13 @@ namespace mml {
         // Ungrab the cursor
         grab_cursor(false);
 
-        platform_event event;
-        event.type = platform_event::lost_focus;
-        push_event(event);
+        push_event(platform_event{ .type = platform_event::lost_focus });
         break;
       }
 
       // Text event
       case WM_CHAR: {
-        if (_key_repeat_enabled || ((lParam & (1 << 30)) == 0)) {
+        if (_key_repeat_enabled || ((lParam & (static_cast<long long>(1) << 30)) == 0)) {
           // Get the code of the typed character
           std::uint32_t character = static_cast<std::uint32_t>(wParam);
 
@@ -591,10 +587,10 @@ namespace mml {
             }
 
             // Send a text_entered event
-            platform_event event;
-            event.type = platform_event::text_entered;
-            event.text.unicode = character;
-            push_event(event);
+            push_event(platform_event{
+              .type = platform_event::text_entered,
+              .text{ .unicode = character },
+            });
           }
         }
         break;
@@ -604,14 +600,16 @@ namespace mml {
       case WM_KEYDOWN:
       case WM_SYSKEYDOWN: {
         if (_key_repeat_enabled || ((HIWORD(lParam) & KF_REPEAT) == 0)) {
-          platform_event event;
-          event.type = platform_event::key_pressed;
-          event.key.alt = HIWORD(GetKeyState(VK_MENU)) != 0;
-          event.key.control = HIWORD(GetKeyState(VK_CONTROL)) != 0;
-          event.key.shift = HIWORD(GetKeyState(VK_SHIFT)) != 0;
-          event.key.system = HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN));
-          event.key.code = virtual_key_code_to_mml(wParam, lParam);
-          push_event(event);
+          push_event(platform_event{
+            .type = platform_event::key_pressed,
+            .key{
+              .code = virtual_key_code_to_mml(wParam, lParam),
+              .alt = HIWORD(GetKeyState(VK_MENU)) != 0,
+              .control = HIWORD(GetKeyState(VK_CONTROL)) != 0,
+              .shift = HIWORD(GetKeyState(VK_SHIFT)) != 0,
+              .system = HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN)),
+            },
+          });
         }
         break;
       }
@@ -619,145 +617,164 @@ namespace mml {
       // Keyup event
       case WM_KEYUP:
       case WM_SYSKEYUP: {
-        platform_event event;
-        event.type = platform_event::key_released;
-        event.key.alt = HIWORD(GetKeyState(VK_MENU)) != 0;
-        event.key.control = HIWORD(GetKeyState(VK_CONTROL)) != 0;
-        event.key.shift = HIWORD(GetKeyState(VK_SHIFT)) != 0;
-        event.key.system = HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN));
-        event.key.code = virtual_key_code_to_mml(wParam, lParam);
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::key_released,
+          .key{
+            .code = virtual_key_code_to_mml(wParam, lParam),
+            .alt = HIWORD(GetKeyState(VK_MENU)) != 0,
+            .control = HIWORD(GetKeyState(VK_CONTROL)) != 0,
+            .shift = HIWORD(GetKeyState(VK_SHIFT)) != 0,
+            .system = HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN)),
+          },
+        });
         break;
       }
 
       // Vertical mouse wheel event
       case WM_MOUSEWHEEL: {
         // mouse position is in screen coordinates, convert it to window coordinates
-        POINT position;
-        position.x = static_cast<std::int16_t>(LOWORD(lParam));
-        position.y = static_cast<std::int16_t>(HIWORD(lParam));
+        POINT position{
+          .x = static_cast<std::int16_t>(LOWORD(lParam)),
+          .y = static_cast<std::int16_t>(HIWORD(lParam)),
+        };
         ScreenToClient(_handle, &position);
 
         std::int16_t delta = static_cast<std::int16_t>(HIWORD(wParam));
 
-        platform_event event;
-
-        event.type = platform_event::mouse_wheel_scrolled;
-        event.mouse_wheel_scroll.wheel = mouse::vertical_wheel;
-        event.mouse_wheel_scroll.delta = static_cast<float>(delta) / 120.f;
-        event.mouse_wheel_scroll.x = position.x;
-        event.mouse_wheel_scroll.y = position.y;
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_wheel_scrolled,
+          .mouse_wheel_scroll{
+            .wheel = mouse::vertical_wheel,
+            .delta = static_cast<float>(delta) / 120.f,
+            .x = position.x,
+            .y = position.y,
+          },
+        });
         break;
       }
 
       // Horizontal mouse wheel event
       case WM_MOUSEHWHEEL: {
         // mouse position is in screen coordinates, convert it to window coordinates
-        POINT position;
-        position.x = static_cast<std::int16_t>(LOWORD(lParam));
-        position.y = static_cast<std::int16_t>(HIWORD(lParam));
+        POINT position{
+          .x = static_cast<std::int16_t>(LOWORD(lParam)),
+          .y = static_cast<std::int16_t>(HIWORD(lParam)),
+        };
         ScreenToClient(_handle, &position);
 
         std::int16_t delta = static_cast<std::int16_t>(HIWORD(wParam));
 
-        platform_event event;
-        event.type = platform_event::mouse_wheel_scrolled;
-        event.mouse_wheel_scroll.wheel = mouse::horizontal_wheel;
-        event.mouse_wheel_scroll.delta = -static_cast<float>(delta) / 120.f;
-        event.mouse_wheel_scroll.x = position.x;
-        event.mouse_wheel_scroll.y = position.y;
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_wheel_scrolled,
+          .mouse_wheel_scroll{
+            .wheel = mouse::horizontal_wheel,
+            .delta = -static_cast<float>(delta) / 120.f,
+            .x = position.x,
+            .y = position.y,
+          },
+        });
         break;
       }
 
       // mouse left button down event
       case WM_LBUTTONDOWN: {
-        platform_event event;
-        event.type = platform_event::mouse_button_pressed;
-        event.mouse_button.button = mouse::left;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{ 
+          .type = platform_event::mouse_button_pressed,
+          .mouse_button = {
+            .button = mouse::left,
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse left button up event
       case WM_LBUTTONUP: {
-        platform_event event;
-        event.type = platform_event::mouse_button_released;
-        event.mouse_button.button = mouse::left;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_released,
+          .mouse_button{
+            .button = mouse::left,
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse right button down event
       case WM_RBUTTONDOWN: {
-        platform_event event;
-        event.type = platform_event::mouse_button_pressed;
-        event.mouse_button.button = mouse::right;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_pressed,
+          .mouse_button{
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse right button up event
       case WM_RBUTTONUP: {
-        platform_event event;
-        event.type = platform_event::mouse_button_released;
-        event.mouse_button.button = mouse::right;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_released,
+          .mouse_button{
+            .button = mouse::right,
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse wheel button down event
       case WM_MBUTTONDOWN: {
-        platform_event event;
-        event.type = platform_event::mouse_button_pressed;
-        event.mouse_button.button = mouse::middle;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_pressed,
+          .mouse_button{
+            .button = mouse::middle,
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse wheel button up event
       case WM_MBUTTONUP: {
-        platform_event event;
-        event.type = platform_event::mouse_button_released;
-        event.mouse_button.button = mouse::middle;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_released,
+          .mouse_button{
+            .button = mouse::middle,
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse X button down event
       case WM_XBUTTONDOWN: {
-        platform_event event;
-        event.type = platform_event::mouse_button_pressed;
-        event.mouse_button.button =
-          HIWORD(wParam) == XBUTTON1 ? mouse::x_button1 : mouse::x_button2;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_pressed,
+          .mouse_button{
+            .button = HIWORD(wParam) == XBUTTON1 ? mouse::x_button1 : mouse::x_button2,
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
       // mouse X button up event
       case WM_XBUTTONUP: {
-        platform_event event;
-        event.type = platform_event::mouse_button_released;
-        event.mouse_button.button =
-          HIWORD(wParam) == XBUTTON1 ? mouse::x_button1 : mouse::x_button2;
-        event.mouse_button.x = static_cast<std::int16_t>(LOWORD(lParam));
-        event.mouse_button.y = static_cast<std::int16_t>(HIWORD(lParam));
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_button_released,
+          .mouse_button{
+            .x = static_cast<std::int16_t>(LOWORD(lParam)),
+            .y = static_cast<std::int16_t>(HIWORD(lParam)),
+          },
+        });
         break;
       }
 
@@ -768,9 +785,7 @@ namespace mml {
           _mouse_inside = false;
 
           // Generate a mouse_left event
-          platform_event event;
-          event.type = platform_event::mouse_left;
-          push_event(event);
+          push_event(platform_event{ .type = platform_event::mouse_left });
         }
         break;
       }
@@ -804,9 +819,7 @@ namespace mml {
             set_tracking(false);
 
             // Generate a mouse_left event
-            platform_event event;
-            event.type = platform_event::mouse_left;
-            push_event(event);
+            push_event(platform_event{ .type = platform_event::mouse_left });
           }
         } else {
           // and vice-versa
@@ -817,25 +830,25 @@ namespace mml {
             set_tracking(true);
 
             // Generate a mouse_entered event
-            platform_event event;
-            event.type = platform_event::mouse_entered;
-            push_event(event);
+            push_event(platform_event{ .type = platform_event::mouse_entered });
           }
         }
 
         // Generate a MouseMove event
-        platform_event event;
-        event.type = platform_event::mouse_moved;
-        event.mouse_move.x = x;
-        event.mouse_move.y = y;
-        push_event(event);
+        push_event(platform_event{
+          .type = platform_event::mouse_moved,
+          .mouse_move{
+            .x = x,
+            .y = y,
+          },
+        });
         break;
       }
       case WM_DEVICECHANGE: {
         // Some sort of device change has happened, update joystick connections
         if ((wParam == DBT_DEVICEARRIVAL) || (wParam == DBT_DEVICEREMOVECOMPLETE)) {
-          // Some sort of device change has happened, update joystick connections if it is a device
-          // interface
+          // Some sort of device change has happened, update joystick connections if it is a
+          // device interface
           DEV_BROADCAST_HDR* deviceBroadcastHeader = reinterpret_cast<DEV_BROADCAST_HDR*>(lParam);
 
           if (
@@ -853,116 +866,119 @@ namespace mml {
       // Check the scancode to distinguish between left and right shift
       case VK_SHIFT: {
         static UINT lShift = MapVirtualKeyW(VK_LSHIFT, MAPVK_VK_TO_VSC);
-        UINT        scancode = static_cast<UINT>((flags & (0xFF << 16)) >> 16);
-        return scancode == lShift ? keyboard::LShift : keyboard::RShift;
+        UINT scancode = static_cast<UINT>((flags & (static_cast<long long>(0xFF) << 16)) >> 16);
+        return scancode == lShift ? keyboard::key::LShift : keyboard::key::RShift;
       }
 
       // Check the "extended" flag to distinguish between left and right alt
-      case VK_MENU: return (HIWORD(flags) & KF_EXTENDED) ? keyboard::RAlt : keyboard::LAlt;
+      case VK_MENU:
+        return (HIWORD(flags) & KF_EXTENDED) ? keyboard::key::RAlt : keyboard::key::LAlt;
 
       // Check the "extended" flag to distinguish between left and right control
       case VK_CONTROL:
-        return (HIWORD(flags) & KF_EXTENDED) ? keyboard::RControl : keyboard::LControl;
+        return (HIWORD(flags) & KF_EXTENDED) ? keyboard::key::RControl : keyboard::key::LControl;
 
       // Other keys are reported properly
-      case VK_LWIN: return keyboard::LSystem;
-      case VK_RWIN: return keyboard::RSystem;
-      case VK_APPS: return keyboard::Menu;
-      case VK_OEM_1: return keyboard::Semicolon;
-      case VK_OEM_2: return keyboard::Slash;
-      case VK_OEM_PLUS: return keyboard::Equal;
-      case VK_OEM_MINUS: return keyboard::Hyphen;
-      case VK_OEM_4: return keyboard::LBracket;
-      case VK_OEM_6: return keyboard::RBracket;
-      case VK_OEM_COMMA: return keyboard::Comma;
-      case VK_OEM_PERIOD: return keyboard::Period;
-      case VK_OEM_7: return keyboard::Quote;
-      case VK_OEM_5: return keyboard::Backslash;
-      case VK_OEM_3: return keyboard::Tilde;
-      case VK_ESCAPE: return keyboard::Escape;
-      case VK_SPACE: return keyboard::Space;
-      case VK_RETURN: return keyboard::Enter;
-      case VK_BACK: return keyboard::Backspace;
-      case VK_TAB: return keyboard::Tab;
-      case VK_PRIOR: return keyboard::PageUp;
-      case VK_NEXT: return keyboard::PageDown;
-      case VK_END: return keyboard::End;
-      case VK_HOME: return keyboard::Home;
-      case VK_INSERT: return keyboard::Insert;
-      case VK_DELETE: return keyboard::Delete;
-      case VK_ADD: return keyboard::Add;
-      case VK_SUBTRACT: return keyboard::Subtract;
-      case VK_MULTIPLY: return keyboard::Multiply;
-      case VK_DIVIDE: return keyboard::Divide;
-      case VK_PAUSE: return keyboard::Pause;
-      case VK_F1: return keyboard::F1;
-      case VK_F2: return keyboard::F2;
-      case VK_F3: return keyboard::F3;
-      case VK_F4: return keyboard::F4;
-      case VK_F5: return keyboard::F5;
-      case VK_F6: return keyboard::F6;
-      case VK_F7: return keyboard::F7;
-      case VK_F8: return keyboard::F8;
-      case VK_F9: return keyboard::F9;
-      case VK_F10: return keyboard::F10;
-      case VK_F11: return keyboard::F11;
-      case VK_F12: return keyboard::F12;
-      case VK_F13: return keyboard::F13;
-      case VK_F14: return keyboard::F14;
-      case VK_F15: return keyboard::F15;
-      case VK_LEFT: return keyboard::Left;
-      case VK_RIGHT: return keyboard::Right;
-      case VK_UP: return keyboard::Up;
-      case VK_DOWN: return keyboard::Down;
-      case VK_NUMPAD0: return keyboard::Numpad0;
-      case VK_NUMPAD1: return keyboard::Numpad1;
-      case VK_NUMPAD2: return keyboard::Numpad2;
-      case VK_NUMPAD3: return keyboard::Numpad3;
-      case VK_NUMPAD4: return keyboard::Numpad4;
-      case VK_NUMPAD5: return keyboard::Numpad5;
-      case VK_NUMPAD6: return keyboard::Numpad6;
-      case VK_NUMPAD7: return keyboard::Numpad7;
-      case VK_NUMPAD8: return keyboard::Numpad8;
-      case VK_NUMPAD9: return keyboard::Numpad9;
-      case 'A': return keyboard::A;
-      case 'Z': return keyboard::Z;
-      case 'E': return keyboard::E;
-      case 'R': return keyboard::R;
-      case 'T': return keyboard::T;
-      case 'Y': return keyboard::Y;
-      case 'U': return keyboard::U;
-      case 'I': return keyboard::I;
-      case 'O': return keyboard::O;
-      case 'P': return keyboard::P;
-      case 'Q': return keyboard::Q;
-      case 'S': return keyboard::S;
-      case 'D': return keyboard::D;
-      case 'F': return keyboard::F;
-      case 'G': return keyboard::G;
-      case 'H': return keyboard::H;
-      case 'J': return keyboard::J;
-      case 'K': return keyboard::K;
-      case 'L': return keyboard::L;
-      case 'M': return keyboard::M;
-      case 'W': return keyboard::W;
-      case 'X': return keyboard::X;
-      case 'C': return keyboard::C;
-      case 'V': return keyboard::V;
-      case 'B': return keyboard::B;
-      case 'N': return keyboard::N;
-      case '0': return keyboard::Num0;
-      case '1': return keyboard::Num1;
-      case '2': return keyboard::Num2;
-      case '3': return keyboard::Num3;
-      case '4': return keyboard::Num4;
-      case '5': return keyboard::Num5;
-      case '6': return keyboard::Num6;
-      case '7': return keyboard::Num7;
-      case '8': return keyboard::Num8;
-      case '9': return keyboard::Num9;
+      case VK_LWIN: return keyboard::key::LSystem;
+      case VK_RWIN: return keyboard::key::RSystem;
+      case VK_APPS: return keyboard::key::Menu;
+      case VK_OEM_1: return keyboard::key::Semicolon;
+      case VK_OEM_2: return keyboard::key::Slash;
+      case VK_OEM_PLUS: return keyboard::key::Equal;
+      case VK_OEM_MINUS: return keyboard::key::Hyphen;
+      case VK_OEM_4: return keyboard::key::LBracket;
+      case VK_OEM_6: return keyboard::key::RBracket;
+      case VK_OEM_COMMA: return keyboard::key::Comma;
+      case VK_OEM_PERIOD: return keyboard::key::Period;
+      case VK_OEM_7: return keyboard::key::Quote;
+      case VK_OEM_5: return keyboard::key::Backslash;
+      case VK_OEM_3: return keyboard::key::Tilde;
+      case VK_ESCAPE: return keyboard::key::Escape;
+      case VK_SPACE: return keyboard::key::Space;
+      case VK_RETURN: return keyboard::key::Enter;
+      case VK_BACK: return keyboard::key::Backspace;
+      case VK_TAB: return keyboard::key::Tab;
+      case VK_PRIOR: return keyboard::key::PageUp;
+      case VK_NEXT: return keyboard::key::PageDown;
+      case VK_END: return keyboard::key::End;
+      case VK_HOME: return keyboard::key::Home;
+      case VK_INSERT: return keyboard::key::Insert;
+      case VK_DELETE: return keyboard::key::Delete;
+      case VK_ADD: return keyboard::key::Add;
+      case VK_SUBTRACT: return keyboard::key::Subtract;
+      case VK_MULTIPLY: return keyboard::key::Multiply;
+      case VK_DIVIDE: return keyboard::key::Divide;
+      case VK_PAUSE: return keyboard::key::Pause;
+      case VK_F1: return keyboard::key::F1;
+      case VK_F2: return keyboard::key::F2;
+      case VK_F3: return keyboard::key::F3;
+      case VK_F4: return keyboard::key::F4;
+      case VK_F5: return keyboard::key::F5;
+      case VK_F6: return keyboard::key::F6;
+      case VK_F7: return keyboard::key::F7;
+      case VK_F8: return keyboard::key::F8;
+      case VK_F9: return keyboard::key::F9;
+      case VK_F10: return keyboard::key::F10;
+      case VK_F11: return keyboard::key::F11;
+      case VK_F12: return keyboard::key::F12;
+#ifndef IMGUI_KEYBOARD_MAPPING
+      case VK_F13: return keyboard::key::F13;
+      case VK_F14: return keyboard::key::F14;
+      case VK_F15: return keyboard::key::F15;
+#endif
+      case VK_LEFT: return keyboard::key::Left;
+      case VK_RIGHT: return keyboard::key::Right;
+      case VK_UP: return keyboard::key::Up;
+      case VK_DOWN: return keyboard::key::Down;
+      case VK_NUMPAD0: return keyboard::key::Numpad0;
+      case VK_NUMPAD1: return keyboard::key::Numpad1;
+      case VK_NUMPAD2: return keyboard::key::Numpad2;
+      case VK_NUMPAD3: return keyboard::key::Numpad3;
+      case VK_NUMPAD4: return keyboard::key::Numpad4;
+      case VK_NUMPAD5: return keyboard::key::Numpad5;
+      case VK_NUMPAD6: return keyboard::key::Numpad6;
+      case VK_NUMPAD7: return keyboard::key::Numpad7;
+      case VK_NUMPAD8: return keyboard::key::Numpad8;
+      case VK_NUMPAD9: return keyboard::key::Numpad9;
+      case 'A': return keyboard::key::A;
+      case 'Z': return keyboard::key::Z;
+      case 'E': return keyboard::key::E;
+      case 'R': return keyboard::key::R;
+      case 'T': return keyboard::key::T;
+      case 'Y': return keyboard::key::Y;
+      case 'U': return keyboard::key::U;
+      case 'I': return keyboard::key::I;
+      case 'O': return keyboard::key::O;
+      case 'P': return keyboard::key::P;
+      case 'Q': return keyboard::key::Q;
+      case 'S': return keyboard::key::S;
+      case 'D': return keyboard::key::D;
+      case 'F': return keyboard::key::F;
+      case 'G': return keyboard::key::G;
+      case 'H': return keyboard::key::H;
+      case 'J': return keyboard::key::J;
+      case 'K': return keyboard::key::K;
+      case 'L': return keyboard::key::L;
+      case 'M': return keyboard::key::M;
+      case 'W': return keyboard::key::W;
+      case 'X': return keyboard::key::X;
+      case 'C': return keyboard::key::C;
+      case 'V': return keyboard::key::V;
+      case 'B': return keyboard::key::B;
+      case 'N': return keyboard::key::N;
+      case '0': return keyboard::key::Num0;
+      case '1': return keyboard::key::Num1;
+      case '2': return keyboard::key::Num2;
+      case '3': return keyboard::key::Num3;
+      case '4': return keyboard::key::Num4;
+      case '5': return keyboard::key::Num5;
+      case '6': return keyboard::key::Num6;
+      case '7': return keyboard::key::Num7;
+      case '8': return keyboard::key::Num8;
+      case '9': return keyboard::key::Num9;
       }
 
-      return keyboard::Unknown;
+      return keyboard::key::Unknown;
     }
 
     LRESULT CALLBACK
@@ -994,7 +1010,8 @@ namespace mml {
       // window
       if (message == WM_CLOSE) return 0;
 
-      // Don't forward the menu system command, so that pressing ALT or F10 doesn't steal the focus
+      // Don't forward the menu system command, so that pressing ALT or F10 doesn't steal the
+      // focus
       if ((message == WM_SYSCOMMAND) && (wParam == SC_KEYMENU)) return 0;
 
       return DefWindowProcW(handle, message, wParam, lParam);

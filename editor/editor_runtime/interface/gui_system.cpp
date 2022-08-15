@@ -123,7 +123,7 @@ void imgui_handle_event(const mml::platform_event& event) {
   }
 
   if (event.type == mml::platform_event::key_pressed) {
-    io.AddKeyEvent(event.key.code, true);  // TODO: virtual key code 到imgui的映射
+    io.AddKeyEvent((ImGuiKey) event.key.code, true);  // TODO: virtual key code 到imgui的映射
     io.AddKeyEvent(ImGuiKey_LeftAlt, event.key.alt);
     io.AddKeyEvent(ImGuiKey_LeftCtrl, event.key.control);
     io.AddKeyEvent(ImGuiKey_LeftShift, event.key.shift);
@@ -131,7 +131,7 @@ void imgui_handle_event(const mml::platform_event& event) {
   }
 
   if (event.type == mml::platform_event::key_released) {
-    io.AddKeyEvent(event.key.code, false);
+    io.AddKeyEvent((ImGuiKey) event.key.code, false);
     io.AddKeyEvent(ImGuiKey_LeftAlt, event.key.alt);
     io.AddKeyEvent(ImGuiKey_LeftCtrl, event.key.control);
     io.AddKeyEvent(ImGuiKey_LeftShift, event.key.shift);

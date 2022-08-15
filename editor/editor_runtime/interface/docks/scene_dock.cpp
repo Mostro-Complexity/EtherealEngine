@@ -341,7 +341,7 @@ void draw_selected_camera(const ImVec2& size) {
       }
       gui::End();
 
-      if (input.is_key_pressed(mml::keyboard::F) && sel.has_component<transform_component>()) {
+      if (input.is_key_pressed(mml::keyboard::key::F) && sel.has_component<transform_component>()) {
         auto transform = editor_camera.get_component<transform_component>().lock();
         auto transform_selected = sel.get_component<transform_component>().lock();
         transform_selected->set_transform(transform->get_transform());
@@ -361,14 +361,14 @@ void manipulation_gizmos() {
   if (
     !input.is_mouse_button_down(mml::mouse::right) && !gui::IsAnyItemActive()
     && !imguizmo::is_using()) {
-    if (input.is_key_pressed(mml::keyboard::W)) { operation = imguizmo::operation::translate; }
-    if (input.is_key_pressed(mml::keyboard::E)) { operation = imguizmo::operation::rotate; }
-    if (input.is_key_pressed(mml::keyboard::R)) {
+    if (input.is_key_pressed(mml::keyboard::key::W)) { operation = imguizmo::operation::translate; }
+    if (input.is_key_pressed(mml::keyboard::key::E)) { operation = imguizmo::operation::rotate; }
+    if (input.is_key_pressed(mml::keyboard::key::R)) {
       operation = imguizmo::operation::scale;
       mode = imguizmo::mode::local;
     }
-    if (input.is_key_pressed(mml::keyboard::T)) { mode = imguizmo::mode::local; }
-    if (input.is_key_pressed(mml::keyboard::Y) && operation != imguizmo::operation::scale) {
+    if (input.is_key_pressed(mml::keyboard::key::T)) { mode = imguizmo::mode::local; }
+    if (input.is_key_pressed(mml::keyboard::key::Y) && operation != imguizmo::operation::scale) {
       mode = imguizmo::mode::world;
     }
   }
@@ -384,7 +384,7 @@ void manipulation_gizmos() {
       const auto&     transform = transform_comp->get_transform();
       math::transform delta;
       float*          snap = nullptr;
-      if (input.is_key_down(mml::keyboard::LControl)) {
+      if (input.is_key_down(mml::keyboard::key::LControl)) {
         if (operation == imguizmo::operation::translate) {
           snap = &es.snap_data.translation_snap[0];
         } else if (operation == imguizmo::operation::rotate) {
@@ -486,7 +486,7 @@ void handle_camera_movement() {
   auto  delta_move = input.get_cursor_delta_move();
 
   if (input.is_mouse_button_down(mml::mouse::middle)) {
-    if (input.is_key_down(mml::keyboard::LShift)) { movement_speed *= multiplier; }
+    if (input.is_key_down(mml::keyboard::key::LShift)) { movement_speed *= multiplier; }
 
     if (delta_move.x != 0) {
       transform_comp->move_local({ -1 * delta_move.x * movement_speed * dt, 0.0f, 0.0f });
@@ -523,7 +523,7 @@ void handle_camera_movement() {
    * Use left mouse key to rotate the relative position between the observation position
    * and the camera, which is implemented by quaternions to avoid avoid gimbal deadlock.
    */
-  if (input.is_key_down(mml::keyboard::LAlt) && input.is_mouse_button_down(mml::mouse::left)) {
+  if (input.is_key_down(mml::keyboard::key::LAlt) && input.is_mouse_button_down(mml::mouse::left)) {
     auto x = static_cast<float>(delta_move.x);  // mouse from one edge to another
     auto y = static_cast<float>(delta_move.y);
 
@@ -679,7 +679,7 @@ void scene_dock::render(const ImVec2& area) {
       gui::RenderFrameEx(gui::GetItemRectMin(), gui::GetItemRectMax(), true, 0.0f, 2.0f);
       gui::PopStyleColor();
 
-      if (input.is_key_pressed(mml::keyboard::Delete)) {
+      if (input.is_key_pressed(mml::keyboard::key::Delete)) {
         if (selected && selected.is_type<runtime::entity>()) {
           auto sel = selected.get_value<runtime::entity>();
           if (sel && sel != editor_camera) {
@@ -689,8 +689,8 @@ void scene_dock::render(const ImVec2& area) {
         }
       }
 
-      if (input.is_key_pressed(mml::keyboard::D)) {
-        if (input.is_key_down(mml::keyboard::LControl)) {
+      if (input.is_key_pressed(mml::keyboard::key::D)) {
+        if (input.is_key_down(mml::keyboard::key::LControl)) {
           if (selected && selected.is_type<runtime::entity>()) {
             auto sel = selected.get_value<runtime::entity>();
             if (sel && sel != editor_camera) {

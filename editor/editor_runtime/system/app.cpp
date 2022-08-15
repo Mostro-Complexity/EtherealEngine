@@ -234,16 +234,16 @@ namespace editor {
     auto&       input = core::get_subsystem<runtime::input>();
     const auto& current_project = pm.get_name();
 
-    if (input.is_key_down(mml::keyboard::LControl)) {
-      if (input.is_key_down(mml::keyboard::LShift)) {
-        if (input.is_key_pressed(mml::keyboard::S)) { save_scene_as(); }
-      } else if (input.is_key_pressed(mml::keyboard::S)) {
+    if (input.is_key_down(mml::keyboard::key::LControl)) {
+      if (input.is_key_down(mml::keyboard::key::LShift)) {
+        if (input.is_key_pressed(mml::keyboard::key::S)) { save_scene_as(); }
+      } else if (input.is_key_pressed(mml::keyboard::key::S)) {
         save_scene();
       }
 
-      if (input.is_key_pressed(mml::keyboard::O)) { open_scene(); }
+      if (input.is_key_pressed(mml::keyboard::key::O)) { open_scene(); }
 
-      if (input.is_key_pressed(mml::keyboard::N)) { create_new_scene(); }
+      if (input.is_key_pressed(mml::keyboard::key::N)) { create_new_scene(); }
     }
     if (gui::BeginMainMenuBar()) {
 

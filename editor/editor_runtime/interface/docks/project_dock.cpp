@@ -155,9 +155,11 @@ static bool draw_entry(
 
   gui::PushID(name.c_str());
   if (is_selected && !gui::IsAnyItemActive() && gui::IsWindowFocused()) {
-    if (gui::IsKeyPressed(mml::keyboard::F2)) { open_rename_menu = true; }
+    if (gui::IsKeyPressed((ImGuiKey) mml::keyboard::key::F2)) { open_rename_menu = true; }
 
-    if (gui::IsKeyPressed(mml::keyboard::Delete)) { action = entry_action::deleted; }
+    if (gui::IsKeyPressed((ImGuiKey) mml::keyboard::key::Delete)) {
+      action = entry_action::deleted;
+    }
   }
 
   ImVec2 item_size = { size, size };

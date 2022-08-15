@@ -127,12 +127,14 @@ namespace mml {
             bool currPressed = _joystick_states[i].buttons[j];
 
             if (prevPressed ^ currPressed) {
-              platform_event event;
-              event.type = currPressed ? platform_event::joystick_button_pressed
-                                       : platform_event::joystick_button_released;
-              event.joystick_button.joystick_id = i;
-              event.joystick_button.button = j;
-              push_event(event);
+              push_event(platform_event{
+                .type = currPressed ? platform_event::joystick_button_pressed
+                                    : platform_event::joystick_button_released,
+                .joystick_button{
+                  .joystick_id = i,
+                  .button = j,
+                },
+              });
             }
           }
         }
@@ -155,13 +157,15 @@ namespace mml {
           // If the value has changed, trigger an event
           if (_sensor_value[i] != previousValue)  // @todo use a threshold?
           {
-            platform_event event;
-            event.type = platform_event::sensor_changed;
-            event.sensor.type = sensor;
-            event.sensor.x = _sensor_value[i][0];
-            event.sensor.y = _sensor_value[i][1];
-            event.sensor.z = _sensor_value[i][2];
-            push_event(event);
+            push_event(platform_event{
+              .type = platform_event::sensor_changed,
+              .sensor{
+                .type = sensor,
+                .x = _sensor_value[i][0],
+                .y = _sensor_value[i][1],
+                .z = _sensor_value[i][2],
+              },
+            });
           }
         }
       }
