@@ -7,10 +7,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake)
 # Set cpp standard
 set(CMAKE_CXX_STANDARD 20)
 
-# Map mml key to imgui key enum instead of windows virtual key code
-if(IMGUI_KEYBOARD_MAPPING)
-    add_definitions(-DIMGUI_KEYBOARD_MAPPING)
-endif()
 
 # CMake's built-in Android support requires 3.7.0
 if(CMAKE_SYSTEM_NAME MATCHES "Android")

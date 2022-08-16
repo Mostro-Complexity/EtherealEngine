@@ -1,6 +1,6 @@
 add_subdirectory( mml )
 
-option(IMGUI_KEYBOARD_MAPPING "True to use imgui key mapping instead of windows virtual key." ON)
+set( IMGUI_KEYBOARD_MAPPING ON CACHE BOOL "Use imgui key mapping instead of windows virtual key" FORCE)
 
 target_include_directories (mml-window PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/mml/include)
 
