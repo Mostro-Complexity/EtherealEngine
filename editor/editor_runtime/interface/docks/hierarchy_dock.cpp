@@ -378,7 +378,7 @@ void hierarchy_dock::draw_entity(runtime::entity entity) {
 
   if (gui::IsWindowFocused()) {
     if (is_selected && !gui::IsAnyItemActive()) {
-      if (input.is_key_pressed(mml::keyboard::F2)) {
+      if (input.is_key_pressed(mml::keyboard::key::F2)) {
         edit_label_ = true;
         gui::SetKeyboardFocusHere();
       }
@@ -488,7 +488,7 @@ void hierarchy_dock::render(const ImVec2& /*unused*/) {
     check_context_menu(runtime::entity());
 
     if (gui::IsWindowFocused()) {
-      if (input.is_key_pressed(mml::keyboard::Delete)) {
+      if (input.is_key_pressed(mml::keyboard::key::Delete)) {
         if (selected && selected.is_type<runtime::entity>()) {
           auto sel = selected.get_value<runtime::entity>();
           if (sel && sel != editor_camera) {
@@ -498,9 +498,9 @@ void hierarchy_dock::render(const ImVec2& /*unused*/) {
         }
       }
 
-      if (input.is_key_pressed(mml::keyboard::D, mml::keyboard::LControl)) {
+      if (input.is_key_pressed(mml::keyboard::key::D, mml::keyboard::key::LControl)) {
         if (selected && selected.is_type<runtime::entity>()) {
-          auto sel = selected.get_value<runtime::entity>();
+          auto& sel = selected.get_value<runtime::entity>();
           if (sel && sel != editor_camera) {
             auto clone = ecs::utils::clone_entity(sel);
             auto clone_trans_comp = clone.get_component<transform_component>().lock();
@@ -513,9 +513,9 @@ void hierarchy_dock::render(const ImVec2& /*unused*/) {
         }
       }
     }
-    if (input.is_key_pressed(mml::keyboard::F, mml::keyboard::LShift)) {
+    if (input.is_key_pressed(mml::keyboard::key::F, mml::keyboard::key::LShift)) {
       if (selected && selected.is_type<runtime::entity>()) {
-        auto sel = selected.get_value<runtime::entity>();
+        auto& sel = selected.get_value<runtime::entity>();
         if (sel && sel != editor_camera) {
           if (
             editor_camera.has_component<transform_component>()
