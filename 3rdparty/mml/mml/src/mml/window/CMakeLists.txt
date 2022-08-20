@@ -135,3 +135,7 @@ target_link_libraries(mml-window PUBLIC mml-system ${WINDOW_EXT_LIBS})
 if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(mml-window PUBLIC MML_STATIC)
 endif()
+
+if(KEYBOARD_MAPPING)
+    target_compile_definitions(mml-window PUBLIC IMGUI_KEYBOARD_MAPPING)
+endif()
